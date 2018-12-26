@@ -1,0 +1,14 @@
+﻿<Window
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:MFDisplay"
+        xmlns:Configuration="clr-namespace:MFDisplay.Configuration" x:Class="MFDisplay.MainWindow"
+        mc:Ignorable="d"
+        Title="DCS Modules" Height="100" Width="210" Loaded="Window_Loaded" Closing="Window_Closing" MinWidth="100" MinHeight="100" ResizeMode="CanMinimize" Cursor="Arrow" Closed="Window_Closed" Initialized="Window_Initialized" WindowStartupLocation="CenterScreen" WindowState="Minimized">
+    <Grid HorizontalAlignment="Center" VerticalAlignment="Center">
+        <ComboBox Name="cbModules" Width="164" SelectionChanged="ComboBox_SelectionChanged" Loaded="CbModules_Loaded">
+        </ComboBox>
+    </Grid>
+</Window>

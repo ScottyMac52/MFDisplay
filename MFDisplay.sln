@@ -1,0 +1,31 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 15
+VisualStudioVersion = 15.0.28307.168
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MFDisplay", "MFDisplay\MFDisplay.csproj", "{1AC90D5B-6DB5-4AAA-8C7E-B6B28FD75A47}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Tests-MFDisplay", "Tests-MFDisplay\Tests-MFDisplay.csproj", "{3496AFD8-3746-497A-BB3C-AD9F29FDBC30}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{1AC90D5B-6DB5-4AAA-8C7E-B6B28FD75A47}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1AC90D5B-6DB5-4AAA-8C7E-B6B28FD75A47}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1AC90D5B-6DB5-4AAA-8C7E-B6B28FD75A47}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1AC90D5B-6DB5-4AAA-8C7E-B6B28FD75A47}.Release|Any CPU.Build.0 = Release|Any CPU
+		{3496AFD8-3746-497A-BB3C-AD9F29FDBC30}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3496AFD8-3746-497A-BB3C-AD9F29FDBC30}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3496AFD8-3746-497A-BB3C-AD9F29FDBC30}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{3496AFD8-3746-497A-BB3C-AD9F29FDBC30}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {0302FCAD-31DD-4B36-9A9B-3C0D6BBFAE3A}
+	EndGlobalSection
+EndGlobal

@@ -1,0 +1,45 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ClassDiagram MajorVersion="1" MinorVersion="1">
+  <Class Name="MFDisplay.Configuration.MFDConfigurationSection">
+    <Position X="0.5" Y="0.5" Width="2" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAACAAAAAAIAAAAAAAQAAAAAAAAAABAAAAAAAA=</HashCode>
+      <FileName>Configuration\MFDConfigurationSection.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Property Name="Modules" />
+    </ShowAsAssociation>
+  </Class>
+  <Class Name="MFDisplay.Configuration.ModulesConfigurationCollection">
+    <Position X="3.5" Y="0.75" Width="2.5" />
+    <TypeIdentifier>
+      <HashCode>AAICAAAAAAAAAAAACAAABAAAAAABAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Configuration\ModulesConfigurationCollection.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="MFDisplay.Configuration.ModuleConfigurationDefintion">
+    <Position X="3.75" Y="3.75" Width="2.25" />
+    <TypeIdentifier>
+      <HashCode>AAAAEAAAAAAAAAAAAAAAAAAAAAAIAAACAAAAAAAAAAA=</HashCode>
+      <FileName>Configuration\ModuleConfigurationDefintion.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Property Name="MFDConfigurations" />
+    </ShowAsAssociation>
+  </Class>
+  <Class Name="MFDisplay.Configuration.MFDDefinitionsCollection">
+    <Position X="7.5" Y="3.5" Width="2" />
+    <TypeIdentifier>
+      <HashCode>AAICAAAAAAAAAAAACAAABAAAAAABAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Configuration\MFDDefinitionsCollection.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="MFDisplay.Configuration.MFDDefintion">
+    <Position X="7.5" Y="6.25" Width="2" />
+    <TypeIdentifier>
+      <HashCode>AAAAEAAABAAAAAAAAAAAAEQAAAAYAAAACAAAAABAAAA=</HashCode>
+      <FileName>Configuration\MFDDefintion.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Font Name="Segoe UI" Size="9" />
+</ClassDiagram>
