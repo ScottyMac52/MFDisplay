@@ -5,6 +5,7 @@ namespace MFDisplay.Interfaces
 
     public interface IMFDDefintion
     {
+        string ModuleName { get; set; }
         string FileName { get; set; }
         int Height { get; set; }
         int Left { get; set; }
@@ -17,6 +18,7 @@ namespace MFDisplay.Interfaces
         int XOffsetFinish { get; set; }
         int YOffsetFinish { get; set; }
         bool? UseOffsets { get; set; }
+        bool? SaveResults { get; set; }
         BitmapSource CropImage(string imagePath);
         string ToReadableString();
       

@@ -89,6 +89,7 @@ namespace MFDisplay
             Logger.Debug($"Creating configuration {moduleDef.DisplayName}");
             moduleDef.Configurations.ForEach(config =>
             {
+                Logger.Info($"Creatiing {config.ToReadableString()}");
                 var newmfdWindow = new MFDWindow()
                 {
                     Logger = Logger,
