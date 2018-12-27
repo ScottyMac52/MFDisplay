@@ -7,10 +7,6 @@
         mc:Ignorable="d"
         Title="MFD" Height="450" Width="800" Topmost="True" Loaded="Window_Loaded" Closed="Window_Closed" WindowStartupLocation="CenterScreen" SizeToContent="WidthAndHeight" ResizeMode="NoResize" WindowStyle="None" ShowInTaskbar="False" AllowsTransparency="True" Opacity="0">
     <Grid>
-        <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="9*"/>
-            <ColumnDefinition Width="41*"/>
-        </Grid.ColumnDefinitions>
-        <Image x:Name="imgMain" HorizontalAlignment="Stretch" Height="430" Margin="10" VerticalAlignment="Stretch" Width="780" Stretch="Fill" Grid.ColumnSpan="2"/>
+        <Image x:Name="imgMain" HorizontalAlignment="Stretch" Height="430" Margin="10" VerticalAlignment="Stretch" Width="780" Stretch="Fill" Grid.ColumnSpan="1"/>
     </Grid>
 </Window>

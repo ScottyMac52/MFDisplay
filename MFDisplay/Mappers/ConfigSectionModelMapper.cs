@@ -28,6 +28,7 @@ namespace MFDisplay.Mappers
                     var currentConfig = (MFDDefintion) mfdIterator.Current;
                     var mfdConfiguration = new ConfigurationDefinition()
                     {
+                        ModuleName = modelModule.ModuleName,
                         FileName = !string.IsNullOrEmpty(currentConfig.FileName) ? currentConfig.FileName : currentModule.FileName,
                         Height = currentConfig.Height ?? section.Height,
                         Name = currentConfig.Name,
@@ -36,6 +37,7 @@ namespace MFDisplay.Mappers
                         Width = currentConfig.Width ?? section.Width,
                         YOffsetStart = currentConfig.YOffsetStart ?? section.YOffsetStart,
                         YOffsetFinish = currentConfig.YOffsetFinish ?? section.YOffsetFinish,
+                        SaveResults = true,
                         UseOffsets = true
                     };
                     switch(currentConfig.Name)
@@ -49,6 +51,11 @@ namespace MFDisplay.Mappers
                             mfdConfiguration.Left = currentConfig.RMFDLeft ?? section.RMFDLeft;
                             mfdConfiguration.XOffsetStart = currentConfig.XRFMDOffsetStart ?? section.XRFMDOffsetStart;
                             mfdConfiguration.XOffsetFinish = currentConfig.XRFMDOffsetFinish ?? section.XRFMDOffsetFinish;
+                            break;
+                        default:
+                            mfdConfiguration.Left = currentConfig.LMFDLeft ?? currentConfig.RMFDLeft ?? 0;
+                            mfdConfiguration.XOffsetStart = currentConfig.XLFMDOffsetStart ?? currentConfig.XRFMDOffsetStart ?? 0;
+                            mfdConfiguration.XOffsetFinish = currentConfig.XLFMDOffsetFinish ?? currentConfig.XRFMDOffsetFinish ?? 0;
                             break;
                     }
                     modelModule.Configurations.Add(mfdConfiguration);
