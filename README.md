@@ -1,3 +1,5 @@
+## Please report all isues via: https://github.com/ScottyMac52/MFDisplay/issues
+
 # MFDisplay
 
 Utility that allows the display of any image cropped from another image displayed anywhere on the display coordinates of a users computer as any size image.
@@ -50,5 +52,5 @@ Utility that allows the display of any image cropped from another image displaye
   4. Once the coordinates match your display preferences you can save the file, exit and execute the executable.
   ### NOTE, if the exe fails you may not have the correct .NET runtime installed. This application using .NET Framework 4.7.1 and is built in C#.NET on Visual Studio 2017. If you need to install the .NET Framework, it's free, here is the link: https://www.microsoft.com/en-us/download/details.aspx?id=56115.   
   
-Please report all isues via: https://github.com/ScottyMac52/MFDisplay/issues
+## Please report all isues via: https://github.com/ScottyMac52/MFDisplay/issues
 
