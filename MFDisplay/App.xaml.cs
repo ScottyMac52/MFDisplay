@@ -1,8 +1,6 @@
 ﻿using log4net;
 using MFDisplay.Configuration;
 using System.Windows;
-using Microsoft.AppCenter;
-using Microsoft.AppCenter.Analytics;
 
 namespace MFDisplay
 {
@@ -20,11 +18,6 @@ namespace MFDisplay
         /// Logger for the application
         /// </summary>
         private ILog logger = LogManager.GetLogger("MFDisplay");
-
-        public App()
-        {
-            AppCenter.Start("d94b01d4-7eda-4715-b7f9-50ea785733e4", typeof(Analytics));
-        }
 
         private void Application_Startup(object sender, StartupEventArgs e)
         {
