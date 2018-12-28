@@ -5,9 +5,10 @@ namespace MFDisplay.Models
 {
     public class ModulesConfiguration : IModulesConfiguration
     {
-        public string FilePath { get; set; }
-        public string DefaultConfig { get; set; }
-        public List<IModuleDefinition> Modules { get; set; }
+        public string FilePath { get; internal set; }
+        public string DefaultConfig { get; internal set; }
+        public List<IModuleDefinition> Modules { get; internal set; }
+        public bool? SaveClips { get; internal set; }
 
         public ModulesConfiguration()
         {
