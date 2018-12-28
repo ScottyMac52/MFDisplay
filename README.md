@@ -5,10 +5,11 @@ Utility that allows the display of any image cropped from another image displaye
   ### NOTE, if the exe fails you may not have the correct .NET runtime installed. This application using .NET Framework 4.7.1 and is built in C#.NET on Visual Studio 2017. If you need to install the .NET Framework, it's free, here is the link: https://www.microsoft.com/en-us/download/details.aspx?id=56115.   
 
 ## Installation
-  1. Unzip the release file into a folder on your windows based computer
-  2. Then edit the MFDisplay.exe.config file and under the MFDSettings section change the FilePath to be the location where the CTS profile graphics files are. In my case E:\HOTAS\TARGET\CTS\Docs\Profile JPGs.
-  3. Next edit the coordinates in the configuration using the Guide below  
- 
+  1. The zipped installation package is available: https://github.com/ScottyMac52/MFDisplay/blob/master/MFDisplay.zip
+  2. Click on the Download button.
+  3. Unzip the file into a folder where you install programs from
+  4. Run the Setup.exe 
+  
  ## MFDSettings Configuration Section Guide
   ### Provides encapsulated configuration for All Modules
   #### Edit MFDisplay.exe.config 
