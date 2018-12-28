@@ -7,8 +7,9 @@ namespace MFDisplay.Interfaces
     /// </summary>
     public interface IModulesConfiguration
     {
-        string FilePath { get; set; }
-        string DefaultConfig { get; set; }
+        string FilePath { get; }
+        string DefaultConfig { get; }
         List<IModuleDefinition> Modules { get; }
+        bool? SaveClips { get; }
     }
 }

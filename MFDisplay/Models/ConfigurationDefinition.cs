@@ -11,20 +11,20 @@ namespace MFDisplay.Models
 {
     public class ConfigurationDefinition : IMFDDefintion
     {
-        public string ModuleName { get; set; }
-        public string FileName { get; set; }
-        public int Height { get; set; }
-        public int Left { get; set; }
-        public string Name { get; set; }
-        public float Opacity { get; set; }
-        public int Top { get; set; }
-        public int Width { get; set; }
-        public int XOffsetStart { get; set; }
-        public int YOffsetStart { get; set; }
-        public int XOffsetFinish { get; set; }
-        public int YOffsetFinish { get; set; }
-        public bool? UseOffsets { get; set; }
-        public bool? SaveResults { get; set; }
+        public string ModuleName { get; internal set; }
+        public string FileName { get; internal set; }
+        public int Height { get; internal set; }
+        public int Left { get; internal set; }
+        public string Name { get; internal set; }
+        public float Opacity { get; internal set; }
+        public int Top { get; internal set; }
+        public int Width { get; internal set; }
+        public int XOffsetStart { get; internal set; }
+        public int YOffsetStart { get; internal set; }
+        public int XOffsetFinish { get; internal set; }
+        public int YOffsetFinish { get; internal set; }
+        public bool? UseOffsets { get; internal set; }
+        public bool? SaveResults { get; internal set; }
 
         public BitmapSource CropImage(string imagePath)
         {

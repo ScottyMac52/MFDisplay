@@ -11,7 +11,8 @@ namespace MFDisplay.Mappers
             var moduleConfigurations = new ModulesConfiguration()
             {
                 FilePath = section.FilePath,
-                DefaultConfig = section.DefaultConfig
+                DefaultConfig = section.DefaultConfig,
+                SaveClips = section.SaveClips ?? false
             };
             var iterator = section.Modules.GetEnumerator();
             while(iterator.MoveNext())
@@ -37,7 +38,7 @@ namespace MFDisplay.Mappers
                         Width = currentConfig.Width ?? section.Width,
                         YOffsetStart = currentConfig.YOffsetStart ?? section.YOffsetStart,
                         YOffsetFinish = currentConfig.YOffsetFinish ?? section.YOffsetFinish,
-                        SaveResults = true,
+                        SaveResults = section.SaveClips,
                         UseOffsets = true
                     };
                     switch(currentConfig.Name)

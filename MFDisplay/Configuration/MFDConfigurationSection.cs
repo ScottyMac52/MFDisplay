@@ -14,29 +14,43 @@ namespace MFDisplay.Configuration
             return (MFDConfigurationSection)ConfigurationManager.GetSection("MFDSettings") ?? new MFDConfigurationSection();
         }
 
-        [ConfigurationProperty("FilePath", IsRequired = true)]
+        [ConfigurationProperty("saveClips", IsRequired = true)]
+        public bool? SaveClips
+        {
+            get
+            {
+                return (bool?)this["saveClips"];
+            }
+            set
+            {
+                this["saveClips"] = value;
+            }
+        }
+
+
+        [ConfigurationProperty("filePath", IsRequired = true)]
         public string FilePath
         {
             get
             {
-                return this["FilePath"] as string;
+                return this["filePath"] as string;
             }
             set
             {
-                this["FilePath"] = value;
+                this["filePath"] = value;
             }
         }
 
-        [ConfigurationProperty("DefaultConfig", IsRequired = false)]
+        [ConfigurationProperty("defaultConfig", IsRequired = false)]
         public string DefaultConfig
         {
             get
             {
-                return this["DefaultConfig"] as string;
+                return this["defaultConfig"] as string;
             }
             set
             {
-                this["DefaultConfig"] = value;
+                this["defaultConfig"] = value;
             }
         }
 

@@ -59,5 +59,15 @@ namespace MFDisplay.Properties {
                 resourceCulture = value;
             }
         }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Icon similar to (Icon).
+        /// </summary>
+        internal static System.Drawing.Icon mfd_4_cts {
+            get {
+                object obj = ResourceManager.GetObject("mfd_4_cts", resourceCulture);
+                return ((System.Drawing.Icon)(obj));
+            }
+        }
     }
 }

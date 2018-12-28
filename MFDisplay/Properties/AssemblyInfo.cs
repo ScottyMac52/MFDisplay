@@ -8,9 +8,9 @@ using System.Windows;
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
 [assembly: AssemblyTitle("MFDisplay")]
-[assembly: AssemblyDescription("")]
+[assembly: AssemblyDescription("MFD 4 CTS")]
 [assembly: AssemblyConfiguration("")]
-[assembly: AssemblyCompany("")]
+[assembly: AssemblyCompany("Vyper Industries")]
 [assembly: AssemblyProduct("MFDisplay")]
 [assembly: AssemblyCopyright("Copyright ©  2018")]
 [assembly: AssemblyTrademark("")]
