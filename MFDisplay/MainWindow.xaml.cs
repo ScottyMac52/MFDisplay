@@ -4,8 +4,11 @@ using MFDisplay.Interfaces;
 using MFDisplay.Mappers;
 using MFDisplay.Models;
 using System.Collections.Generic;
+using System.Collections.Specialized;
+using System.Deployment.Application;
 using System.IO;
 using System.Linq;
+using System.Web;
 using System.Windows;
 using System.Windows.Controls;
 
@@ -150,5 +153,26 @@ namespace MFDisplay
 
         }
 
+        private void MenuItem_Click(object sender, RoutedEventArgs e)
+        {
+            var menuName = (MenuItem) e.Source;
+            switch(menuName.Header)
+            {
+                case "_ShowLocation":
+                    {
+                        NameValueCollection nameValueTable = new NameValueCollection();
+
+
+                        var appDeploy = ApplicationDeployment.CurrentDeployment;
+
+                        if (ApplicationDeployment.IsNetworkDeployed)
+                        {
+                            string queryString = ApplicationDeployment.CurrentDeployment.ActivationUri.Query;
+                            nameValueTable = HttpUtility.ParseQueryString(queryString);
+                        }
+                    }
+                    break;
+            }
+        }
     }
 }
