@@ -1,5 +1,8 @@
 ﻿using log4net;
 using MFDisplay.Configuration;
+using System;
+using System.Deployment.Application;
+using System.IO;
 using System.Windows;
 
 namespace MFDisplay
@@ -17,13 +20,16 @@ namespace MFDisplay
         /// <summary>
         /// Logger for the application
         /// </summary>
-        private ILog logger = LogManager.GetLogger("MFDisplay");
+        private ILog logger = null;
 
         private void Application_Startup(object sender, StartupEventArgs e)
         {
-            log4net.Config.XmlConfigurator.Configure();
+            logger = LogManager.GetLogger("MFDisplay");
             Configuration = MFDConfigurationSection.GetConfig();
             logger.Info($"Startup");
+
+            var appDeploy = ApplicationDeployment.CurrentDeployment;
+
 
             var maindWindow = new MainWindow(Configuration)
             {
