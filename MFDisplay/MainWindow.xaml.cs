@@ -150,29 +150,6 @@ namespace MFDisplay
                 Logger.Info($"Loading the default configuration {Config.DefaultConfig}...");
                 cbModules.SelectedValue = Config.DefaultConfig;
             }
-
-        }
-
-        private void MenuItem_Click(object sender, RoutedEventArgs e)
-        {
-            var menuName = (MenuItem) e.Source;
-            switch(menuName.Header)
-            {
-                case "_ShowLocation":
-                    {
-                        NameValueCollection nameValueTable = new NameValueCollection();
-
-
-                        var appDeploy = ApplicationDeployment.CurrentDeployment;
-
-                        if (ApplicationDeployment.IsNetworkDeployed)
-                        {
-                            string queryString = ApplicationDeployment.CurrentDeployment.ActivationUri.Query;
-                            nameValueTable = HttpUtility.ParseQueryString(queryString);
-                        }
-                    }
-                    break;
-            }
         }
     }
 }

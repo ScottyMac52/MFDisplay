@@ -9,15 +9,6 @@
         Title="DCS Modules" Height="100" Width="210" Loaded="Window_Loaded" Closing="Window_Closing" MinWidth="100" MinHeight="100" ResizeMode="CanMinimize" Cursor="Arrow" Closed="Window_Closed" Initialized="Window_Initialized" WindowStartupLocation="CenterScreen" WindowState="Minimized">
     <Grid HorizontalAlignment="Left" VerticalAlignment="Top">
         <StackPanel>
-            <DockPanel>
-            <Menu DockPanel.Dock="Top">
-                <MenuItem Header="_Help">
-                        <MenuItem Header="_ShowLocation" Click="MenuItem_Click"/>
-                    <MenuItem Header="_About" Click="MenuItem_Click"/>
-                </MenuItem>
-            </Menu>
-            <StackPanel></StackPanel>
-        </DockPanel>
         <ComboBox Name="cbModules" Width="164" SelectionChanged="ComboBox_SelectionChanged" Loaded="CbModules_Loaded">
         </ComboBox>
         </StackPanel>
