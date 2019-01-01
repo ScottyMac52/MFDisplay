@@ -46,10 +46,7 @@ namespace MFDisplay
 				return;
 			}
             logger.Info($"Startup");
-
-            var appDeploy = ApplicationDeployment.CurrentDeployment;
-
-
+			 
             var maindWindow = new MainWindow(Configuration)
             {
                 Logger = logger
