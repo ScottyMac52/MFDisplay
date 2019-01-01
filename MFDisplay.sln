@@ -9,6 +9,11 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Tests-MFDisplay", "Tests-MF
 EndProject
 Project("{54435603-DBB4-11D2-8724-00A0C9A8B90C}") = "Setup", "Setup\Setup.vdproj", "{81AB3E3D-EB66-401C-AA5B-5D42E41B061C}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Docs", "Docs", "{EC07B551-29B0-4ACE-B45F-44A5871DC8A2}"
+	ProjectSection(SolutionItems) = preProject
+		mfdisp_exe_test.tmc = mfdisp_exe_test.tmc
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
