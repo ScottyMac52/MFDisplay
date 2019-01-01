@@ -1,0 +1,31 @@
+include "target.tmh"
+
+//program startup
+int main()
+{
+    if(Init(&EventHandle)) return 1; // declare the event handler, return on error
+	
+	//add initialization code here
+	Configure(&LMFD,MODE_EXCLUDED);
+	Configure(&RMFD,MODE_EXCLUDED);	
+	Configure(&Joystick,MODE_EXCLUDED);
+	Configure(&TFRPRudder,MODE_EXCLUDED);
+	Configure(&TFRPHARudder,MODE_EXCLUDED);	
+	
+MapKey	(&Throttle,	APENG,	EXEC("launch_mfdisplay();"));
+}
+
+//event handler
+int EventHandle(int type, alias o, int x)
+{
+    DefaultMapping(&o, x);
+	
+	//add event handling code here
+}
+int launch_mfdisplay()
+{
+GameOutput(&Throttle, OUT_ID_LED_1, 2);
+printf("attempting to launch MFDisplay\xa");
+int launched = system("spawn -w \"E:\\HOTAS\\TARGET\\CTS\\MFD4CTS\" \"E:\\HOTAS\\TARGET\\CTS\\MFD4CTS\\MFDisplay.exe\""); 
+printf("Result was %d", launched);
+}
