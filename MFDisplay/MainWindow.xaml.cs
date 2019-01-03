@@ -1,14 +1,11 @@
 ﻿using log4net;
-using MFDisplay.Configuration;
 using MFDisplay.Interfaces;
 using MFDisplay.Mappers;
 using MFDisplay.Models;
+using MFDSettingsManager;
 using System.Collections.Generic;
-using System.Collections.Specialized;
-using System.Deployment.Application;
 using System.IO;
 using System.Linq;
-using System.Web;
 using System.Windows;
 using System.Windows.Controls;
 
@@ -76,6 +73,9 @@ namespace MFDisplay
             DestroyMFDs();
         }
 
+        /// <summary>
+        /// Sets up the main window
+        /// </summary>
         public void SetupWindow()
         {
             var model = ConfigSectionModelMapper.MapFromConfigurationSection(Config);
@@ -87,6 +87,10 @@ namespace MFDisplay
 
         }
 
+        /// <summary>
+        /// Creates the MFDs using the specified Module Definition
+        /// </summary>
+        /// <param name="moduleDef"><seealso cref="IModuleDefinition"/></param>
         public void CreateMFDs(IModuleDefinition moduleDef)
         {
             Logger.Debug($"Creating configuration {moduleDef.DisplayName}");
@@ -107,6 +111,9 @@ namespace MFDisplay
             });
         }
 
+        /// <summary>
+        /// Closes all the open Windows
+        /// </summary>
         public void DestroyMFDs()
         {
             MFDList.ToList().ForEach(mfd =>
@@ -122,6 +129,11 @@ namespace MFDisplay
             Logger.Info($"MFD list cleared.");
         }
 
+        /// <summary>
+        /// Gets the specified Definition
+        /// </summary>
+        /// <param name="moduleName"></param>
+        /// <returns></returns>
         public IModuleDefinition GetSelectedDefinition(string moduleName)
         {
             Logger.Info($"Configuration requested for {moduleName}");

@@ -89,10 +89,7 @@ namespace MFDisplay
             else
             {
                 Logger.Error($"File {fi.FullName} was NOT found!");
-                throw new FileNotFoundException()
-                {
-                    Source = $"No file named {fi.FullName} found for the configuration {Configuration.Name}."
-                };          
+                Close();
             }
         }
 

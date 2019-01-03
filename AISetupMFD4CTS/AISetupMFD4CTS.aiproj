@@ -16,7 +16,9 @@
     <LoadFromTemplate>
     </LoadFromTemplate>
   </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)' == 'DefaultBuild' " />
+  <PropertyGroup Condition=" '$(Configuration)' == 'DefaultBuild' ">
+    <OutputPath>..\Output</OutputPath>
+  </PropertyGroup>
   <ItemGroup>
     <Compile Include="AISetupMFD4CTS.aip">
       <SubType>Code</SubType>
