@@ -1,6 +1,6 @@
-﻿using MFDisplay.Configuration;
-using MFDisplay.Interfaces;
+﻿using MFDisplay.Interfaces;
 using MFDisplay.Models;
+using MFDSettingsManager;
 
 namespace MFDisplay.Mappers
 {

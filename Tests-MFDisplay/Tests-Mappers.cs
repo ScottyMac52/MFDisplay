@@ -1,11 +1,14 @@
-﻿using MFDisplay.Configuration;
-using MFDisplay.Mappers;
+﻿using MFDisplay.Mappers;
+using MFDSettingsManager;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System.Configuration;
 using System.Linq;
 
 namespace Tests_MFDisplay
 {
+    /// <summary>
+    /// Test fixture
+    /// </summary>
     [TestClass]
     public class TestsMappers
     {
@@ -24,6 +27,9 @@ namespace Tests_MFDisplay
         private readonly string Name1 = "LMFD";
         private readonly string Name2 = "RMFD";
 
+        /// <summary>
+        /// TestToEnsureConfigSectionIsMappedToModel
+        /// </summary>
         [TestMethod]
         public void TestToEnsureConfigSectionIsMappedToModel()
         {

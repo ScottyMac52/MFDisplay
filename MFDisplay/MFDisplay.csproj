@@ -44,19 +44,21 @@
     <DebugSymbols>true</DebugSymbols>
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
-    <OutputPath>bin\Debug\</OutputPath>
+    <OutputPath>..\Output\</OutputPath>
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+    <DocumentationFile>..\Output\MFDisplay.xml</DocumentationFile>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <PlatformTarget>AnyCPU</PlatformTarget>
     <DebugType>pdbonly</DebugType>
     <Optimize>true</Optimize>
-    <OutputPath>bin\Release\</OutputPath>
+    <OutputPath>..\Output\</OutputPath>
     <DefineConstants>TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+    <DocumentationFile>..\Output\MFDisplay.xml</DocumentationFile>
   </PropertyGroup>
   <PropertyGroup>
     <ManifestCertificateThumbprint>752CCF5210A3BF79887E5D4EAC12E352BCFBAB0B</ManifestCertificateThumbprint>
@@ -245,33 +247,28 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
-    <Compile Include="Configuration\ModuleConfigurationDefintion.cs" />
-    <Compile Include="Configuration\ModulesConfigurationCollection.cs" />
     <Compile Include="Exceptions\MFConfigurationException.cs" />
     <Compile Include="Extensions\ImageHandlerExtensions.cs" />
     <Compile Include="Interfaces\IMFDWindow.cs" />
     <Compile Include="Interfaces\IModulesConfiguration.cs" />
     <Compile Include="Interfaces\IMFDDefintion.cs" />
-    <Compile Include="Configuration\MFDConfigurationSection.cs" />
-    <Compile Include="Configuration\MFDDefinitionsCollection.cs" />
-    <Compile Include="Configuration\MFDDefintion.cs" />
+    <Compile Include="MainWindow.xaml.cs">
+      <DependentUpon>MainWindow.xaml</DependentUpon>
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="Mappers\ConfigSectionModelMapper.cs" />
     <Compile Include="Mappers\NativeMethods.cs" />
     <Compile Include="MFDWindow.xaml.cs">
       <DependentUpon>MFDWindow.xaml</DependentUpon>
     </Compile>
-    <Page Include="MainWindow.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Page>
     <Compile Include="App.xaml.cs">
       <DependentUpon>App.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="MainWindow.xaml.cs">
-      <DependentUpon>MainWindow.xaml</DependentUpon>
-      <SubType>Code</SubType>
-    </Compile>
+    <Page Include="MainWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>XamlIntelliSenseFileGenerator</Generator>
+    </Page>
     <Page Include="MFDWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -300,7 +297,6 @@
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
     <None Include="ClassDiagram1.cd" />
-    <None Include="Configuration\ConfigurationDiagram.cd" />
     <Content Include="Docs\readme.rtf">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
@@ -349,6 +345,12 @@
     <Content Include="Docs\readme.txt">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\MFDSettingsManager\MFDSettingsManager.csproj">
+      <Project>{BB12C431-7568-4AB3-AC21-4D6396744F22}</Project>
+      <Name>MFDSettingsManager</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
