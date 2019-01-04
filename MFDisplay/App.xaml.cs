@@ -27,11 +27,12 @@ namespace MFDisplay
         /// <param name="e"></param>
         protected override void OnStartup(StartupEventArgs e)
         {
+            var assmLocation = Assembly.GetExecutingAssembly().Location;
+            var 
             log4net.Config.XmlConfigurator.Configure();
             Configuration = MFDConfigurationSection.GetConfig();
             if(!File.Exists(Configuration.FilePath))
             {
-                var assmLocation = Assembly.GetExecutingAssembly().Location;
                 var errorMessage = $"Unable to find path {Configuration.FilePath}";
                 Logger.Error(errorMessage, new DirectoryNotFoundException(Configuration.FilePath));
                 MessageBox.Show($"{errorMessage}. Please edit {assmLocation}.config and change FilePath to the location of the graphics files.", "Path Not Found", MessageBoxButton.OK, MessageBoxImage.Error);

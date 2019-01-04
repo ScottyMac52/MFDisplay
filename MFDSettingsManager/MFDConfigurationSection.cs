@@ -17,6 +17,8 @@ namespace MFDSettingsManager
             return (MFDConfigurationSection)ConfigurationManager.GetSection("MFDSettings") ?? new MFDConfigurationSection();
         }
 
+        #region Main configuration properties
+
         /// <summary>
         /// SaveClips results in the cropped images being saved
         /// </summary>
@@ -65,8 +67,13 @@ namespace MFDSettingsManager
             }
         }
 
+        #endregion Main configuration properties
+
         #region MFD Common Top, Wdith and Height
 
+        /// <summary>
+        /// Default Width to use for the images
+        /// </summary>
         [ConfigurationProperty("width", IsRequired = true)]
         public int Width
         {
@@ -80,6 +87,9 @@ namespace MFDSettingsManager
             }
         }
 
+        /// <summary>
+        /// Default Height to use for the images
+        /// </summary>
         [ConfigurationProperty("height", IsRequired = true)]
         public int Height
         {
@@ -93,6 +103,9 @@ namespace MFDSettingsManager
             }
         }
 
+        /// <summary>
+        /// Default Top position for the images
+        /// </summary>
         [ConfigurationProperty("top", IsRequired = true)]
         public int Top
         {
@@ -110,6 +123,9 @@ namespace MFDSettingsManager
 
         #region L&R MFD Left
 
+        /// <summary>
+        /// Default Left position for the LMFD keyed images
+        /// </summary>
         [ConfigurationProperty("lMfdLeft", IsRequired = true)]
         public int LMFDLeft
         {
@@ -123,6 +139,9 @@ namespace MFDSettingsManager
             }
         }
 
+        /// <summary>
+        /// Default Left position for the RMFD keyed images
+        /// </summary>
         [ConfigurationProperty("rMfdLeft", IsRequired = true)]
         public int RMFDLeft
         {
@@ -137,9 +156,12 @@ namespace MFDSettingsManager
         }
 
         #endregion L&R MFD Left
-        
+
         #region LMFD X Offsets
 
+        /// <summary>
+        /// Default for the starting X position of the crop of the image for the LMFD
+        /// </summary>
         [ConfigurationProperty("xLMFDOffsetStart", IsRequired = true)]
         public int XLFMDOffsetStart
         {
@@ -153,6 +175,9 @@ namespace MFDSettingsManager
             }
         }
 
+        /// <summary>
+        /// Default for the ending X position of the crop of the image for the LMFD
+        /// </summary>
         [ConfigurationProperty("xLMFDOffsetFinish", IsRequired = true)]
         public int XLFMDOffsetFinish
         {
@@ -170,6 +195,9 @@ namespace MFDSettingsManager
 
         #region RMFD X Offsets
 
+        /// <summary>
+        /// Default for the starting X position of the crop of the image for the RMFD
+        /// </summary>
         [ConfigurationProperty("xRMFDOffsetStart", IsRequired = true)]
         public int XRFMDOffsetStart
         {
@@ -183,6 +211,9 @@ namespace MFDSettingsManager
             }
         }
 
+        /// <summary>
+        /// Default for the ending X position of the crop of the image for the RMFD
+        /// </summary>
         [ConfigurationProperty("xRMFDOffsetFinish", IsRequired = true)]
         public int XRFMDOffsetFinish
         {
@@ -200,7 +231,10 @@ namespace MFDSettingsManager
 
         #region MFD Y Offsets
 
-        [ConfigurationProperty("yOffsetStart", IsRequired = true)]
+        /// <summary>
+        /// Default for the starting Y position of the crop of the image
+        /// </summary>
+       [ConfigurationProperty("yOffsetStart", IsRequired = true)]
         public int YOffsetStart
         {
             get
@@ -213,6 +247,9 @@ namespace MFDSettingsManager
             }
         }
 
+        /// <summary>
+        /// Default for the ending Y position of the crop of the image
+        /// </summary>
         [ConfigurationProperty("yOffsetFinish", IsRequired = true)]
         public int YOffsetFinish
         {
@@ -227,6 +264,8 @@ namespace MFDSettingsManager
         }
 
         #endregion MFD Y Offsets
+
+        #region Modules Collection
 
         /// <summary>
         /// MFD Configurations
@@ -246,5 +285,8 @@ namespace MFDSettingsManager
                 this["Modules"] = value;
             }
         }
+
+        #endregion Modules Collection
+
     }
 }

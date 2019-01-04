@@ -1,5 +1,5 @@
 ﻿using log4net;
-using MFDisplay.Interfaces;
+using MFDisplay.Models;
 using System;
 using System.IO;
 using System.Windows;
@@ -9,7 +9,7 @@ namespace MFDisplay
     /// <summary>
     /// Each MFD is encapsulated in this class
     /// </summary>
-    public partial class MFDWindow : Window, IMFDWindow
+    public partial class MFDWindow : Window
     {
         /// <summary>
         /// Is the image specified loaded?
@@ -19,7 +19,7 @@ namespace MFDisplay
         /// <summary>
         /// MFD Configuration
         /// </summary>
-        public IMFDDefintion Configuration { get; set; }
+        public ConfigurationDefinition Configuration { get; set; }
 
         /// <summary>
         /// Logger
@@ -44,7 +44,7 @@ namespace MFDisplay
         ///  Uses the Configuration to set the properties for this MFD
         /// </summary>
         /// <returns></returns>
-        public bool InitializeMFD(IMFDDefintion definition)
+        public bool InitializeMFD(ConfigurationDefinition definition)
         {
             Logger.Debug($"Loading the configuration for {definition.Name}");
             Configuration = definition;

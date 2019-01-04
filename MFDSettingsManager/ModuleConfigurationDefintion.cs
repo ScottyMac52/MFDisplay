@@ -2,8 +2,16 @@
 
 namespace MFDSettingsManager
 {
+    /// <summary>
+    /// Module configuration
+    /// </summary>
     public class ModuleConfigurationDefintion : ConfigurationElement
     {
+        #region Module configuration properties
+
+        /// <summary>
+        /// Name of the Module
+        /// </summary>
         [ConfigurationProperty("moduleName", IsRequired = false)]
         public string ModuleName
         {
@@ -17,6 +25,9 @@ namespace MFDSettingsManager
             }
         }
 
+        /// <summary>
+        /// Display name of the Module
+        /// </summary>
         [ConfigurationProperty("displayName", IsRequired = false)]
         public string DisplayName
         {
@@ -30,6 +41,9 @@ namespace MFDSettingsManager
             }
         }
 
+        /// <summary>
+        /// Default FileName for the Module
+        /// </summary>
         [ConfigurationProperty("filename", IsRequired = true)]
         public string FileName
         {
@@ -42,6 +56,10 @@ namespace MFDSettingsManager
                 this["filename"] = value;
             }
         }
+
+        #endregion Module configuration properties
+
+        #region MFD Collection 
 
         /// <summary>
         /// MFD Configurations
@@ -61,5 +79,7 @@ namespace MFDSettingsManager
                 this["Configurations"] = value;
             }
         }
+
+        #endregion MFD Collection 
     }
 }
