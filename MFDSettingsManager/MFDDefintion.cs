@@ -8,6 +8,12 @@ namespace MFDSettingsManager
     /// </summary>
     public class MFDDefintion : ConfigurationElement
     {
+
+        #region General configuration properties
+
+        /// <summary>
+        /// Name of the Configuration, LMFD, RMFD etc.
+        /// </summary>
         [ConfigurationProperty("name", IsRequired = true)]
         public string Name
         {
@@ -21,6 +27,9 @@ namespace MFDSettingsManager
             }
         }
 
+        /// <summary>
+        /// Opacity setting for the image
+        /// </summary>
         [ConfigurationProperty("opacity", IsRequired = true)]
         public float Opacity
         {
@@ -34,6 +43,9 @@ namespace MFDSettingsManager
             }
         }
 
+        /// <summary>
+        /// FileName for the image source
+        /// </summary>
         [ConfigurationProperty("filename", IsRequired = false)]
         public string FileName
         {
@@ -47,8 +59,13 @@ namespace MFDSettingsManager
             }
         }
 
+        #endregion General configuration properties
+
         #region MFD Common Top, Wdith and Height
 
+        /// <summary>
+        /// Nullable Width of the image in the display, used to override the default
+        /// </summary>
         [ConfigurationProperty("width", IsRequired = false)]
         public int? Width
         {
@@ -66,6 +83,9 @@ namespace MFDSettingsManager
             }
         }
 
+        /// <summary>
+        /// Nullable Height of the image in the display, used to override the default
+        /// </summary>
         [ConfigurationProperty("height", IsRequired = false)]
         public int? Height
         {
@@ -83,6 +103,9 @@ namespace MFDSettingsManager
             }
         }
 
+        /// <summary>
+        /// Nullable Top position of the image in the display, used to override the default
+        /// </summary>
         [ConfigurationProperty("top", IsRequired = false)]
         public int? Top
         {
@@ -104,6 +127,9 @@ namespace MFDSettingsManager
 
         #region L&R MFD Left
 
+        /// <summary>
+        /// Nullable Left position of the LMFD image, used to override the default
+        /// </summary>
         [ConfigurationProperty("lMfdLeft", IsRequired = false)]
         public int? LMFDLeft
         {
@@ -121,6 +147,9 @@ namespace MFDSettingsManager
             }
         }
 
+        /// <summary>
+        /// Nullable Left position of the RMFD image, used to override the default
+        /// </summary>
         [ConfigurationProperty("rMfdLeft", IsRequired = false)]
         public int? RMFDLeft
         {
@@ -142,6 +171,9 @@ namespace MFDSettingsManager
 
         #region LMFD X Offsets
 
+        /// <summary>
+        /// Nullable starting X position of the crop of the image for the LMFD, used to override the default
+        /// </summary>
         [ConfigurationProperty("xLMFDOffsetStart", IsRequired = false)]
         public int? XLFMDOffsetStart
         {
@@ -159,6 +191,9 @@ namespace MFDSettingsManager
             }
         }
 
+        /// <summary>
+        /// Nullable ending X position of the crop of the image for the LMFD, used to override the default
+        /// </summary>
         [ConfigurationProperty("xLMFDOffsetFinish", IsRequired = false)]
         public int? XLFMDOffsetFinish
         {
@@ -180,6 +215,9 @@ namespace MFDSettingsManager
 
         #region RMFD X Offsets
 
+        /// <summary>
+        /// Nullable starting X position of the crop of the image for the RMFD, used to override the default
+        /// </summary>
         [ConfigurationProperty("xRMFDOffsetStart", IsRequired = false)]
         public int? XRFMDOffsetStart
         {
@@ -197,6 +235,9 @@ namespace MFDSettingsManager
             }
         }
 
+        /// <summary>
+        /// Nullable ending X position of the crop of the image for the RMFD, used to override the default
+        /// </summary>
         [ConfigurationProperty("xRMFDOffsetFinish", IsRequired = false)]
         public int? XRFMDOffsetFinish
         {
@@ -218,6 +259,9 @@ namespace MFDSettingsManager
 
         #region MFD Y Offsets
 
+        /// <summary>
+        /// Nullable starting Y position of the crop of the image, used to override the default
+        /// </summary>
         [ConfigurationProperty("yOffsetStart", IsRequired = false)]
         public int? YOffsetStart
         {
@@ -235,6 +279,9 @@ namespace MFDSettingsManager
             }
         }
 
+        /// <summary>
+        /// Nullable ending Y position of the crop of the image, used to override the default
+        /// </summary>
         [ConfigurationProperty("yOffsetFinish", IsRequired = false)]
         public int? YOffsetFinish
         {
@@ -253,7 +300,5 @@ namespace MFDSettingsManager
         }
 
         #endregion MFD Y Offsets
-
-
     }
 }

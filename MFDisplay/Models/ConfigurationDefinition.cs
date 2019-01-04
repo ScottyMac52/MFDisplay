@@ -1,15 +1,12 @@
 ﻿using MFDisplay.Extensions;
-using MFDisplay.Interfaces;
 using System;
-using System.Drawing;
 using System.IO;
 using System.Windows;
-using System.Windows.Interop;
 using System.Windows.Media.Imaging;
 
 namespace MFDisplay.Models
 {
-    public class ConfigurationDefinition : IMFDDefintion
+    public class ConfigurationDefinition 
     {
         public string ModuleName { get; internal set; }
         public string FileName { get; internal set; }

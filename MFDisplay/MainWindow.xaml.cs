@@ -1,5 +1,4 @@
 ﻿using log4net;
-using MFDisplay.Interfaces;
 using MFDisplay.Mappers;
 using MFDisplay.Models;
 using MFDSettingsManager;
@@ -34,7 +33,7 @@ namespace MFDisplay
         /// <summary>
         /// The list of available modules
         /// </summary>
-        protected List<IModuleDefinition> AvailableModules { get; set; }
+        protected List<ModuleDefinition> AvailableModules { get; set; }
 
         /// <summary>
         /// Ctor, initializes component, logging, sorted list and loads the configuration  
@@ -42,7 +41,7 @@ namespace MFDisplay
         public MainWindow(MFDConfigurationSection config)
         {
             MFDList = new SortedList<string, MFDWindow>();
-            AvailableModules = new List<IModuleDefinition>();
+            AvailableModules = new List<ModuleDefinition>();
             Config = config;
             InitializeComponent();
         }
@@ -90,8 +89,8 @@ namespace MFDisplay
         /// <summary>
         /// Creates the MFDs using the specified Module Definition
         /// </summary>
-        /// <param name="moduleDef"><seealso cref="IModuleDefinition"/></param>
-        public void CreateMFDs(IModuleDefinition moduleDef)
+        /// <param name="moduleDef"><seealso cref="ModuleDefinition"/></param>
+        public void CreateMFDs(ModuleDefinition moduleDef)
         {
             Logger.Debug($"Creating configuration {moduleDef.DisplayName}");
             moduleDef.Configurations.ForEach(config =>
@@ -134,7 +133,7 @@ namespace MFDisplay
         /// </summary>
         /// <param name="moduleName"></param>
         /// <returns></returns>
-        public IModuleDefinition GetSelectedDefinition(string moduleName)
+        public ModuleDefinition GetSelectedDefinition(string moduleName)
         {
             Logger.Info($"Configuration requested for {moduleName}");
             return AvailableModules.Where(am => am.ModuleName == moduleName).FirstOrDefault();

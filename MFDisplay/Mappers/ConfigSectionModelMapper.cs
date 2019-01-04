@@ -1,12 +1,11 @@
-﻿using MFDisplay.Interfaces;
-using MFDisplay.Models;
+﻿using MFDisplay.Models;
 using MFDSettingsManager;
 
 namespace MFDisplay.Mappers
 {
     public class ConfigSectionModelMapper
     {
-        public static IModulesConfiguration MapFromConfigurationSection(MFDConfigurationSection section)
+        public static ModulesConfiguration MapFromConfigurationSection(MFDConfigurationSection section)
         {
             var moduleConfigurations = new ModulesConfiguration()
             {
