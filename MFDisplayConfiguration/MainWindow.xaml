@@ -5,14 +5,45 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:MFDisplayConfiguration"
         mc:Ignorable="d"
-        Title="MainWindow" Height="450" Width="800">
-    <Grid>
-        <StackPanel HorizontalAlignment="Left" Height="380" Margin="22,10,0,0" VerticalAlignment="Top" Width="742">
-            <Label Content="FilePath"/>
-            <TextBox Name="txtFilePath" Height="23" TextWrapping="Wrap" Text=""/>
-            <Separator Height="10" />
-            <ComboBox Name="cbbModules"  />
-            <Separator Height="100" />
+        Title="MFD 4 CTS Configuration " Loaded="Window_Loaded" Background="White" Width="900" Height="350">
+    <StackPanel HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
+        <DockPanel>
+            <Menu DockPanel.Dock="Top">
+                <MenuItem Header="_Configuration">
+                    <MenuItem CommandParameter="Revert"  Header="_Revert" Click="ConfigurationMenuItem_Click"/>
+                    <MenuItem CommandParameter="Save" Header="_Save" Click="ConfigurationMenuItem_Click"/>
+                    <MenuItem CommandParameter="Close" Header="_Close" Click="ConfigurationMenuItem_Click"/>
+                </MenuItem>
+                <MenuItem Header="_Help">
+                    <MenuItem CommandParameter="About" Header="_About" Click="HelpMenuItem_Click"/>
+                </MenuItem>
+            </Menu>
+            <StackPanel Height="10"></StackPanel>
+        </DockPanel>
+        <!-- Horizontal StackPanel for the top level configuration options -->
+        <StackPanel Orientation="Horizontal">
+            <!-- FilePath Configuration -->
+            <Label VerticalAlignment="Center" Content="FilePath:"/>
+            <TextBox Name="txtFilePath" Width="300" VerticalAlignment="Center" ToolTip="The FilePath to the images" TextWrapping="Wrap" Text=""/>
+            <Button Name="btnBrowsePath" Content="..." Click="BtnBrowsePath_Click" />
+            <Label VerticalAlignment="Center" Content="Valid path: "/>
+            <CheckBox IsEnabled="False" Name="chkIsValidPath" VerticalAlignment="Center" ToolTip="Is the FilePath valid?"/>
+            <!-- DefaultModule Configuration -->
+            <Label VerticalAlignment="Center" Content="Default Module:"/>
+            <ComboBox Name="cbDefaultModule" VerticalAlignment="Center" ToolTip="Default module" SelectionChanged="CbDefaultModule_SelectionChanged" />
+            <!-- SaveClips Configuration -->
+            <Label VerticalAlignment="Center" Content="SaveClips:" />
+            <CheckBox Name="chkSaveClips" VerticalAlignment="Center" ToolTip="If checked then each cropped image will be saved." IsThreeState="True" />
         </StackPanel>
-    </Grid>
+        <Separator Height="5"/>
+        <!-- Horizontal StackPanel for the Modules -->
+        <StackPanel Orientation="Horizontal">
+            <!-- Current Module Configuration -->
+            <Label VerticalAlignment="Center" Content="Selected Module:"/>
+            <ComboBox Name="cbModules" VerticalAlignment="Center" SelectionChanged="CbModules_SelectionChanged"  />
+        </StackPanel>
+        <DataGrid Name="dgConfigurations">
+        </DataGrid>
+        <Separator Height="20"/>
+    </StackPanel>
 </Window>

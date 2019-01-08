@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Runtime.InteropServices;
 
-namespace MFDisplay.Mappers
+namespace MFDSettingsManager.Mappers
 {
     /// <summary>
     /// FxCop requires all Marshalled functions to be in a class called NativeMethods.

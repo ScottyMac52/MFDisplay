@@ -1,7 +1,7 @@
 ﻿using log4net;
-using MFDisplay.Mappers;
-using MFDisplay.Models;
 using MFDSettingsManager;
+using MFDSettingsManager.Mappers;
+using MFDSettingsManager.Models;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;

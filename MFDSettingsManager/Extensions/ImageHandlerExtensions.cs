@@ -1,39 +1,46 @@
-﻿using MFDisplay.Mappers;
+﻿using MFDSettingsManager.Mappers;
 using System;
 using System.ComponentModel;
 using System.Drawing;
 using System.IO;
 using System.Windows;
-using System.Windows.Media;
 using System.Windows.Media.Imaging;
 
-namespace MFDisplay.Extensions
+namespace MFDSettingsManager.Extensions
 {
     public static class ImageHandlerExtensions
     {
+        /// <summary>
+        /// Saves the <seealso cref="BitmapSource"/> as a JPEG
+        /// </summary>
+        /// <param name="bitmapImage"></param>
+        /// <param name="fileName"></param>
         public static void SaveToJpeg(this BitmapSource bitmapImage, string fileName)
         {
             var encoder = new JpegBitmapEncoder();
             SaveUsingEncoder(bitmapImage, fileName, encoder);
         }
 
+        /// <summary>
+        /// Saves the <seealso cref="BitmapSource"/> as a PNG
+        /// </summary>
+        /// <param name="bitmapImage"></param>
+        /// <param name="fileName"></param>
         public static void SaveToPng(this BitmapSource bitmapImage, string fileName)
         {
             var encoder = new PngBitmapEncoder();
             SaveUsingEncoder(bitmapImage, fileName, encoder);
         }
 
+        /// <summary>
+        /// Saves the <seealso cref="BitmapSource"/> as a BMP
+        /// </summary>
+        /// <param name="bitmapImage"></param>
+        /// <param name="fileName"></param>
         public static void SaveToBmp(this BitmapSource bitmapImage, string fileName)
         {
             var encoder = new BmpBitmapEncoder();
             SaveUsingEncoder(bitmapImage, fileName, encoder);
-        }
-
-        private static void SaveUsingEncoder(BitmapSource bitmapImage, string fileName, BitmapEncoder encoder)
-        {
-            encoder.Frames.Add(BitmapFrame.Create(bitmapImage));
-            using (FileStream stream = new FileStream(fileName, FileMode.Create))
-            encoder.Save(stream);
         }
 
         /// <summary>
@@ -86,10 +93,13 @@ namespace MFDisplay.Extensions
             return bitSrc;
         }
 
+        /// <summary>
+        /// Converts a <seealso cref="BitmapSource"/> into a <seealso cref="Bitmap"/>
+        /// </summary>
+        /// <param name="bitmapImage"></param>
+        /// <returns></returns>
         public static Bitmap BitmapImage2Bitmap(this BitmapSource bitmapImage)
         {
-            // BitmapImage bitmapImage = new BitmapImage(new Uri("../Images/test.png", UriKind.Relative));
-
             using (MemoryStream outStream = new MemoryStream())
             {
                 BitmapEncoder enc = new BmpBitmapEncoder();
@@ -101,6 +111,11 @@ namespace MFDisplay.Extensions
             }
         }
 
+        /// <summary>
+        /// Crops the border of a <seealso cref="Bitmap"/>
+        /// </summary>
+        /// <param name="bmp"></param>
+        /// <returns></returns>
         public static Bitmap Crop(this Bitmap bmp)
         {
             int w = bmp.Width;
@@ -193,5 +208,11 @@ namespace MFDisplay.Extensions
             }
         }
 
+        private static void SaveUsingEncoder(BitmapSource bitmapImage, string fileName, BitmapEncoder encoder)
+        {
+            encoder.Frames.Add(BitmapFrame.Create(bitmapImage));
+            using (FileStream stream = new FileStream(fileName, FileMode.Create))
+                encoder.Save(stream);
+        }
     }
 }

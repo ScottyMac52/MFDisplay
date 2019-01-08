@@ -247,14 +247,11 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
-    <Compile Include="Extensions\ImageHandlerExtensions.cs" />
     <Compile Include="Helpers\LogHelper.cs" />
     <Compile Include="MainWindow.xaml.cs">
       <DependentUpon>MainWindow.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Mappers\ConfigSectionModelMapper.cs" />
-    <Compile Include="Mappers\NativeMethods.cs" />
     <Compile Include="MFDWindow.xaml.cs">
       <DependentUpon>MFDWindow.xaml</DependentUpon>
     </Compile>
@@ -272,9 +269,6 @@
     </Page>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Models\ConfigurationDefinition.cs" />
-    <Compile Include="Models\ModuleDefinition.cs" />
-    <Compile Include="Models\ModulesConfiguration.cs" />
     <Compile Include="Properties\AssemblyInfo.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -297,7 +291,6 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <None Include="MFDisplay_TemporaryKey.pfx" />
-    <None Include="Models\ModelDiagram.cd" />
     <None Include="packages.config">
       <SubType>Designer</SubType>
     </None>
