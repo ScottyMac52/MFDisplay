@@ -33,20 +33,29 @@
     <DocumentationFile>..\Output\MFDSettingsManager.xml</DocumentationFile>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="PresentationCore" />
     <Reference Include="System" />
     <Reference Include="System.Configuration" />
     <Reference Include="System.Core" />
+    <Reference Include="System.Drawing" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="System.Data" />
     <Reference Include="System.Net.Http" />
     <Reference Include="System.Xml" />
+    <Reference Include="WindowsBase" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Extensions\ImageHandlerExtensions.cs" />
+    <Compile Include="Mappers\ConfigSectionModelMapper.cs" />
+    <Compile Include="Mappers\NativeMethods.cs" />
     <Compile Include="MFDConfigurationSection.cs" />
     <Compile Include="MFDDefinitionsCollection.cs" />
     <Compile Include="MFDDefintion.cs" />
+    <Compile Include="Models\ConfigurationDefinition.cs" />
+    <Compile Include="Models\ModuleDefinition.cs" />
+    <Compile Include="Models\ModulesConfiguration.cs" />
     <Compile Include="ModuleConfigurationDefintion.cs" />
     <Compile Include="ModulesConfigurationCollection.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

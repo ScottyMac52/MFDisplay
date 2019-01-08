@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Configuration;
+using System.IO;
 
 namespace MFDSettingsManager
 {
@@ -9,12 +10,20 @@ namespace MFDSettingsManager
     public class MFDConfigurationSection : ConfigurationSection
     {
         /// <summary>
+        /// 
+        /// </summary>
+        public bool IsDataDirty { get; set; }
+
+        /// <summary>
         /// Gets the configurations section
         /// </summary>
         /// <returns></returns>
         public static MFDConfigurationSection GetConfig()
         {
-            return (MFDConfigurationSection)ConfigurationManager.GetSection("MFDSettings") ?? new MFDConfigurationSection();
+            var mappedExeConfig = ConfigurationManager.OpenExeConfiguration(Path.Combine(Environment.CurrentDirectory, "MFDisplay.exe"));
+            var configSection = (MFDConfigurationSection)mappedExeConfig.GetSection("MFDSettings");
+            configSection.IsDataDirty = false;
+            return configSection ?? new MFDConfigurationSection();
         }
 
         #region Main configuration properties
@@ -22,7 +31,7 @@ namespace MFDSettingsManager
         /// <summary>
         /// SaveClips results in the cropped images being saved
         /// </summary>
-        [ConfigurationProperty("saveClips", IsRequired = true)]
+        [ConfigurationProperty("saveClips", IsRequired = false)]
         public bool? SaveClips
         {
             get
@@ -31,6 +40,7 @@ namespace MFDSettingsManager
             }
             set
             {
+                IsDataDirty = true;
                 this["saveClips"] = value;
             }
         }
@@ -47,6 +57,7 @@ namespace MFDSettingsManager
             }
             set
             {
+                IsDataDirty = true;
                 this["filePath"] = value;
             }
         }
@@ -63,6 +74,7 @@ namespace MFDSettingsManager
             }
             set
             {
+                IsDataDirty = true;
                 this["defaultConfig"] = value;
             }
         }
@@ -83,6 +95,7 @@ namespace MFDSettingsManager
             }
             set
             {
+                IsDataDirty = true;
                 this["width"] = value;
             }
         }
@@ -99,6 +112,7 @@ namespace MFDSettingsManager
             }
             set
             {
+                IsDataDirty = true;
                 this["height"] = value;
             }
         }
@@ -115,6 +129,7 @@ namespace MFDSettingsManager
             }
             set
             {
+                IsDataDirty = true;
                 this["top"] = value;
             }
         }
@@ -135,6 +150,7 @@ namespace MFDSettingsManager
             }
             set
             {
+                IsDataDirty = true;
                 this["lMfdLeft"] = value;
             }
         }
@@ -151,6 +167,7 @@ namespace MFDSettingsManager
             }
             set
             {
+                IsDataDirty = true;
                 this["rMfdLeft"] = value;
             }
         }
@@ -171,6 +188,7 @@ namespace MFDSettingsManager
             }
             set
             {
+                IsDataDirty = true;
                 this["xLMFDOffsetStart"] = value;
             }
         }
@@ -187,6 +205,7 @@ namespace MFDSettingsManager
             }
             set
             {
+                IsDataDirty = true;
                 this["xLMFDOffsetFinish"] = value;
             }
         }
@@ -207,6 +226,7 @@ namespace MFDSettingsManager
             }
             set
             {
+                IsDataDirty = true;
                 this["xRMFDOffsetStart"] = value;
             }
         }
@@ -223,6 +243,7 @@ namespace MFDSettingsManager
             }
             set
             {
+                IsDataDirty = true;
                 this["xRMFDOffsetFinish"] = value;
             }
         }
@@ -243,6 +264,7 @@ namespace MFDSettingsManager
             }
             set
             {
+                IsDataDirty = true;
                 this["yOffsetStart"] = value;
             }
         }
@@ -259,6 +281,7 @@ namespace MFDSettingsManager
             }
             set
             {
+                IsDataDirty = true;
                 this["yOffsetFinish"] = value;
             }
         }
@@ -282,6 +305,7 @@ namespace MFDSettingsManager
 
             set
             {
+                IsDataDirty = true;
                 this["Modules"] = value;
             }
         }

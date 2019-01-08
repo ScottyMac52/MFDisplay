@@ -1,5 +1,5 @@
-﻿using MFDisplay.Mappers;
-using MFDSettingsManager;
+﻿using MFDSettingsManager;
+using MFDSettingsManager.Mappers;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System.Configuration;
 using System.Linq;

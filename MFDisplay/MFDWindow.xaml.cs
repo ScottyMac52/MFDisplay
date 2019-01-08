@@ -1,5 +1,5 @@
 ﻿using log4net;
-using MFDisplay.Models;
+using MFDSettingsManager.Models;
 using System;
 using System.IO;
 using System.Windows;

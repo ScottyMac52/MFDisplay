@@ -1,14 +1,7 @@
 ﻿using Microsoft.Win32;
-using System;
-using System.Collections.Generic;
-using System.Configuration;
-using System.Data;
-using System.Linq;
-using System.Threading.Tasks;
-using System.Windows;
-using System.Reflection;
 using System.IO;
-using System.Windows.Documents;
+using System.Reflection;
+using System.Windows;
 
 namespace MFDisplayConfiguration
 {
@@ -20,17 +13,15 @@ namespace MFDisplayConfiguration
 
         protected override void OnStartup(StartupEventArgs e)
         {
+            /*
             var fileName = GetFileToEdit();
             if(string.IsNullOrEmpty(fileName))
             {
                 Shutdown(2);
                 return;
             }
-
-            var mainWnd = new MainWindow()
-            {
-                ConfigurationFile = fileName
-            };
+            */
+            var mainWnd = new MainWindow();
             mainWnd.ShowDialog();
             Shutdown(0);
         }
