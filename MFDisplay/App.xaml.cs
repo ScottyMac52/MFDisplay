@@ -1,5 +1,7 @@
 ﻿using log4net;
+using MFDisplay.Helpers;
 using MFDSettingsManager;
+using System.Diagnostics;
 using System.IO;
 using System.Reflection;
 using System.Windows;
@@ -19,7 +21,7 @@ namespace MFDisplay
         /// <summary>
         /// Logger for the application
         /// </summary>
-        private static readonly ILog Logger = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
+        private static readonly ILog Logger = LogHelper.GetLoggerRollingFileAppender(typeof(App).Name, GetLoggerFilename());
 
         /// <summary>
         /// Executed when the application starts
@@ -28,8 +30,6 @@ namespace MFDisplay
         protected override void OnStartup(StartupEventArgs e)
         {
             var assmLocation = Assembly.GetExecutingAssembly().Location;
-            var 
-            log4net.Config.XmlConfigurator.Configure();
             Configuration = MFDConfigurationSection.GetConfig();
             if(!File.Exists(Configuration.FilePath))
             {
@@ -62,5 +62,15 @@ namespace MFDisplay
             Logger?.Error($"{sender?.GetType()?.Name} threw an exception", e?.Exception);
             Shutdown(-1);
         }
+        private static string GetLoggerFilename()
+        {
+            Debugger.Break();
+            var fi = new FileInfo(Assembly.GetExecutingAssembly().Location);
+            var appDir = fi.Directory.FullName;
+            var loggingDir = Path.Combine(appDir, "Logs");
+            Directory.CreateDirectory(loggingDir);
+            return Path.Combine(loggingDir, "MFDisplay.log");
+        }
+
     }
 }
