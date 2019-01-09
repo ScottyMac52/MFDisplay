@@ -1,4 +1,6 @@
-﻿using MFDSettingsManager.Models;
+﻿using log4net;
+using MFDSettingsManager.Configuration;
+using MFDSettingsManager.Models;
 
 namespace MFDSettingsManager.Mappers
 {
@@ -11,14 +13,17 @@ namespace MFDSettingsManager.Mappers
         /// Get the <seealso cref="ModulesConfiguration"/> from the <seealso cref="MFDConfigurationSection"/>
         /// </summary>
         /// <param name="section"></param>
+        /// <param name="logger"><seealso cref="ILog"/>Logger to use</param>
         /// <returns></returns>
-        public static ModulesConfiguration MapFromConfigurationSection(MFDConfigurationSection section)
+        public static ModulesConfiguration MapFromConfigurationSection(MFDConfigurationSection section, ILog logger)
         {
             var moduleConfigurations = new ModulesConfiguration()
             {
+                Logger = logger,
                 FilePath = section.FilePath,
                 DefaultConfig = section.DefaultConfig,
-                SaveClips = section.SaveClips ?? false
+                SaveClips = section.SaveClips ?? false,
+                ImageType = section.ImageType
             };
             var iterator = section.Modules.GetEnumerator();
             while(iterator.MoveNext())
@@ -26,8 +31,9 @@ namespace MFDSettingsManager.Mappers
                 var currentModule = (ModuleConfigurationDefintion) iterator.Current;
                 var modelModule = new ModuleDefinition()
                 {
+                    Parent = moduleConfigurations,
                     DisplayName = currentModule.DisplayName,
-                    ModuleName = currentModule.ModuleName,
+                    ModuleName = currentModule.ModuleName
                 };
                 var mfdIterator = currentModule.MFDConfigurations.GetEnumerator();
                 while(mfdIterator.MoveNext())
@@ -35,6 +41,8 @@ namespace MFDSettingsManager.Mappers
                     var currentConfig = (MFDDefintion) mfdIterator.Current;
                     var mfdConfiguration = new ConfigurationDefinition()
                     {
+                        Logger = moduleConfigurations.Logger,
+                        Parent = modelModule,
                         ModuleName = modelModule.ModuleName,
                         FileName = !string.IsNullOrEmpty(currentConfig.FileName) ? currentConfig.FileName : currentModule.FileName,
                         Height = currentConfig.Height ?? section.Height,

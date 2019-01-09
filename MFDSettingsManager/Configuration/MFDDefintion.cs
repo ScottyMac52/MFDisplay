@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Configuration;
 
-namespace MFDSettingsManager
+namespace MFDSettingsManager.Configuration
 {
     /// <summary>
     /// Encapsulates a MFD configuration

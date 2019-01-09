@@ -1,12 +1,19 @@
-﻿using System.Collections.Generic;
+﻿using log4net;
+using MFDSettingsManager.Enum;
+using System.Collections.Generic;
 
 namespace MFDSettingsManager.Models
 {
     /// <summary>
-    /// Implementation of the ModulesConfiguration interface
+    /// Top level of the model for the configuration
     /// </summary>
     public class ModulesConfiguration
     {
+        /// <summary>
+        /// Logger
+        /// </summary>
+        public ILog Logger { get; set; }
+
         /// <summary>
         /// The path to the graphic files from the CTS utility
         /// </summary>
@@ -20,9 +27,14 @@ namespace MFDSettingsManager.Models
         /// </summary>
         public bool? SaveClips { get; set; }
         /// <summary>
+        /// Type to use for SaveClips == true
+        /// </summary>
+        public SavedImageType? ImageType { get; set; }
+        /// <summary>
         /// List of modules available
         /// </summary>
         public List<ModuleDefinition> Modules { get; set; }
+
         /// <summary>
         /// Ctor
         /// </summary>

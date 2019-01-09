@@ -6,7 +6,7 @@
         xmlns:local="clr-namespace:MFDisplay"
         x:Class="MFDisplay.MainWindow"
         mc:Ignorable="d"
-        Title="DCS Modules" Height="100" Width="210" Loaded="Window_Loaded" Closing="Window_Closing" MinWidth="100" MinHeight="100" ResizeMode="CanMinimize" Cursor="Arrow" Closed="Window_Closed" Initialized="Window_Initialized" WindowStartupLocation="CenterScreen" WindowState="Minimized">
+        Title="DCS Modules" Height="100" Width="210" Loaded="Window_Loaded" Closing="Window_Closing" MinWidth="100" MinHeight="100" ResizeMode="CanMinimize" Cursor="Arrow" Closed="Window_Closed" WindowStartupLocation="CenterScreen">
     <Grid HorizontalAlignment="Left" VerticalAlignment="Top">
         <StackPanel>
         <ComboBox Name="cbModules" Width="164" SelectionChanged="ComboBox_SelectionChanged" Loaded="CbModules_Loaded">

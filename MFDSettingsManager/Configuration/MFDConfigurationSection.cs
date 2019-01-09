@@ -1,8 +1,9 @@
 ﻿using System;
 using System.Configuration;
 using System.IO;
+using MFDSettingsManager.Enum;
 
-namespace MFDSettingsManager
+namespace MFDSettingsManager.Configuration
 {
     /// <summary>
     /// Encapsulates a Configuration section for the MFDs
@@ -44,6 +45,34 @@ namespace MFDSettingsManager
                 this["saveClips"] = value;
             }
         }
+
+        /// <summary>
+        /// ImageType to use when SaveClips == true
+        /// </summary>
+        [ConfigurationProperty("imageType", IsRequired = false)]
+        public SavedImageType? ImageType
+        {
+            get
+            {
+                try
+                {
+                    var result = this["imageType"] == null ? SavedImageType.Bmp : (SavedImageType)System.Enum.Parse(typeof(SavedImageType), (string)this["imageType"]);
+                    return result;
+                }
+                catch (Exception)
+                {
+
+                    return SavedImageType.Bmp;
+                }
+            }
+
+            set
+            {
+                IsDataDirty = true;
+                this["imageType"] = value ?? SavedImageType.Bmp;
+            }
+        }
+
 
         /// <summary>
         /// The file path to the images to be cropped

@@ -1,5 +1,5 @@
 ﻿using log4net;
-using MFDSettingsManager;
+using MFDSettingsManager.Configuration;
 using MFDSettingsManager.Mappers;
 using MFDSettingsManager.Models;
 using System;
@@ -72,7 +72,7 @@ namespace MFDisplayConfiguration
         private void LoadConfig()
         {
             var configSection = MFDConfigurationSection.GetConfig();
-            Config = ConfigSectionModelMapper.MapFromConfigurationSection(configSection);
+            Config = ConfigSectionModelMapper.MapFromConfigurationSection(configSection, Logger);
             cbModules.ItemsSource = Config.Modules;
             cbModules.DisplayMemberPath = "DisplayName";
             cbModules.SelectedValuePath = "ModuleName";
