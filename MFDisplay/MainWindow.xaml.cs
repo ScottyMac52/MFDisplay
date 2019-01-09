@@ -157,5 +157,26 @@ namespace MFDisplay
                 cbModules.SelectedValue = Config.DefaultConfig;
             }
         }
+
+        private void ConfigurationMenuItem_Click(object sender, RoutedEventArgs e)
+        {
+            var configWindow = new ConfigurationWindow()
+            {
+                Logger = Logger,
+                Config = ConfigSectionModelMapper.MapFromConfigurationSection(Config, Logger)
+            };
+            configWindow.ShowDialog();
+            Config = MFDConfigurationSection.GetConfig(Logger);
+        }
+
+        private void HelpMenuItem_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
+
+        private void FileMenuItem_Click(object sender, RoutedEventArgs e)
+        {
+            Close();
+        }
     }
 }

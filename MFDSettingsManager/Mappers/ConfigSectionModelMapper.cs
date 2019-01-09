@@ -29,6 +29,7 @@ namespace MFDSettingsManager.Mappers
             while(iterator.MoveNext())
             {
                 var currentModule = (ModuleConfigurationDefintion) iterator.Current;
+                logger.Debug($"Loading the Module named {currentModule.DisplayName} as {currentModule.ModuleName} using {currentModule.FileName}");
                 var modelModule = new ModuleDefinition()
                 {
                     Parent = moduleConfigurations,
@@ -39,6 +40,7 @@ namespace MFDSettingsManager.Mappers
                 while(mfdIterator.MoveNext())
                 {
                     var currentConfig = (MFDDefintion) mfdIterator.Current;
+                    logger.Debug($"Loading the Configuration named {currentModule.DisplayName}-{currentConfig.Name}");
                     var mfdConfiguration = new ConfigurationDefinition()
                     {
                         Logger = moduleConfigurations.Logger,
@@ -73,8 +75,10 @@ namespace MFDSettingsManager.Mappers
                             mfdConfiguration.XOffsetFinish = currentConfig.XLFMDOffsetFinish ?? currentConfig.XRFMDOffsetFinish ?? 0;
                             break;
                     }
+                    logger.Debug($"Loaded Configuration {currentModule.DisplayName}-{currentConfig.Name} as {mfdConfiguration.ToReadableString()}");
                     modelModule.Configurations.Add(mfdConfiguration);
                 }
+                logger.Debug($"Loaded Module {modelModule.ModuleName}");
                 moduleConfigurations.Modules.Add(modelModule);
             }
             return moduleConfigurations;

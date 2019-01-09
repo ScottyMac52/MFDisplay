@@ -36,10 +36,11 @@ namespace Tests_MFDisplay
         public void TestToEnsureConfigSectionIsMappedToModel()
         {
             // ARRANGE
-            var configSection = MFDConfigurationSection.GetConfig();
+            var logger = new MockLogger();
+            var configSection = MFDConfigurationSection.GetConfig(logger);
 
             // ACT
-            var configModel = ConfigSectionModelMapper.MapFromConfigurationSection(configSection, new MockLogger());
+            var configModel = ConfigSectionModelMapper.MapFromConfigurationSection(configSection, logger);
 
             // ASSERT
             Assert.AreEqual(filePath, configModel.FilePath);
