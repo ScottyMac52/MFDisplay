@@ -11,12 +11,12 @@ using System.Windows.Forms;
 using MenuItem = System.Windows.Controls.MenuItem;
 using MessageBox = System.Windows.MessageBox;
 
-namespace MFDisplayConfiguration
+namespace MFDisplay
 {
     /// <summary>
-    /// Interaction logic for MainWindow.xaml
+    /// Interaction logic for ConfigurationWindow.xaml
     /// </summary>
-    public partial class MainWindow : Window
+    public partial class ConfigurationWindow : Window
     {
         /// <summary>
         /// Logger for the window
@@ -71,7 +71,7 @@ namespace MFDisplayConfiguration
 
         private void LoadConfig()
         {
-            var configSection = MFDConfigurationSection.GetConfig();
+            var configSection = MFDConfigurationSection.GetConfig(Logger);
             Config = ConfigSectionModelMapper.MapFromConfigurationSection(configSection, Logger);
             cbModules.ItemsSource = Config.Modules;
             cbModules.DisplayMemberPath = "DisplayName";
@@ -111,10 +111,11 @@ namespace MFDisplayConfiguration
 
         private void Save()
         {
-            var configSection = MFDConfigurationSection.GetConfig();
+            var configSection = MFDConfigurationSection.GetConfig(Logger);
             configSection.DefaultConfig = cbDefaultModule.SelectedValue?.ToString();
             configSection.FilePath = txtFilePath.Text;
             configSection.SaveClips = chkSaveClips.IsChecked;
+            Logger.Info($"Saving the configuration file {configSection.CurrentConfiguration.FilePath}...");
             configSection.CurrentConfiguration.Save();
             LoadConfig();
         }
