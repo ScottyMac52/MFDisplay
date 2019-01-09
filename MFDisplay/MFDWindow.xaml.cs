@@ -32,9 +32,8 @@ namespace MFDisplay
         public string FilePath { get; set; }
 
         /// <summary>
-        /// Ctor setups the configuration and loads the MFD
+        /// Ctor 
         /// </summary>
-        /// <param name="config"></param>
         public MFDWindow()
         {
             InitializeComponent();

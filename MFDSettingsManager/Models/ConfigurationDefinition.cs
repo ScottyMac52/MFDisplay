@@ -1,4 +1,6 @@
-﻿using MFDSettingsManager.Extensions;
+﻿using log4net;
+using MFDSettingsManager.Enum;
+using MFDSettingsManager.Extensions;
 using System;
 using System.IO;
 using System.Windows;
@@ -6,22 +8,92 @@ using System.Windows.Media.Imaging;
 
 namespace MFDSettingsManager.Models
 {
+    /// <summary>
+    /// Single Configuration for a Module
+    /// </summary>
     public class ConfigurationDefinition 
     {
+        /// <summary>
+        /// Logger
+        /// </summary>
+        public ILog Logger { get; set; }
+
+        #region Identifying properties
+        /// <summary>
+        /// The parent Module to this Configuration
+        /// </summary>
+        public ModuleDefinition Parent { get; internal set; }
+        /// <summary>
+        /// Module Name
+        /// </summary>
         public string ModuleName { get; internal set; }
-        public string FileName { get; internal set; }
-        public int Height { get; internal set; }
-        public int Left { get; internal set; }
+        /// <summary>
+        /// Name of the Configuration
+        /// </summary>
         public string Name { get; internal set; }
+        /// <summary>
+        /// FileName for the image cropping that this configuration uses
+        /// </summary>
+        public string FileName { get; internal set; }
+
+        #endregion Identifying properties
+
+        #region Basic Image Properties Left, Top, Width, Height and Opacity
+        /// <summary>
+        /// Translucency of the image expressed as percentage of solidness 
+        /// </summary>
         public float Opacity { get; internal set; }
-        public int Top { get; internal set; }
+        /// <summary>
+        /// Width of the displayed image
+        /// </summary>
         public int Width { get; internal set; }
+        /// <summary>
+        /// The Height of the displayed image
+        /// </summary>
+        public int Height { get; internal set; }
+        /// <summary>
+        /// Left coordinate of the displayed image
+        /// </summary>
+        public int Left { get; internal set; }
+        /// <summary>
+        /// Top coordinate of the displayed image
+        /// </summary>
+        public int Top { get; internal set; }
+
+        #endregion Basic Image Properties Left, Top, Width, Height and Opacity
+
+        #region Image cropping properties
+        /// <summary>
+        /// Starting X position of the Crop
+        /// </summary>
         public int XOffsetStart { get; internal set; }
+        /// <summary>
+        /// Starting Y position of the Crop
+        /// </summary>
         public int YOffsetStart { get; internal set; }
+        /// <summary>
+        /// Ending X position of the Crop
+        /// </summary>
         public int XOffsetFinish { get; internal set; }
+        /// <summary>
+        /// Ending Y position of the Crop
+        /// </summary>
         public int YOffsetFinish { get; internal set; }
+        /// <summary>
+        /// If true then cropping is used otherwise the entire image is used
+        /// </summary>
         public bool? UseOffsets { get; internal set; }
+        /// <summary>
+        /// If true then the results of the cropping are saved
+        /// </summary>
         public bool? SaveResults { get; internal set; }
+        /// <summary>
+        /// The type to use when saving images
+        /// </summary>
+        public SavedImageType? ImageType => Parent.ImageType ?? SavedImageType.Bmp;
+        #endregion Image cropping properties
+
+        #region Public methods
 
         /// <summary>
         /// Crop the specified image
@@ -46,8 +118,7 @@ namespace MFDSettingsManager.Models
                 {
                     var fi = new FileInfo(imagePath);
 
-                    string fileName = Path.Combine(fi.Directory.FullName, $"Before_{ModuleName}_{Name}_{Width}_{Height}.jpg");
-                    ((BitmapSource)croppedBitmap).SaveToJpeg(fileName);
+                    SaveImage(croppedBitmap, fi.Directory.FullName, "Before");
                 }
                 var bitmap = croppedBitmap.BitmapImage2Bitmap();
                 bitmap = bitmap.Crop();
@@ -55,9 +126,7 @@ namespace MFDSettingsManager.Models
                 if ((SaveResults ?? false) == true)
                 {
                     var fi = new FileInfo(imagePath);
-
-                    string fileName = Path.Combine(fi.Directory.FullName, $"After_{ModuleName}_{Name}_{Width}_{Height}.jpg");
-                    retResult.SaveToJpeg(fileName);
+                    SaveImage(retResult, fi.Directory.FullName, "After");
                 }
             }
             else
@@ -77,5 +146,45 @@ namespace MFDSettingsManager.Models
         {
             return $"{Name} at ({Left}, {Top}) for ({Width}, {Height}) with Opacity {Opacity} from {FileName} at ({XOffsetStart}, {YOffsetStart}) for ({XOffsetFinish - XOffsetStart}, {YOffsetFinish - YOffsetStart}).";
         }
+
+        #endregion Public methods
+
+        #region Private helpers
+
+        /// <summary>
+        /// Saves the Image in the specified format, default format is bmp
+        /// </summary>
+        /// <param name="retResult"><seealso cref="BitmapSource"/></param>
+        /// <param name="filePath">Directory to save the file to</param>
+        /// <param name="imagePrefix">Prefix to add to the filename</param>
+        private void SaveImage(BitmapSource retResult, string filePath, string imagePrefix)
+        {
+            switch (ImageType)
+            {
+                case SavedImageType.Jpeg:
+                    {
+                        var fileName = Path.Combine(filePath, $"{imagePrefix}_{ModuleName}_{Name}_{Width}_{Height}.jpg");
+                        retResult?.SaveToJpeg(fileName);
+                        Logger.Debug($"Cropped image saved as {fileName}.");
+                    }
+                    break;
+                case SavedImageType.Png:
+                    {
+                        var fileName = Path.Combine(filePath, $"{imagePrefix}_{ModuleName}_{Name}_{Width}_{Height}.png");
+                        retResult?.SaveToPng(fileName);
+                        Logger.Debug($"Cropped image saved as {fileName}.");
+                    }
+                    break;
+                default:
+                    {
+                        var fileName = Path.Combine(filePath, $"{imagePrefix}_{ModuleName}_{Name}_{Width}_{Height}.bmp");
+                        retResult?.SaveToBmp(fileName);
+                        Logger.Debug($"Cropped image saved as {fileName}.");
+                    }
+                    break;
+            }
+        }
+
+        #endregion Private helpers
     }
 }

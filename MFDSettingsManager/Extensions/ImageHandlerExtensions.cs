@@ -8,6 +8,9 @@ using System.Windows.Media.Imaging;
 
 namespace MFDSettingsManager.Extensions
 {
+    /// <summary>
+    /// Image Handler Extensions
+    /// </summary>
     public static class ImageHandlerExtensions
     {
         /// <summary>

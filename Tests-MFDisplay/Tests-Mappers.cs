@@ -1,8 +1,10 @@
 ﻿using MFDSettingsManager;
+using MFDSettingsManager.Configuration;
 using MFDSettingsManager.Mappers;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System.Configuration;
 using System.Linq;
+using Tests_MFDisplay.Mocks;
 
 namespace Tests_MFDisplay
 {
@@ -34,10 +36,10 @@ namespace Tests_MFDisplay
         public void TestToEnsureConfigSectionIsMappedToModel()
         {
             // ARRANGE
-            var configSection = (MFDConfigurationSection) ConfigurationManager.GetSection("MFDSettings");
+            var configSection = MFDConfigurationSection.GetConfig();
 
             // ACT
-            var configModel = ConfigSectionModelMapper.MapFromConfigurationSection(configSection);
+            var configModel = ConfigSectionModelMapper.MapFromConfigurationSection(configSection, new MockLogger());
 
             // ASSERT
             Assert.AreEqual(filePath, configModel.FilePath);

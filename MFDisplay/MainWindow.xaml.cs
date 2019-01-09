@@ -1,5 +1,5 @@
 ﻿using log4net;
-using MFDSettingsManager;
+using MFDSettingsManager.Configuration;
 using MFDSettingsManager.Mappers;
 using MFDSettingsManager.Models;
 using System.Collections.Generic;
@@ -38,17 +38,11 @@ namespace MFDisplay
         /// <summary>
         /// Ctor, initializes component, logging, sorted list and loads the configuration  
         /// </summary>
-        public MainWindow(MFDConfigurationSection config)
+        public MainWindow()
         {
             MFDList = new SortedList<string, MFDWindow>();
             AvailableModules = new List<ModuleDefinition>();
-            Config = config;
             InitializeComponent();
-        }
-
-        private void Window_Initialized(object sender, System.EventArgs e)
-        {
-            SetupWindow();
         }
 
         /// <summary>
@@ -58,6 +52,7 @@ namespace MFDisplay
         /// <param name="e"></param>
         private void Window_Loaded(object sender, RoutedEventArgs e)
         {
+            SetupWindow();
             Logger.Info("is Loaded");
         }
 
@@ -77,7 +72,7 @@ namespace MFDisplay
         /// </summary>
         public void SetupWindow()
         {
-            var model = ConfigSectionModelMapper.MapFromConfigurationSection(Config);
+            var model = ConfigSectionModelMapper.MapFromConfigurationSection(Config, Logger);
             AvailableModules = model.Modules;
 
             cbModules.ItemsSource = AvailableModules;

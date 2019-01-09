@@ -3,14 +3,13 @@ using log4net.Appender;
 using log4net.Core;
 using log4net.Layout;
 using log4net.Repository.Hierarchy;
-using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
 
 namespace MFDisplay.Helpers
 {
+    /// <summary>
+    /// <seealso cref="ILog"/> support
+    /// </summary>
     public static class LogHelper
     {
         static LogHelper()
@@ -20,7 +19,13 @@ namespace MFDisplay.Helpers
             hierarchy.Configured = true;
         }
 
-        public static ILog GetLoggerRollingFileAppender(string logName, string fileName)
+        /// <summary>
+        /// Gets the ILog instance and the specified appenders
+        /// </summary>
+        /// <param name="logName"></param>
+        /// <param name="fileName"></param>
+        /// <returns></returns>
+        public static ILog GetLogger(string logName, string fileName)
         {
             var log = LogManager.Exists(logName);
 
@@ -28,12 +33,42 @@ namespace MFDisplay.Helpers
 
             var appenderName = $"{logName}Appender";
             log = LogManager.GetLogger(logName);
-            ((Logger)log.Logger).AddAppender(GetRollingFileAppender(appenderName, fileName));
-
+            ((Logger)log.Logger).AddAppender(GetRollingFileAppender(appenderName, fileName, Level.All));
+            ((Logger)log.Logger).AddAppender(GetConsoleAppender("ColoredConsoleAppender", Level.All));
             return log;
         }
 
-        public static RollingFileAppender GetRollingFileAppender(string appenderName, string fileName)
+        /// <summary>
+        /// Gets a colored console appender
+        /// </summary>
+        /// <param name="appenderName"></param>
+        /// <param name="level"></param>
+        /// <returns></returns>
+        public static ColoredConsoleAppender GetConsoleAppender(string appenderName, Level level)
+        {
+            var layout = new PatternLayout { ConversionPattern = "%date{dd.MM.yyyy HH:mm:ss}  [%-5level]  %message%newline" };
+            layout.ActivateOptions();
+
+            var appender = new ColoredConsoleAppender()
+            {
+                Layout = layout,
+                Name = appenderName,
+                Target = "Console.Out",
+                Threshold = level
+            };
+
+            appender.ActivateOptions();
+            return appender;
+        }
+
+        /// <summary>
+        /// Gets a rolling file appender
+        /// </summary>
+        /// <param name="appenderName"></param>
+        /// <param name="fileName"></param>
+        /// <param name="level"></param>
+        /// <returns></returns>
+        public static RollingFileAppender GetRollingFileAppender(string appenderName, string fileName, Level level)
         {
             var layout = new PatternLayout { ConversionPattern = "%date{dd.MM.yyyy HH:mm:ss.fff}  [%-5level]  %message%newline" };
             layout.ActivateOptions();
@@ -50,6 +85,7 @@ namespace MFDisplay.Helpers
                 ImmediateFlush = true,
                 LockingModel = new FileAppender.MinimalLock(),
                 Encoding = Encoding.UTF8,
+                Threshold = level
             };
 
             appender.ActivateOptions();

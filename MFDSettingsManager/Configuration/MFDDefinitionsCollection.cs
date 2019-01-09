@@ -1,6 +1,6 @@
 ﻿using System.Configuration;
 
-namespace MFDSettingsManager
+namespace MFDSettingsManager.Configuration
 {
     /// <summary>
     /// Collection of MFD configurations

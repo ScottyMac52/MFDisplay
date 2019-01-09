@@ -33,6 +33,9 @@
     <DocumentationFile>..\Output\MFDSettingsManager.xml</DocumentationFile>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="log4net, Version=2.0.8.0, Culture=neutral, PublicKeyToken=669e0ddf0bb1aa2a, processorArchitecture=MSIL">
+      <HintPath>..\packages\log4net.2.0.8\lib\net45-full\log4net.dll</HintPath>
+    </Reference>
     <Reference Include="PresentationCore" />
     <Reference Include="System" />
     <Reference Include="System.Configuration" />
@@ -50,15 +53,19 @@
     <Compile Include="Extensions\ImageHandlerExtensions.cs" />
     <Compile Include="Mappers\ConfigSectionModelMapper.cs" />
     <Compile Include="Mappers\NativeMethods.cs" />
-    <Compile Include="MFDConfigurationSection.cs" />
-    <Compile Include="MFDDefinitionsCollection.cs" />
-    <Compile Include="MFDDefintion.cs" />
+    <Compile Include="Configuration\MFDConfigurationSection.cs" />
+    <Compile Include="Configuration\MFDDefinitionsCollection.cs" />
+    <Compile Include="Configuration\MFDDefintion.cs" />
     <Compile Include="Models\ConfigurationDefinition.cs" />
     <Compile Include="Models\ModuleDefinition.cs" />
     <Compile Include="Models\ModulesConfiguration.cs" />
-    <Compile Include="ModuleConfigurationDefintion.cs" />
-    <Compile Include="ModulesConfigurationCollection.cs" />
+    <Compile Include="Configuration\ModuleConfigurationDefintion.cs" />
+    <Compile Include="Configuration\ModulesConfigurationCollection.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Enum\SavedImageType.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="packages.config" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
