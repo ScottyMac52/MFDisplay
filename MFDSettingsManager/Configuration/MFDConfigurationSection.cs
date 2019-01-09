@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Configuration;
 using System.IO;
+using log4net;
 using MFDSettingsManager.Enum;
 
 namespace MFDSettingsManager.Configuration
@@ -16,13 +17,19 @@ namespace MFDSettingsManager.Configuration
         public bool IsDataDirty { get; set; }
 
         /// <summary>
+        /// Logger 
+        /// </summary>
+        public ILog Logger { get; set; }
+
+        /// <summary>
         /// Gets the configurations section
         /// </summary>
         /// <returns></returns>
-        public static MFDConfigurationSection GetConfig()
+        public static MFDConfigurationSection GetConfig(ILog logger)
         {
             var mappedExeConfig = ConfigurationManager.OpenExeConfiguration(Path.Combine(Environment.CurrentDirectory, "MFDisplay.exe"));
             var configSection = (MFDConfigurationSection)mappedExeConfig.GetSection("MFDSettings");
+            configSection.Logger = logger;
             configSection.IsDataDirty = false;
             return configSection ?? new MFDConfigurationSection();
         }
@@ -56,12 +63,12 @@ namespace MFDSettingsManager.Configuration
             {
                 try
                 {
-                    var result = this["imageType"] == null ? SavedImageType.Bmp : (SavedImageType)System.Enum.Parse(typeof(SavedImageType), (string)this["imageType"]);
+                    var result = this["imageType"] == null ? SavedImageType.Bmp : (SavedImageType) this["imageType"];
                     return result;
                 }
-                catch (Exception)
+                catch (Exception ex)
                 {
-
+                    Logger?.Error("There was an error in determining the ImageType", ex);
                     return SavedImageType.Bmp;
                 }
             }

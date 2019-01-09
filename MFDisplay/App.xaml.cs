@@ -30,7 +30,7 @@ namespace MFDisplay
         protected override void OnStartup(StartupEventArgs e)
         {
             var assmLocation = Assembly.GetExecutingAssembly().Location;
-            Configuration = MFDConfigurationSection.GetConfig();
+            Configuration = MFDConfigurationSection.GetConfig(Logger);
             if(!Directory.Exists(Configuration.FilePath))
             {
                 var errorMessage = $"Unable to find path {Configuration.FilePath}";
