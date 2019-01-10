@@ -5,8 +5,6 @@ using MFDSettingsManager.Mappers;
 using System.IO;
 using System.Reflection;
 using System.Windows;
-using System.Windows.Navigation;
-using System.Security.AccessControl;
 
 namespace MFDisplay
 {
