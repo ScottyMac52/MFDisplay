@@ -36,6 +36,11 @@ namespace MFDisplay
         protected List<ModuleDefinition> AvailableModules { get; set; }
 
         /// <summary>
+        /// Currently selected Module
+        /// </summary>
+        protected ModuleDefinition SelectedModule { get; set; }
+
+        /// <summary>
         /// Ctor, initializes component, logging, sorted list and loads the configuration  
         /// </summary>
         public MainWindow()
@@ -84,18 +89,17 @@ namespace MFDisplay
         /// <summary>
         /// Creates the MFDs using the specified Module Definition
         /// </summary>
-        /// <param name="moduleDef"><seealso cref="ModuleDefinition"/></param>
-        public void CreateMFDs(ModuleDefinition moduleDef)
+        public void CreateMFDs()
         {
-            Logger.Debug($"Creating configuration {moduleDef.DisplayName}");
-            moduleDef.Configurations.ForEach(config =>
+            Logger.Debug($"Creating configuration {SelectedModule.DisplayName}");
+            SelectedModule.Configurations.ForEach(config =>
             {
                 Logger.Info($"Creatiing {config.ToReadableString()}");
                 var newmfdWindow = new MFDWindow()
                 {
                     Logger = Logger,
                     Configuration = config,
-                    FilePath = Path.Combine(Config.FilePath, moduleDef.ModuleName)
+                    FilePath = Path.Combine(Config.FilePath, SelectedModule.ModuleName)
                 };
                 newmfdWindow.Show();
                 if (newmfdWindow.IsMFDLoaded)
@@ -128,10 +132,10 @@ namespace MFDisplay
         /// </summary>
         /// <param name="moduleName"></param>
         /// <returns></returns>
-        public ModuleDefinition GetSelectedDefinition(string moduleName)
+        public void GetSelectedDefinition(string moduleName)
         {
             Logger.Info($"Configuration requested for {moduleName}");
-            return AvailableModules.Where(am => am.ModuleName == moduleName).FirstOrDefault();
+            SelectedModule = AvailableModules.Where(am => am.ModuleName == moduleName).FirstOrDefault();
         }
         
         private void ComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
@@ -140,8 +144,8 @@ namespace MFDisplay
             DestroyMFDs();
             var selectedModule = (ModuleDefinition)e.AddedItems[0];
             Logger.Info($"Module selected {selectedModule.DisplayName}");
-            var moduleDef = GetSelectedDefinition(selectedModule.ModuleName);
-            CreateMFDs(moduleDef);
+            GetSelectedDefinition(selectedModule.ModuleName);
+            CreateMFDs();
         }
 
         private void Window_Closed(object sender, System.EventArgs e)
@@ -160,13 +164,16 @@ namespace MFDisplay
 
         private void ConfigurationMenuItem_Click(object sender, RoutedEventArgs e)
         {
+            DestroyMFDs();
             var configWindow = new ConfigurationWindow()
             {
                 Logger = Logger,
-                Config = ConfigSectionModelMapper.MapFromConfigurationSection(Config, Logger)
+                Config = ConfigSectionModelMapper.MapFromConfigurationSection(Config, Logger),
+                Owner = this
             };
             configWindow.ShowDialog();
             Config = MFDConfigurationSection.GetConfig(Logger);
+            CreateMFDs();
         }
 
         private void HelpMenuItem_Click(object sender, RoutedEventArgs e)

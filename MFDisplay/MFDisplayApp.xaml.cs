@@ -5,8 +5,6 @@ using MFDSettingsManager.Mappers;
 using System.IO;
 using System.Reflection;
 using System.Windows;
-using System.Windows.Navigation;
-using System.Security.AccessControl;
 
 namespace MFDisplay
 {
@@ -114,5 +112,7 @@ namespace MFDisplay
             Logger?.Error($"{sender?.GetType()?.Name} threw an exception", e?.Exception);
             Shutdown(-1);
         }
+
+
     }
 }

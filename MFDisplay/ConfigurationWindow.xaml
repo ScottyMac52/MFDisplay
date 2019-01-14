@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:MFDisplay"
         mc:Ignorable="d"
-        Title="MFD 4 CTS Configuration" Loaded="Window_Loaded" MaxHeight="150" MaxWidth="400"  Background="DarkGray">
+        Title="MFD 4 CTS Configuration" Loaded="Window_Loaded" MaxHeight="400" MaxWidth="450"  Background="DarkGray">
     <StackPanel HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
         <DockPanel>
             <Menu DockPanel.Dock="Top">
@@ -41,17 +41,44 @@
                 <Label VerticalAlignment="Center" Content="SaveClips:" />
                 <CheckBox Name="chkSaveClips" VerticalAlignment="Center" ToolTip="If checked then each cropped image will be saved." IsThreeState="True" Click="ChkSaveClips_Click" />
             </StackPanel>
+            <StackPanel HorizontalAlignment="Stretch" Orientation="Vertical" VerticalAlignment="Stretch">
+                <StackPanel Orientation="Horizontal">
+                    <Label VerticalAlignment="Center" Content="Selected Module:"/>
+                    <GroupBox HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Header="Module Configuration">
+                        <ComboBox Name="cbModules" VerticalAlignment="Center" SelectionChanged="CbModules_SelectionChanged"  />
+                    </GroupBox>
+                </StackPanel>
+                <StackPanel Orientation="Horizontal">
+                    <DataGrid Name="dgConfigurations" CanUserAddRows="False" CanUserDeleteRows="True" CanUserReorderColumns="true" CanUserResizeColumns="false" CanUserResizeRows="false" FontSize="8" SelectionMode="Single" AutoGenerateColumns="False" HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
+                        <DataGrid.Columns>
+                            <DataGridTextColumn Header="Name" Binding="{Binding Name}" Width="30" />
+                            <DataGridTextColumn Header="File Name" Binding="{Binding FileName}" Width="80" />
+                            <DataGridTextColumn Header="Left" Binding="{Binding Left}" Width="30" />
+                            <DataGridTextColumn Header="Top" Binding="{Binding Top}" Width="30" />
+                            <DataGridTextColumn Header="Width" Binding="{Binding Width}" Width="35" />
+                            <DataGridTextColumn Header="Height" Binding="{Binding Height}" Width="35" />
+                            <DataGridTextColumn Header="X Start" Binding="{Binding XOffsetStart}" Width="35" />
+                            <DataGridTextColumn Header="X Finish" Binding="{Binding XOffsetFinish}" Width="35" />
+                            <DataGridTextColumn Header="Y Start" Binding="{Binding YOffsetStart}" Width="35" />
+                            <DataGridTextColumn Header="Y Finish" Binding="{Binding YOffsetFinish}" Width="35" />
+                            <DataGridTemplateColumn Width="*" Header="Preview">
+                                <DataGridTemplateColumn.CellTemplate>
+                                    <DataTemplate>
+                                        <StackPanel>
+                                            <Button Content="Preview" Tag="{Binding ModuleName}" CommandParameter="{Binding Name}" Click="PreviewClick"/>
+                                        </StackPanel>
+                                    </DataTemplate>
+                                </DataGridTemplateColumn.CellTemplate>
+                            </DataGridTemplateColumn>
+                        </DataGrid.Columns>
+                    </DataGrid>
+                </StackPanel>
             </StackPanel>
+        </StackPanel>
         <!-- Horizontal StackPanel for the Modules -->
         <!-- Current Module Configuration -->
         <!-- 
         <Separator Height="5"/>
-        <StackPanel Orientation="Horizontal">
-            <Label VerticalAlignment="Center" Content="Selected Module:"/>
-            <ComboBox Name="cbModules" VerticalAlignment="Center" SelectionChanged="CbModules_SelectionChanged"  />
-        </StackPanel>
-        <DataGrid Name="dgConfigurations">
-        </DataGrid>
         <Separator Height="20"/>
         -->
     </StackPanel>

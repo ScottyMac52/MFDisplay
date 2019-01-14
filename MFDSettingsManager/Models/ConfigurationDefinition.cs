@@ -22,19 +22,19 @@ namespace MFDSettingsManager.Models
         /// <summary>
         /// The parent Module to this Configuration
         /// </summary>
-        public ModuleDefinition Parent { get; internal set; }
+        public ModuleDefinition Parent { get; set; }
         /// <summary>
         /// Module Name
         /// </summary>
-        public string ModuleName { get; internal set; }
+        public string ModuleName { get; set; }
         /// <summary>
         /// Name of the Configuration
         /// </summary>
-        public string Name { get; internal set; }
+        public string Name { get; set; }
         /// <summary>
         /// FileName for the image cropping that this configuration uses
         /// </summary>
-        public string FileName { get; internal set; }
+        public string FileName { get; set; }
 
         #endregion Identifying properties
 
@@ -42,23 +42,23 @@ namespace MFDSettingsManager.Models
         /// <summary>
         /// Translucency of the image expressed as percentage of solidness 
         /// </summary>
-        public float Opacity { get; internal set; }
+        public float Opacity { get; set; }
         /// <summary>
         /// Width of the displayed image
         /// </summary>
-        public int Width { get; internal set; }
+        public int Width { get; set; }
         /// <summary>
         /// The Height of the displayed image
         /// </summary>
-        public int Height { get; internal set; }
+        public int Height { get; set; }
         /// <summary>
         /// Left coordinate of the displayed image
         /// </summary>
-        public int Left { get; internal set; }
+        public int Left { get; set; }
         /// <summary>
         /// Top coordinate of the displayed image
         /// </summary>
-        public int Top { get; internal set; }
+        public int Top { get; set; }
 
         #endregion Basic Image Properties Left, Top, Width, Height and Opacity
 
@@ -66,27 +66,27 @@ namespace MFDSettingsManager.Models
         /// <summary>
         /// Starting X position of the Crop
         /// </summary>
-        public int XOffsetStart { get; internal set; }
+        public int XOffsetStart { get; set; }
         /// <summary>
         /// Starting Y position of the Crop
         /// </summary>
-        public int YOffsetStart { get; internal set; }
+        public int YOffsetStart { get; set; }
         /// <summary>
         /// Ending X position of the Crop
         /// </summary>
-        public int XOffsetFinish { get; internal set; }
+        public int XOffsetFinish { get; set; }
         /// <summary>
         /// Ending Y position of the Crop
         /// </summary>
-        public int YOffsetFinish { get; internal set; }
+        public int YOffsetFinish { get; set; }
         /// <summary>
         /// If true then cropping is used otherwise the entire image is used
         /// </summary>
-        public bool? UseOffsets { get; internal set; }
+        public bool? UseOffsets { get; set; }
         /// <summary>
         /// If true then the results of the cropping are saved
         /// </summary>
-        public bool? SaveResults { get; internal set; }
+        public bool? SaveResults { get; set; }
         /// <summary>
         /// The type to use when saving images
         /// </summary>
