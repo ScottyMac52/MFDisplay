@@ -4,6 +4,5 @@
              xmlns:local="clr-namespace:MFDisplay"
              DispatcherUnhandledException="Application_DispatcherUnhandledException" ShutdownMode="OnExplicitShutdown">
     <Application.Resources>
-         
     </Application.Resources>
 </Application>

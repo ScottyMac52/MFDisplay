@@ -112,5 +112,7 @@ namespace MFDisplay
             Logger?.Error($"{sender?.GetType()?.Name} threw an exception", e?.Exception);
             Shutdown(-1);
         }
+
+
     }
 }
