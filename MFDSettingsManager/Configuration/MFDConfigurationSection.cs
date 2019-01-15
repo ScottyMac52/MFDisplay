@@ -25,10 +25,24 @@ namespace MFDSettingsManager.Configuration
         /// Gets the configurations section
         /// </summary>
         /// <returns></returns>
-        public static MFDConfigurationSection GetConfig(ILog logger)
+        public static MFDConfigurationSection GetConfig(ILog logger, string fullPathtoConfig = null)
         {
-            var mappedExeConfig = ConfigurationManager.OpenExeConfiguration(Path.Combine(Environment.CurrentDirectory, "MFDisplay.exe"));
-            var configSection = (MFDConfigurationSection)mappedExeConfig.GetSection("MFDSettings");
+            System.Configuration.Configuration currentConfiguration = null;
+
+            if(string.IsNullOrEmpty(fullPathtoConfig))
+            {
+                currentConfiguration = ConfigurationManager.OpenExeConfiguration(Path.Combine(Environment.CurrentDirectory, "MFDisplay.exe"));
+            }
+            else
+            {
+                var exeFileMap = new ExeConfigurationFileMap()
+                {
+                    ExeConfigFilename = fullPathtoConfig
+                };
+                currentConfiguration = ConfigurationManager.OpenMappedExeConfiguration(exeFileMap, ConfigurationUserLevel.None);
+            }
+
+            var configSection = (MFDConfigurationSection)currentConfiguration.GetSection("MFDSettings");
             configSection.Logger = logger;
             configSection.IsDataDirty = false;
             return configSection ?? new MFDConfigurationSection();
@@ -117,13 +131,13 @@ namespace MFDSettingsManager.Configuration
 
         #endregion Main configuration properties
 
-        #region MFD Common Top, Wdith and Height
+        #region MFD Common Left, Top, Wdith and Height
 
         /// <summary>
         /// Default Width to use for the images
         /// </summary>
-        [ConfigurationProperty("width", IsRequired = true)]
-        public int Width
+        [ConfigurationProperty("width", IsRequired = false)]
+        public int? Width
         {
             get
             {
@@ -139,8 +153,8 @@ namespace MFDSettingsManager.Configuration
         /// <summary>
         /// Default Height to use for the images
         /// </summary>
-        [ConfigurationProperty("height", IsRequired = true)]
-        public int Height
+        [ConfigurationProperty("height", IsRequired = false)]
+        public int? Height
         {
             get
             {
@@ -156,8 +170,26 @@ namespace MFDSettingsManager.Configuration
         /// <summary>
         /// Default Top position for the images
         /// </summary>
-        [ConfigurationProperty("top", IsRequired = true)]
-        public int Top
+        [ConfigurationProperty("left", IsRequired = false)]
+        public int? Left
+        {
+            get
+            {
+                return (int)Convert.ChangeType(this["left"], typeof(int));
+            }
+            set
+            {
+                IsDataDirty = true;
+                this["left"] = value;
+            }
+        }
+
+
+        /// <summary>
+        /// Default Top position for the images
+        /// </summary>
+        [ConfigurationProperty("top", IsRequired = false)]
+        public int? Top
         {
             get
             {
@@ -170,129 +202,53 @@ namespace MFDSettingsManager.Configuration
             }
         }
 
-        #endregion MFD Common Top, Wdith and Height
+        #endregion MFD Common Left, Top, Wdith and Height
 
-        #region L&R MFD Left
+        #region MFD X Offsets
 
         /// <summary>
-        /// Default Left position for the LMFD keyed images
+        /// Default for the starting X position of the crop
         /// </summary>
-        [ConfigurationProperty("lMfdLeft", IsRequired = true)]
-        public int LMFDLeft
+        [ConfigurationProperty("xOffsetStart", IsRequired = false)]
+        public int? XOffsetStart
         {
             get
             {
-                return (int)Convert.ChangeType(this["lMfdLeft"], typeof(int));
+                return (int)Convert.ChangeType(this["xOffsetStart"], typeof(int));
             }
             set
             {
                 IsDataDirty = true;
-                this["lMfdLeft"] = value;
+                this["xOffsetStart"] = value;
             }
         }
 
         /// <summary>
-        /// Default Left position for the RMFD keyed images
+        /// Default for the ending X position of the crop of the image
         /// </summary>
-        [ConfigurationProperty("rMfdLeft", IsRequired = true)]
-        public int RMFDLeft
+        [ConfigurationProperty("xOffsetFinish", IsRequired = false)]
+        public int? XOffsetFinish
         {
             get
             {
-                return (int)Convert.ChangeType(this["rMfdLeft"], typeof(int));
+                return (int)Convert.ChangeType(this["xOffsetFinish"], typeof(int));
             }
             set
             {
                 IsDataDirty = true;
-                this["rMfdLeft"] = value;
+                this["xOffsetFinish"] = value;
             }
         }
 
-        #endregion L&R MFD Left
-
-        #region LMFD X Offsets
-
-        /// <summary>
-        /// Default for the starting X position of the crop of the image for the LMFD
-        /// </summary>
-        [ConfigurationProperty("xLMFDOffsetStart", IsRequired = true)]
-        public int XLFMDOffsetStart
-        {
-            get
-            {
-                return (int)Convert.ChangeType(this["xLMFDOffsetStart"], typeof(int));
-            }
-            set
-            {
-                IsDataDirty = true;
-                this["xLMFDOffsetStart"] = value;
-            }
-        }
-
-        /// <summary>
-        /// Default for the ending X position of the crop of the image for the LMFD
-        /// </summary>
-        [ConfigurationProperty("xLMFDOffsetFinish", IsRequired = true)]
-        public int XLFMDOffsetFinish
-        {
-            get
-            {
-                return (int)Convert.ChangeType(this["xLMFDOffsetFinish"], typeof(int));
-            }
-            set
-            {
-                IsDataDirty = true;
-                this["xLMFDOffsetFinish"] = value;
-            }
-        }
-
-        #endregion LMFD X Offsets
-
-        #region RMFD X Offsets
-
-        /// <summary>
-        /// Default for the starting X position of the crop of the image for the RMFD
-        /// </summary>
-        [ConfigurationProperty("xRMFDOffsetStart", IsRequired = true)]
-        public int XRFMDOffsetStart
-        {
-            get
-            {
-                return (int)Convert.ChangeType(this["xRMFDOffsetStart"], typeof(int));
-            }
-            set
-            {
-                IsDataDirty = true;
-                this["xRMFDOffsetStart"] = value;
-            }
-        }
-
-        /// <summary>
-        /// Default for the ending X position of the crop of the image for the RMFD
-        /// </summary>
-        [ConfigurationProperty("xRMFDOffsetFinish", IsRequired = true)]
-        public int XRFMDOffsetFinish
-        {
-            get
-            {
-                return (int)Convert.ChangeType(this["xRMFDOffsetFinish"], typeof(int));
-            }
-            set
-            {
-                IsDataDirty = true;
-                this["xRMFDOffsetFinish"] = value;
-            }
-        }
-
-        #endregion RMFD X Offsets
+        #endregion MFD X Offsets
 
         #region MFD Y Offsets
 
         /// <summary>
         /// Default for the starting Y position of the crop of the image
         /// </summary>
-       [ConfigurationProperty("yOffsetStart", IsRequired = true)]
-        public int YOffsetStart
+       [ConfigurationProperty("yOffsetStart", IsRequired = false)]
+        public int? YOffsetStart
         {
             get
             {
@@ -308,8 +264,8 @@ namespace MFDSettingsManager.Configuration
         /// <summary>
         /// Default for the ending Y position of the crop of the image
         /// </summary>
-        [ConfigurationProperty("yOffsetFinish", IsRequired = true)]
-        public int YOffsetFinish
+        [ConfigurationProperty("yOffsetFinish", IsRequired = false)]
+        public int? YOffsetFinish
         {
             get
             {

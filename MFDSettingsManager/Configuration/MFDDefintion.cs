@@ -61,7 +61,7 @@ namespace MFDSettingsManager.Configuration
 
         #endregion General configuration properties
 
-        #region MFD Common Top, Wdith and Height
+        #region Left, Top, Wdith and Height
 
         /// <summary>
         /// Nullable Width of the image in the display, used to override the default
@@ -104,7 +104,27 @@ namespace MFDSettingsManager.Configuration
         }
 
         /// <summary>
-        /// Nullable Top position of the image in the display, used to override the default
+        /// Nullable Left position of the image in the display
+        /// </summary>
+        [ConfigurationProperty("left", IsRequired = false)]
+        public int? Left
+        {
+            get
+            {
+                if (this["left"] == null)
+                {
+                    return null;
+                }
+                return (int)Convert.ChangeType(this["left"], typeof(int));
+            }
+            set
+            {
+                this["left"] = value;
+            }
+        }
+        
+        /// <summary>
+        /// Nullable Top position of the image in the display
         /// </summary>
         [ConfigurationProperty("top", IsRequired = false)]
         public int? Top
@@ -123,141 +143,53 @@ namespace MFDSettingsManager.Configuration
             }
         }
 
-        #endregion MFD Common Top, Wdith and Height
+        #endregion Left, Top, Wdith and Height
 
-        #region L&R MFD Left
+        #region X Offsets
 
         /// <summary>
-        /// Nullable Left position of the LMFD image, used to override the default
+        /// Nullable starting X position of the crop of the image
         /// </summary>
-        [ConfigurationProperty("lMfdLeft", IsRequired = false)]
-        public int? LMFDLeft
+        [ConfigurationProperty("xOffsetStart", IsRequired = false)]
+        public int? XOffsetStart
         {
             get
             {
-                if (this["lMfdLeft"] == null)
+                if (this["xOffsetStart"] == null)
                 {
                     return null;
                 }
-                return (int)Convert.ChangeType(this["lMfdLeft"], typeof(int));
+                return (int)Convert.ChangeType(this["xOffsetStart"], typeof(int));
             }
             set
             {
-                this["lMfdLeft"] = value;
+                this["xOffsetStart"] = value;
             }
         }
 
         /// <summary>
-        /// Nullable Left position of the RMFD image, used to override the default
+        /// Nullable ending X position of the crop of the image
         /// </summary>
-        [ConfigurationProperty("rMfdLeft", IsRequired = false)]
-        public int? RMFDLeft
+        [ConfigurationProperty("xOffsetFinish", IsRequired = false)]
+        public int? XOffsetFinish
         {
             get
             {
-                if (this["rMfdLeft"] == null)
+                if (this["xOffsetFinish"] == null)
                 {
                     return null;
                 }
-                return (int)Convert.ChangeType(this["rMfdLeft"], typeof(int));
+                return (int)Convert.ChangeType(this["xOffsetFinish"], typeof(int));
             }
             set
             {
-                this["rMfdLeft"] = value;
+                this["xOffsetFinish"] = value;
             }
         }
 
-        #endregion L&R MFD Left
+        #endregion X Offsets
 
-        #region LMFD X Offsets
-
-        /// <summary>
-        /// Nullable starting X position of the crop of the image for the LMFD, used to override the default
-        /// </summary>
-        [ConfigurationProperty("xLMFDOffsetStart", IsRequired = false)]
-        public int? XLFMDOffsetStart
-        {
-            get
-            {
-                if (this["xLMFDOffsetStart"] == null)
-                {
-                    return null;
-                }
-                return (int)Convert.ChangeType(this["xLMFDOffsetStart"], typeof(int));
-            }
-            set
-            {
-                this["xLMFDOffsetStart"] = value;
-            }
-        }
-
-        /// <summary>
-        /// Nullable ending X position of the crop of the image for the LMFD, used to override the default
-        /// </summary>
-        [ConfigurationProperty("xLMFDOffsetFinish", IsRequired = false)]
-        public int? XLFMDOffsetFinish
-        {
-            get
-            {
-                if (this["xLMFDOffsetFinish"] == null)
-                {
-                    return null;
-                }
-                return (int)Convert.ChangeType(this["xLMFDOffsetFinish"], typeof(int));
-            }
-            set
-            {
-                this["xLMFDOffsetFinish"] = value;
-            }
-        }
-
-        #endregion LMFD X Offsets
-
-        #region RMFD X Offsets
-
-        /// <summary>
-        /// Nullable starting X position of the crop of the image for the RMFD, used to override the default
-        /// </summary>
-        [ConfigurationProperty("xRMFDOffsetStart", IsRequired = false)]
-        public int? XRFMDOffsetStart
-        {
-            get
-            {
-                if (this["xRMFDOffsetStart"] == null)
-                {
-                    return null;
-                }
-                return (int)Convert.ChangeType(this["xRMFDOffsetStart"], typeof(int));
-            }
-            set
-            {
-                this["xRMFDOffsetStart"] = value;
-            }
-        }
-
-        /// <summary>
-        /// Nullable ending X position of the crop of the image for the RMFD, used to override the default
-        /// </summary>
-        [ConfigurationProperty("xRMFDOffsetFinish", IsRequired = false)]
-        public int? XRFMDOffsetFinish
-        {
-            get
-            {
-                if (this["xRMFDOffsetFinish"] == null)
-                {
-                    return null;
-                }
-                return (int)Convert.ChangeType(this["xRMFDOffsetFinish"], typeof(int));
-            }
-            set
-            {
-                this["xRMFDOffsetFinish"] = value;
-            }
-        }
-
-        #endregion RMFD X Offsets
-
-        #region MFD Y Offsets
+        #region Y Offsets
 
         /// <summary>
         /// Nullable starting Y position of the crop of the image, used to override the default
@@ -299,6 +231,6 @@ namespace MFDSettingsManager.Configuration
             }
         }
 
-        #endregion MFD Y Offsets
+        #endregion Y Offsets
     }
 }

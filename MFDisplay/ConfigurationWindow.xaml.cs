@@ -270,19 +270,7 @@ namespace MFDisplay
                         selectedConfig.Top = config.Top;
                         selectedConfig.Width = config.Width;
                         selectedConfig.Height = config.Height;
-                        switch (selectedConfig.Name)
-                        {
-                            case "LMFD":
-                                selectedConfig.LMFDLeft = config.Left;
-                                break;
-                            case "RMFD":
-                                selectedConfig.RMFDLeft = config.Left;
-                                break;
-                            default:
-                                selectedConfig.LMFDLeft = config.Left;
-                                selectedConfig.RMFDLeft = config.Left;
-                                break;
-                        }
+                        selectedConfig.Left = config.Left;
                     }
                     break;
                 }

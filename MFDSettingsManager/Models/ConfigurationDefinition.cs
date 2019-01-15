@@ -80,10 +80,6 @@ namespace MFDSettingsManager.Models
         /// </summary>
         public int YOffsetFinish { get; set; }
         /// <summary>
-        /// If true then cropping is used otherwise the entire image is used
-        /// </summary>
-        public bool? UseOffsets { get; set; }
-        /// <summary>
         /// If true then the results of the cropping are saved
         /// </summary>
         public bool? SaveResults { get; set; }
@@ -110,30 +106,22 @@ namespace MFDSettingsManager.Models
             src.CacheOption = BitmapCacheOption.OnLoad;
             src.EndInit();
 
-            if ((UseOffsets ?? false) == true)
+            offSet = new Int32Rect(XOffsetStart, YOffsetStart, XOffsetFinish - XOffsetStart, YOffsetFinish - YOffsetStart);
+            var croppedBitmap = new CroppedBitmap(src, offSet);
+            if ((SaveResults ?? false) == true)
             {
-                offSet = new Int32Rect(XOffsetStart, YOffsetStart, XOffsetFinish - XOffsetStart, YOffsetFinish - YOffsetStart);
-                var croppedBitmap = new CroppedBitmap(src, offSet);
-                if ((SaveResults ?? false) == true)
-                {
-                    var fi = new FileInfo(imagePath);
+                var fi = new FileInfo(imagePath);
 
-                    SaveImage(croppedBitmap, fi.Directory.FullName, "Before");
-                }
-                var bitmap = croppedBitmap.BitmapImage2Bitmap();
-                bitmap = bitmap.Crop();
-                retResult = bitmap.ToBitmapSource();
-                if ((SaveResults ?? false) == true)
-                {
-                    var fi = new FileInfo(imagePath);
-                    SaveImage(retResult, fi.Directory.FullName, "After");
-                }
+                SaveImage(croppedBitmap, fi.Directory.FullName, "Before");
             }
-            else
+            var bitmap = croppedBitmap.BitmapImage2Bitmap();
+            bitmap = bitmap.Crop();
+            retResult = bitmap.ToBitmapSource();
+            if ((SaveResults ?? false) == true)
             {
-                retResult = src;
+                var fi = new FileInfo(imagePath);
+                SaveImage(retResult, fi.Directory.FullName, "After");
             }
-
 
             return retResult;
         }
