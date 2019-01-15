@@ -271,8 +271,8 @@ namespace MFDisplay
                         selectedConfig.Width = config.Width;
                         selectedConfig.Height = config.Height;
                         selectedConfig.Left = config.Left;
+                        break;
                     }
-                    break;
                 }
                 configSection.CurrentConfiguration.Save();
                 LoadConfig();
