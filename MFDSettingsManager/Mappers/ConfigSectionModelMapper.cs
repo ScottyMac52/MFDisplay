@@ -47,34 +47,18 @@ namespace MFDSettingsManager.Mappers
                         Parent = modelModule,
                         ModuleName = modelModule.ModuleName,
                         FileName = !string.IsNullOrEmpty(currentConfig.FileName) ? currentConfig.FileName : currentModule.FileName,
-                        Height = currentConfig.Height ?? section.Height,
+                        Height = currentConfig.Height ?? section.Height ?? 0,
                         Name = currentConfig.Name,
                         Opacity = currentConfig.Opacity,
-                        Top = currentConfig.Top ?? section.Top,
-                        Width = currentConfig.Width ?? section.Width,
-                        YOffsetStart = currentConfig.YOffsetStart ?? section.YOffsetStart,
-                        YOffsetFinish = currentConfig.YOffsetFinish ?? section.YOffsetFinish,
-                        SaveResults = section.SaveClips,
-                        UseOffsets = true
+                        Left = currentConfig.Left ?? section.Left ?? 0,
+                        Top = currentConfig.Top ?? section.Top ?? 0,
+                        Width = currentConfig.Width ?? section.Width ?? 0,
+                        XOffsetStart = currentConfig.XOffsetStart ?? section.XOffsetStart ?? 0,
+                        XOffsetFinish = currentConfig.XOffsetFinish ?? section.XOffsetFinish ?? 0,
+                        YOffsetStart = currentConfig.YOffsetStart ?? section.YOffsetStart ?? 0,
+                        YOffsetFinish = currentConfig.YOffsetFinish ?? section.YOffsetFinish ?? 0,
+                        SaveResults = section.SaveClips
                     };
-                    switch(currentConfig.Name)
-                    {
-                        case "LMFD":
-                            mfdConfiguration.Left = currentConfig.LMFDLeft ?? section.LMFDLeft;
-                            mfdConfiguration.XOffsetStart = currentConfig.XLFMDOffsetStart ?? section.XLFMDOffsetStart;
-                            mfdConfiguration.XOffsetFinish = currentConfig.XLFMDOffsetFinish ?? section.XLFMDOffsetFinish;
-                            break;
-                        case "RMFD":
-                            mfdConfiguration.Left = currentConfig.RMFDLeft ?? section.RMFDLeft;
-                            mfdConfiguration.XOffsetStart = currentConfig.XRFMDOffsetStart ?? section.XRFMDOffsetStart;
-                            mfdConfiguration.XOffsetFinish = currentConfig.XRFMDOffsetFinish ?? section.XRFMDOffsetFinish;
-                            break;
-                        default:
-                            mfdConfiguration.Left = currentConfig.LMFDLeft ?? currentConfig.RMFDLeft ?? 0;
-                            mfdConfiguration.XOffsetStart = currentConfig.XLFMDOffsetStart ?? currentConfig.XRFMDOffsetStart ?? 0;
-                            mfdConfiguration.XOffsetFinish = currentConfig.XLFMDOffsetFinish ?? currentConfig.XRFMDOffsetFinish ?? 0;
-                            break;
-                    }
                     logger.Debug($"Loaded Configuration {currentModule.DisplayName}-{currentConfig.Name} as {mfdConfiguration.ToReadableString()}");
                     modelModule.Configurations.Add(mfdConfiguration);
                 }
