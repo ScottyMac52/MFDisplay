@@ -23,7 +23,7 @@ namespace MFDisplay
         /// <summary>
         /// The configuration
         /// </summary>
-        public MFDConfigurationSection Config { get; set; }
+        public ModulesConfiguration Config { get; set; }
        
         /// <summary>
         /// Sorted list of the active MFDs
@@ -77,8 +77,8 @@ namespace MFDisplay
         /// </summary>
         public void SetupWindow()
         {
-            var model = ConfigSectionModelMapper.MapFromConfigurationSection(Config, Logger);
-            AvailableModules = model.Modules;
+            //var model = ConfigSectionModelMapper.MapFromConfigurationSection(Config);
+            AvailableModules = Config?.Modules;
 
             cbModules.ItemsSource = AvailableModules;
             cbModules.DisplayMemberPath = "DisplayName";
@@ -165,14 +165,13 @@ namespace MFDisplay
         private void ConfigurationMenuItem_Click(object sender, RoutedEventArgs e)
         {
             DestroyMFDs();
+            var sectionConfig = MFDConfigurationSection.GetConfig(Logger);
             var configWindow = new ConfigurationWindow()
             {
                 Logger = Logger,
-                Config = ConfigSectionModelMapper.MapFromConfigurationSection(Config, Logger),
                 Owner = this
             };
             configWindow.ShowDialog();
-            Config = MFDConfigurationSection.GetConfig(Logger);
             CreateMFDs();
         }
 

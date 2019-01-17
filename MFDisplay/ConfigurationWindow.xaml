@@ -49,7 +49,7 @@
                     </GroupBox>
                 </StackPanel>
                 <StackPanel Orientation="Horizontal">
-                    <DataGrid Name="dgConfigurations" CanUserAddRows="False" CanUserDeleteRows="True" CanUserReorderColumns="true" CanUserResizeColumns="false" CanUserResizeRows="false" FontSize="8" SelectionMode="Single" AutoGenerateColumns="False" HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
+                    <DataGrid Name="dgConfigurations" CanUserAddRows="False" CanUserDeleteRows="True" CanUserReorderColumns="true" CanUserResizeColumns="false" CanUserResizeRows="false" FontSize="8" SelectionMode="Single" AutoGenerateColumns="False" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" CellEditEnding="DgConfigurations_CellEditEnding">
                         <DataGrid.Columns>
                             <DataGridTextColumn Header="Name" Binding="{Binding Name}" Width="30" />
                             <DataGridTextColumn Header="File Name" Binding="{Binding FileName}" Width="80" />

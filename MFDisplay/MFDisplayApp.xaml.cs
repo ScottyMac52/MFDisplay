@@ -1,7 +1,9 @@
 ﻿using log4net;
 using log4net.Config;
 using MFDSettingsManager.Configuration;
+using MFDSettingsManager.Extensions;
 using MFDSettingsManager.Mappers;
+using MFDSettingsManager.Models;
 using System.IO;
 using System.Reflection;
 using System.Windows;
@@ -16,7 +18,7 @@ namespace MFDisplay
         /// <summary>
         /// Configuration section for the MFDs
         /// </summary>
-        public MFDConfigurationSection Configuration { get; protected set; }
+        public ModulesConfiguration Configuration { get; protected set; }
 
         private static readonly ILog Logger;
 
@@ -58,17 +60,17 @@ namespace MFDisplay
             }
 
             var assmLocation = Assembly.GetExecutingAssembly().Location;
-            Configuration = MFDConfigurationSection.GetConfig(Logger);
+            var sectionConfig = MFDConfigurationSection.GetConfig(Logger);
+            Configuration = sectionConfig.ToModel(Logger);
             while (!Directory.Exists(Configuration.FilePath))
             {
                 var configWindow = new ConfigurationWindow()
                 {
-                    Logger = Logger,
-                    Config = ConfigSectionModelMapper.MapFromConfigurationSection(Configuration, Logger)
+                    Logger = Logger
                 };
                 configWindow.ShowInTaskbar = true;
                 configWindow.ShowDialog();
-                Configuration = MFDConfigurationSection.GetConfig(Logger);
+                Configuration = sectionConfig.ToModel(Logger);
                 if (!Directory.Exists(Configuration.FilePath))
                 {
                     var msgResult = MessageBox.Show($"{Configuration.FilePath} is not a valid path. Do you wish to try another path?", "Invalid Path Configuration", MessageBoxButton.YesNo, MessageBoxImage.Hand);
