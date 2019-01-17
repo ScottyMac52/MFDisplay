@@ -20,10 +20,6 @@ namespace MFDSettingsManager.Models
 
         #region Identifying properties
         /// <summary>
-        /// The parent Module to this Configuration
-        /// </summary>
-        public ModuleDefinition Parent { get; set; }
-        /// <summary>
         /// Module Name
         /// </summary>
         public string ModuleName { get; set; }
@@ -86,10 +82,40 @@ namespace MFDSettingsManager.Models
         /// <summary>
         /// The type to use when saving images
         /// </summary>
-        public SavedImageType? ImageType => Parent.ImageType ?? SavedImageType.Bmp;
+        public SavedImageType? ImageType { get; set; }
         #endregion Image cropping properties
 
         #region Public methods
+
+        /// <summary>
+        /// Default constructor
+        /// </summary>
+        public ConfigurationDefinition()
+        {
+
+        }
+
+        /// <summary>
+        /// Copy constructor
+        /// </summary>
+        /// <param name="dc"></param>
+        public ConfigurationDefinition(ConfigurationDefinition dc)
+        {
+            FileName = dc.FileName;
+            ModuleName = dc.ModuleName;
+            Left = dc.Left;
+            Top = dc.Top;
+            Width = dc.Width;
+            Height = dc.Height;
+            ImageType = dc.ImageType;
+            Name = dc.Name;
+            XOffsetStart = dc.XOffsetStart;
+            XOffsetFinish = dc.XOffsetFinish;
+            YOffsetStart = dc.YOffsetStart;
+            YOffsetFinish = dc.YOffsetFinish;
+            SaveResults = dc.SaveResults;
+            Opacity = dc.Opacity;
+        }
 
         /// <summary>
         /// Crop the specified image
@@ -132,7 +158,7 @@ namespace MFDSettingsManager.Models
         /// <returns></returns>
         public string ToReadableString()
         {
-            return $"{Name} at ({Left}, {Top}) for ({Width}, {Height}) with Opacity {Opacity} from {FileName} at ({XOffsetStart}, {YOffsetStart}) for ({XOffsetFinish - XOffsetStart}, {YOffsetFinish - YOffsetStart}).";
+            return $"{Name} at ({Left}, {Top}) for ({Width}, {Height}) with Opacity {Opacity} from {FileName ?? "Unknown Image"} at ({XOffsetStart}, {YOffsetStart}) for ({XOffsetFinish - XOffsetStart}, {YOffsetFinish - YOffsetStart}).";
         }
 
         #endregion Public methods

@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Configuration;
 using System.IO;
+using System.Linq;
 using log4net;
 using MFDSettingsManager.Enum;
 
@@ -46,6 +47,47 @@ namespace MFDSettingsManager.Configuration
             configSection.Logger = logger;
             configSection.IsDataDirty = false;
             return configSection ?? new MFDConfigurationSection();
+        }
+
+        /// <summary>
+        /// Get the module
+        /// </summary>
+        /// <param name="moduleName"></param>
+        /// <returns><seealso cref="ModuleConfigurationDefintion"/></returns>
+        public ModuleConfigurationDefintion GetModuleConfiguration(string moduleName)
+        {
+            var iterator = Modules.GetEnumerator();
+            while(iterator.MoveNext())
+            {
+                var currentModule = (ModuleConfigurationDefintion)iterator.Current;
+                if(currentModule.ModuleName == moduleName)
+                {
+                    var defaultConfigs = DefaultConfigurations.List;
+                    defaultConfigs.ForEach(dc =>
+                    {
+                        var existingConfig = currentModule.MFDConfigurations.List.FirstOrDefault(mfdConfig => mfdConfig.Name == dc.Name);
+                        if(existingConfig == null)
+                        {
+                            currentModule.MFDConfigurations.Add(new MFDDefintion()
+                            {
+                                FileName = currentModule.FileName,
+                                Height = dc.Height,
+                                Width = dc.Width,
+                                Left = dc.Left,
+                                Top = dc.Top,
+                                Name = dc.Name,
+                                XOffsetStart = dc.XOffsetStart,
+                                XOffsetFinish = dc.XOffsetFinish,
+                                YOffsetStart = dc.YOffsetStart,
+                                YOffsetFinish = dc.YOffsetFinish,
+                                Opacity = dc.Opacity
+                            });
+                        }
+                    });
+                    return currentModule;
+                }
+            }
+            return null;
         }
 
         #region Main configuration properties
@@ -131,154 +173,28 @@ namespace MFDSettingsManager.Configuration
 
         #endregion Main configuration properties
 
-        #region MFD Common Left, Top, Wdith and Height
+        #region Default Configurations
 
         /// <summary>
-        /// Default Width to use for the images
+        /// MFD Default Configurations
         /// </summary>
-        [ConfigurationProperty("width", IsRequired = false)]
-        public int? Width
+        [ConfigurationProperty("DefaultConfigurations", IsDefaultCollection = false, IsRequired = false)]
+        [ConfigurationCollection(typeof(MFDDefinitionsCollection), AddItemName = "add", ClearItemsName = "clear", RemoveItemName = "remove")]
+        public MFDDefinitionsCollection DefaultConfigurations
         {
             get
             {
-                return (int)Convert.ChangeType(this["width"], typeof(int));
+                object o = this["DefaultConfigurations"];
+                return o as MFDDefinitionsCollection;
             }
+
             set
             {
-                IsDataDirty = true;
-                this["width"] = value;
+                this["DefaultConfigurations"] = value;
             }
         }
-
-        /// <summary>
-        /// Default Height to use for the images
-        /// </summary>
-        [ConfigurationProperty("height", IsRequired = false)]
-        public int? Height
-        {
-            get
-            {
-                return (int)Convert.ChangeType(this["height"], typeof(int));
-            }
-            set
-            {
-                IsDataDirty = true;
-                this["height"] = value;
-            }
-        }
-
-        /// <summary>
-        /// Default Top position for the images
-        /// </summary>
-        [ConfigurationProperty("left", IsRequired = false)]
-        public int? Left
-        {
-            get
-            {
-                return (int)Convert.ChangeType(this["left"], typeof(int));
-            }
-            set
-            {
-                IsDataDirty = true;
-                this["left"] = value;
-            }
-        }
-
-
-        /// <summary>
-        /// Default Top position for the images
-        /// </summary>
-        [ConfigurationProperty("top", IsRequired = false)]
-        public int? Top
-        {
-            get
-            {
-                return (int)Convert.ChangeType(this["top"], typeof(int));
-            }
-            set
-            {
-                IsDataDirty = true;
-                this["top"] = value;
-            }
-        }
-
-        #endregion MFD Common Left, Top, Wdith and Height
-
-        #region MFD X Offsets
-
-        /// <summary>
-        /// Default for the starting X position of the crop
-        /// </summary>
-        [ConfigurationProperty("xOffsetStart", IsRequired = false)]
-        public int? XOffsetStart
-        {
-            get
-            {
-                return (int)Convert.ChangeType(this["xOffsetStart"], typeof(int));
-            }
-            set
-            {
-                IsDataDirty = true;
-                this["xOffsetStart"] = value;
-            }
-        }
-
-        /// <summary>
-        /// Default for the ending X position of the crop of the image
-        /// </summary>
-        [ConfigurationProperty("xOffsetFinish", IsRequired = false)]
-        public int? XOffsetFinish
-        {
-            get
-            {
-                return (int)Convert.ChangeType(this["xOffsetFinish"], typeof(int));
-            }
-            set
-            {
-                IsDataDirty = true;
-                this["xOffsetFinish"] = value;
-            }
-        }
-
-        #endregion MFD X Offsets
-
-        #region MFD Y Offsets
-
-        /// <summary>
-        /// Default for the starting Y position of the crop of the image
-        /// </summary>
-       [ConfigurationProperty("yOffsetStart", IsRequired = false)]
-        public int? YOffsetStart
-        {
-            get
-            {
-                return (int)Convert.ChangeType(this["yOffsetStart"], typeof(int));
-            }
-            set
-            {
-                IsDataDirty = true;
-                this["yOffsetStart"] = value;
-            }
-        }
-
-        /// <summary>
-        /// Default for the ending Y position of the crop of the image
-        /// </summary>
-        [ConfigurationProperty("yOffsetFinish", IsRequired = false)]
-        public int? YOffsetFinish
-        {
-            get
-            {
-                return (int)Convert.ChangeType(this["yOffsetFinish"], typeof(int));
-            }
-            set
-            {
-                IsDataDirty = true;
-                this["yOffsetFinish"] = value;
-            }
-        }
-
-        #endregion MFD Y Offsets
+               
+        #endregion Default Configurations
 
         #region Modules Collection
 

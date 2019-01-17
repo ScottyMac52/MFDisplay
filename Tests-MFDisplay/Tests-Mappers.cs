@@ -1,4 +1,5 @@
 ﻿using MFDSettingsManager.Configuration;
+using MFDSettingsManager.Extensions;
 using MFDSettingsManager.Mappers;
 using MFDSettingsManager.Models;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
@@ -173,7 +174,7 @@ namespace Tests_MFDisplay
             var configSection = MFDConfigurationSection.GetConfig(logger, configFilePath);
 
             // ACT
-            var configModel = ConfigSectionModelMapper.MapFromConfigurationSection(configSection, logger);
+            var configModel = configSection.ToModel(logger);
 
             // ASSERT
             var module = configModel.Modules.Where(cm => cm.ModuleName == moduleName).FirstOrDefault();

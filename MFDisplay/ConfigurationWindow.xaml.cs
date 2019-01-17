@@ -1,5 +1,7 @@
 ﻿using log4net;
+using MFDisplay.Extenisons;
 using MFDSettingsManager.Configuration;
+using MFDSettingsManager.Extensions;
 using MFDSettingsManager.Mappers;
 using MFDSettingsManager.Models;
 using System;
@@ -29,7 +31,7 @@ namespace MFDisplay
         /// <summary>
         /// The configuration
         /// </summary>
-        public ModulesConfiguration Config { get; set; }
+        public ModulesConfiguration Config { get; private set; }
 
         /// <summary>
         /// Currently selected Module
@@ -40,6 +42,11 @@ namespace MFDisplay
         /// DataDirty variable
         /// </summary>
         public bool IsDataDirty { get; private set; }
+
+        /// <summary>
+        /// The current preview window
+        /// </summary>
+        public MFDWindow PreviewWindow { get; private set; }
 
         /// <summary>
         /// Is the configuration Valid?
@@ -66,11 +73,15 @@ namespace MFDisplay
             LoadConfig();
         }
 
-        private void LoadConfig()
+        private void LoadConfigurationSectionAsModel()
         {
             var configSection = MFDConfigurationSection.GetConfig(Logger);
-            Config = ConfigSectionModelMapper.MapFromConfigurationSection(configSection, Logger);
+            Config = configSection.ToModel(Logger);
+        }
 
+        private void LoadConfig()
+        {
+            LoadConfigurationSectionAsModel();
             cbModules.ItemsSource = Config.Modules;
             cbModules.DisplayMemberPath = "DisplayName";
             cbModules.SelectedValuePath = "ModuleName";
@@ -101,12 +112,19 @@ namespace MFDisplay
 
         private void Save()
         {
-            var configSection = MFDConfigurationSection.GetConfig(Logger);
-            configSection.DefaultConfig = cbDefaultModule.SelectedValue?.ToString();
-            configSection.FilePath = txtFilePath.Text;
-            configSection.SaveClips = chkSaveClips.IsChecked;
-            Logger.Info($"Saving the configuration file {configSection.CurrentConfiguration.FilePath}...");
-            configSection.CurrentConfiguration.Save();
+            var savedConfig = MFDConfigurationSection.GetConfig(Logger);
+            savedConfig.FilePath = txtFilePath.Text;
+            savedConfig.SaveClips = chkSaveClips.IsChecked;
+            savedConfig.DefaultConfig = cbDefaultModule.SelectedValue?.ToString();
+            Logger.Info($"Saving the configuration file {savedConfig.CurrentConfiguration.FilePath}...");
+            savedConfig?.Modules.List.ForEach(sc =>
+            {
+            });
+
+
+            // TODO: Update the Configuration Section from the Model
+
+            savedConfig.CurrentConfiguration.Save();
         }
 
         private void ConfigurationMenuItem_Click(object sender, RoutedEventArgs e)
@@ -220,7 +238,7 @@ namespace MFDisplay
             var btn = sender as System.Windows.Controls.Button;
             var config = ((List<ConfigurationDefinition>)dgConfigurations.ItemsSource).SingleOrDefault(currentConfig => currentConfig.Name == (string)btn.CommandParameter);
 
-            var mfdWindow = new MFDWindow()
+            PreviewWindow = new MFDWindow()
             {
                 Logger = Logger,
                 Configuration = config,
@@ -233,50 +251,30 @@ namespace MFDisplay
                 AllowsTransparency = false
             };
 
-            mfdWindow.imgMain.MouseDown += ImgMain_MouseDown;
-            mfdWindow.ToggleCloseCheckBox(true);
-            mfdWindow.ShowDialog();
-            mfdWindow.ToggleCloseCheckBox(false);
+            PreviewWindow.imgMain.MouseDown += ImgMain_MouseDown;
+            PreviewWindow.ToggleCloseCheckBox(true);
+            PreviewWindow.ShowDialog();
+            PreviewWindow.ToggleCloseCheckBox(false);
 
-            config.Left = (int)mfdWindow.Left;
-            config.Top = (int)mfdWindow.Top;
-            config.Width = (int)mfdWindow.Width;
-            config.Height = (int)mfdWindow.Height;
+            config.Left = (int)PreviewWindow.Left;
+            config.Top = (int)PreviewWindow.Top;
+            config.Width = (int)PreviewWindow.Width;
+            config.Height = (int)PreviewWindow.Height;
+            
+            var savedConfig = MFDConfigurationSection.GetConfig(Logger);
+            var savedModule = savedConfig?.GetModuleConfiguration(config.ModuleName);
+            var savedConfiguration = savedModule?.GetMFDConfiguration(config.Name);
 
-            ModuleConfigurationDefintion selectedModule = null;
-            MFDDefintion selectedConfig = null;
-
-            var configSection = MFDConfigurationSection.GetConfig(Logger);
-            var moduleIterator = configSection.Modules.GetEnumerator();
-            while (moduleIterator.MoveNext())
+            if (savedConfiguration != null)
             {
-                var currentModule = (ModuleConfigurationDefintion)moduleIterator.Current;
-                if (currentModule.ModuleName == config.ModuleName)
-                {
-                    selectedModule = currentModule;
-                    break;
-                }
+                savedConfiguration.Top = config.Top;
+                savedConfiguration.Width = config.Width;
+                savedConfiguration.Height = config.Height;
+                savedConfiguration.Left = config.Left;
             }
 
-            if (selectedModule != null)
-            {
-                var configIterator = selectedModule.MFDConfigurations.GetEnumerator();
-                while (configIterator.MoveNext())
-                {
-                    var currentConfig = (MFDDefintion)configIterator.Current;
-                    if (currentConfig.Name == config.Name)
-                    {
-                        selectedConfig = currentConfig;
-                        selectedConfig.Top = config.Top;
-                        selectedConfig.Width = config.Width;
-                        selectedConfig.Height = config.Height;
-                        selectedConfig.Left = config.Left;
-                        break;
-                    }
-                }
-                configSection.CurrentConfiguration.Save();
-                LoadConfig();
-            }
+            savedConfig.CurrentConfiguration.Save();
+            LoadConfig();
         }
 
         private void ImgMain_MouseDown(object sender, MouseButtonEventArgs e)
@@ -381,6 +379,54 @@ namespace MFDisplay
             }
 
             return foundChild;
+        }
+
+        private void DgConfigurations_CellEditEnding(object sender, DataGridCellEditEndingEventArgs e)
+        {
+            // the data Context is the item edited
+            var screens = Screen.AllScreens;
+            var screen = this.GetScreen();
+            var mfdConfiguration = e.Row.DataContext as ConfigurationDefinition;
+            var txtControl = e.EditingElement as System.Windows.Controls.TextBox;
+            var propertyName = (string) ((System.Windows.Controls.DataGridCell)txtControl?.Parent)?.Column?.Header;
+
+            if(int.TryParse(txtControl.Text, out int newValue))
+            {
+                var checkParameter = propertyName.ToLower();
+                switch (checkParameter)
+                {
+                    case "left":
+                        {
+                            var bounds = (screen.Bounds.X + screen.Bounds.Width);
+                            var validStart = screen.Bounds.X;
+
+                            if (newValue > bounds || newValue <= screen.Bounds.X)
+                            {
+                                MessageBox.Show($"The coordinate {newValue} is not valid, has to be between {validStart} and {bounds}", $"Invalid Coordinate for {checkParameter}", MessageBoxButton.OK);
+                                e.Cancel = true;
+                                return;
+                            }
+                        }
+                        break;
+
+                    case "top":
+                        {
+                            var bounds = (screen.Bounds.Y + screen.Bounds.Height);
+                            var validStart = screen.Bounds.Y;
+                            if (newValue > bounds || newValue <= screen.Bounds.Y)
+                            {
+                                MessageBox.Show($"The coordinate {newValue} is not valid, has to be between {validStart} and {bounds}", $"Invalid Coordinate {checkParameter}", MessageBoxButton.OK);
+                                e.Cancel = true;
+                                return;
+                            }
+                        }
+                        break;
+
+                    default:
+                        break;
+                }
+            }
+            IsDataDirty = true;
         }
     }
 }

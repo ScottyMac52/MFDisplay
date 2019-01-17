@@ -1,4 +1,5 @@
-﻿using System.Configuration;
+﻿using System;
+using System.Configuration;
 
 namespace MFDSettingsManager.Configuration
 {
@@ -12,7 +13,7 @@ namespace MFDSettingsManager.Configuration
         /// <summary>
         /// Name of the Module
         /// </summary>
-        [ConfigurationProperty("moduleName", IsRequired = false)]
+        [ConfigurationProperty("moduleName", IsRequired = true)]
         public string ModuleName
         {
             get
@@ -28,7 +29,7 @@ namespace MFDSettingsManager.Configuration
         /// <summary>
         /// Display name of the Module
         /// </summary>
-        [ConfigurationProperty("displayName", IsRequired = false)]
+        [ConfigurationProperty("displayName", IsRequired = true)]
         public string DisplayName
         {
             get
@@ -44,7 +45,7 @@ namespace MFDSettingsManager.Configuration
         /// <summary>
         /// Default FileName for the Module
         /// </summary>
-        [ConfigurationProperty("filename", IsRequired = true)]
+        [ConfigurationProperty("filename", IsRequired = false)]
         public string FileName
         {
             get
@@ -78,6 +79,26 @@ namespace MFDSettingsManager.Configuration
             {
                 this["Configurations"] = value;
             }
+        }
+
+        /// <summary>
+        /// Gets the specified configuration
+        /// </summary>
+        /// <param name="name"></param>
+        /// <returns></returns>
+        public MFDDefintion GetMFDConfiguration(string name)
+        {
+            var iterator = MFDConfigurations.GetEnumerator();
+            while(iterator.MoveNext())
+            {
+                var currentConfig = (MFDDefintion) iterator.Current;
+                if(currentConfig.Name == name)
+                {
+                    return currentConfig;
+                }
+            }
+
+            return null;
         }
 
         #endregion MFD Collection 

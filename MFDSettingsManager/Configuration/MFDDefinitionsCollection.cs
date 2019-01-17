@@ -1,4 +1,5 @@
-﻿using System.Configuration;
+﻿using System.Collections.Generic;
+using System.Configuration;
 
 namespace MFDSettingsManager.Configuration
 {
@@ -7,6 +8,25 @@ namespace MFDSettingsManager.Configuration
     /// </summary>
     public class MFDDefinitionsCollection : ConfigurationElementCollection
     {
+
+        /// <summary>
+        /// Exposes the Collection as a List
+        /// </summary>
+        public List<MFDDefintion> List => GetAsList();
+
+        private List<MFDDefintion> GetAsList()
+        {
+            var defList = new List<MFDDefintion>();
+
+            var iterator = this.GetEnumerator();
+            while(iterator.MoveNext())
+            {
+                defList.Add((MFDDefintion) iterator.Current);
+            }
+
+            return defList;
+        }
+
         #region Collection item access
 
         /// <summary>

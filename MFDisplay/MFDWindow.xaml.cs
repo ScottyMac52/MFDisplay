@@ -41,6 +41,16 @@ namespace MFDisplay
             InitializeComponent();
         }
 
+        private bool IsValid => CheckForValidConfig();
+
+        private bool CheckForValidConfig()
+        {
+            return Directory.Exists(FilePath) 
+                    && !string.IsNullOrEmpty(Configuration?.FileName) 
+                    && File.Exists(System.IO.Path.Combine(FilePath, Configuration.FileName)
+            );
+        }
+
         /// <summary>
         ///  Uses the Configuration to set the properties for this MFD
         /// </summary>
@@ -51,12 +61,11 @@ namespace MFDisplay
             Configuration = definition;
             Title = definition?.Name;
             ResizeMode = ResizeMode.NoResize;
-            Width = Configuration?.Width ?? 1280;
-            Height = Configuration?.Height ?? 720;
+            Width = Configuration?.Width ?? 0;
+            Height = Configuration?.Height ?? 0;
             Left = Configuration?.Left ?? 0;
             Top = Configuration?.Top ?? 0;
             Opacity = Configuration?.Opacity ?? 1.0;
-            Logger.Info($"Creating MFD -> {Configuration.ToReadableString()}");
             return true;
         }
 
@@ -77,20 +86,19 @@ namespace MFDisplay
         public void LoadImage()
         {
             IsMFDLoaded = false;
-            var filePath = System.IO.Path.Combine(FilePath, Configuration.FileName);
-            var fi = new FileInfo(filePath);
-            if (fi.Exists)
+            if (!IsValid)
             {
+                Logger.Error($"The configuration {Configuration.ToReadableString()} cannot be loaded using the FilePath: {FilePath}.");
+                Close();
+            }
+            else
+            {
+                var filePath = System.IO.Path.Combine(FilePath, Configuration.FileName);
                 imgMain.Width = Width;
                 imgMain.Height = Height;
                 imgMain.Source = Configuration.CropImage(filePath);
                 IsMFDLoaded = true;
-                Logger.Debug($"Image {fi.FullName} is loaded");
-            }
-            else
-            {
-                Logger.Error($"File {fi.FullName} was NOT found!");
-                Close();
+                Logger.Debug($"Image {filePath} is loaded at ({Left}, {Top}) for ({Width}, {Height}) Opacity: {Opacity}");
             }
         }
 
@@ -181,7 +189,7 @@ namespace MFDisplay
 
         private void ChkCloseAndSave_Click(object sender, RoutedEventArgs e)
         {
-            Logger.Info($"MFD Is Closing -> {Configuration.ToReadableString()}");
+            Logger.Debug($"MFD Is Closing -> {Configuration.ToReadableString()}");
             Close();
         }
     }

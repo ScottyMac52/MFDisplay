@@ -21,14 +21,17 @@ namespace MFDSettingsManager.Models
         /// </summary>
         public string DisplayName { get; internal set; }
         /// <summary>
+        /// Filename to use for the entire module
+        /// </summary>
+        public string FileName { get; internal set; }
+        /// <summary>
         /// The list of Configurations for this Module
         /// </summary>
         public List<ConfigurationDefinition> Configurations { get; internal set; }
         /// <summary>
         /// ImageType to use for saving
         /// </summary>
-        public SavedImageType? ImageType => Parent.ImageType ?? SavedImageType.Bmp;
-
+        public SavedImageType? ImageType => Parent?.ImageType ?? SavedImageType.Jpeg;
         /// <summary>
         /// Ctor
         /// </summary>        
