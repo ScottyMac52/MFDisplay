@@ -47,14 +47,28 @@ namespace MFDSettingsManager.Mappers
                     var existConfig = modelModule.Configurations.SingleOrDefault(mmc => mmc.Name == dc.Name);
                     if (existConfig == null)
                     {
+                        dc.Logger = logger;
+                        dc.ModuleName = modelModule.ModuleName;
+                        dc.FileName = !string.IsNullOrEmpty(modelModule.FileName) ? modelModule.FileName : dc.FileName;
+                        dc.ImageType = modelModule.ImageType ?? section.ImageType ?? SavedImageType.Jpeg;
+                        dc.SaveResults = dc.SaveResults ?? section.SaveClips ?? false;
+                        logger.Debug($"Adding configuration {dc.ToReadableString()} to module {modelModule.DisplayName}");
                         var newMfdConfiguration = new ConfigurationDefinition(dc);
-                        newMfdConfiguration.Logger = logger;
-                        newMfdConfiguration.ModuleName = modelModule.ModuleName;
-                        newMfdConfiguration.FileName = !string.IsNullOrEmpty(modelModule.FileName) ? modelModule.FileName : dc.FileName;
-                        newMfdConfiguration.ImageType = modelModule.ImageType ?? section.ImageType ?? SavedImageType.Jpeg;
-                        newMfdConfiguration.SaveResults = newMfdConfiguration.SaveResults ?? section.SaveClips ?? false;
-                        logger.Debug($"Adding configuration {newMfdConfiguration.ToReadableString()} to module {modelModule.DisplayName}");
                         modelModule.Configurations.Add(newMfdConfiguration);
+                    }
+                    else
+                    {
+                        existConfig.Left = existConfig.Left == 0 ? dc.Left : existConfig.Left;
+                        existConfig.Top = existConfig.Top == 0 ? dc.Top : existConfig.Top;
+                        existConfig.Height = existConfig.Height == 0 ? dc.Height : existConfig.Height;
+                        existConfig.Width = existConfig.Width == 0 ? dc.Width : existConfig.Width;
+                        existConfig.XOffsetStart = existConfig.XOffsetStart == 0 ? dc.XOffsetStart : existConfig.XOffsetStart;
+                        existConfig.XOffsetFinish = existConfig.XOffsetFinish == 0 ? dc.XOffsetFinish : existConfig.XOffsetFinish;
+                        existConfig.YOffsetStart = existConfig.YOffsetStart == 0 ? dc.YOffsetStart : existConfig.YOffsetStart;
+                        existConfig.YOffsetFinish = existConfig.YOffsetFinish == 0 ? dc.YOffsetFinish : existConfig.YOffsetFinish;
+                        existConfig.FileName = string.IsNullOrEmpty(existConfig.FileName) ? dc.FileName : existConfig.FileName;
+                        existConfig.SaveResults = existConfig.SaveResults ?? dc.SaveResults ?? false;
+                        existConfig.ModuleName = modelModule.ModuleName;
                     }
                 });
 

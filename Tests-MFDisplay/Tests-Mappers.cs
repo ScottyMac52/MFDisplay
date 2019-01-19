@@ -1,6 +1,5 @@
 ﻿using MFDSettingsManager.Configuration;
 using MFDSettingsManager.Extensions;
-using MFDSettingsManager.Mappers;
 using MFDSettingsManager.Models;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System;
@@ -16,17 +15,20 @@ namespace Tests_MFDisplay
     [TestClass]
     public class TestsMappers
     {
-        private readonly int left = 2975;
-        private readonly int top = 615;
+        private readonly int leftL = 800;
+        private readonly int top = 500;
         private readonly int width = 850;
-        private readonly int height = 720;
-        private readonly int xOffsetStart = 101;
-        private readonly int xOffsetFinish = 785;
-        private readonly int yOffsetStart = 132;
+        private readonly int height = 850;
+        private readonly int xOffsetStartL = 101;
+        private readonly int xOffsetFinishL = 785;
+        private readonly int leftR = 1000;
+        private readonly int xOffsetStartR = 903;
+        private readonly int xOffsetFinishR = 1587;
+        private readonly int yOffsetStart = 250;
         private readonly int yOffsetFinish = 901;
         private readonly float opacity = 1.0F;
-        private readonly string Name1 = "LMFD";
-        private readonly string Name2 = "RMFD";
+        private readonly string NameL = "LMFD";
+        private readonly string NameR = "RMFD";
 
         /// <summary>
         /// TestToEnsureThatDefaultsFunctionCorrectly
@@ -34,6 +36,23 @@ namespace Tests_MFDisplay
         [TestMethod]
         public void TestToEnsureThatDefaultsFunctionCorrectly()
         {
+            /*
+             * This test is designed to surface problems in configuration management related to defaults
+             * 
+             * Default Configurations:
+             * 
+             *  <DefaultConfigurations>
+                    <add name="LMFD" left="800" top="500" width="850" height="850" xOffsetStart="101" xOffsetFinish="785" yOffsetStart="250" yOffsetFinish="901" opacity="1.0" />
+                    <add name="RMFD" left="1000" top="500" width="850" height="850" xOffsetStart="903" xOffsetFinish="1587" yOffsetStart="250" yOffsetFinish="901" opacity="1.0" />
+                </DefaultConfigurations>
+             * 
+             * Module Definition 
+             * 
+             *  <Modules>
+                    <add moduleName="DefaultsWork" displayName="Defaults Work" filename="DefaultsWork.jpg"/>
+                </Modules>
+             * 
+             */
             // ARRANGE
             var moduleName = "DefaultsWork";
             var displayName = "Defaults Work";
@@ -49,19 +68,67 @@ namespace Tests_MFDisplay
                         cf.Height == height &&
                         cf.Top == top &&
                         cf.Width == width &&
-                        cf.Left == left &&
-                        cf.XOffsetStart == xOffsetStart &&
-                        cf.XOffsetFinish == xOffsetFinish &&
                         cf.YOffsetStart == yOffsetStart &&
                         cf.YOffsetFinish == yOffsetFinish &&
-                        cf.Opacity == opacity));
+                        cf.Opacity == opacity &&
+                        cf.FileName == fileName));
 
-                var mfdConfiguration1 = module.Configurations.Where(cfg => cfg.Name == "LMFD").FirstOrDefault();
-                var mfdConfiguration2 = module.Configurations.Where(cfg => cfg.Name == "RMFD").FirstOrDefault();
-                Assert.AreEqual(Name1, mfdConfiguration1.Name);
-                Assert.AreEqual(Name2, mfdConfiguration2.Name);
-                Assert.AreEqual(fileName, mfdConfiguration1.FileName);
-                Assert.AreEqual(fileName, mfdConfiguration2.FileName);
+                var mfdConfiguration1 = module.Configurations.Where(cfg => cfg.Name == NameL).FirstOrDefault();
+                Assert.AreEqual(leftL, mfdConfiguration1.Left);
+                Assert.AreEqual(xOffsetStartL, mfdConfiguration1.XOffsetStart);
+                Assert.AreEqual(xOffsetFinishL, mfdConfiguration1.XOffsetFinish);
+
+                var mfdConfiguration2 = module.Configurations.Where(cfg => cfg.Name == NameR).FirstOrDefault();
+                Assert.AreEqual(leftR, mfdConfiguration2.Left);
+                Assert.AreEqual(xOffsetStartR, mfdConfiguration2.XOffsetStart);
+                Assert.AreEqual(xOffsetFinishR, mfdConfiguration2.XOffsetFinish);
+            });
+        }
+
+        /// <summary>
+        /// Tests to ensure that configurations defined in modules override all aspects of configurations
+        /// defined as defaults.
+        /// </summary>
+        [TestMethod]
+        public void TestToEnsurteThatPartialConfigurationsFunctionCorrectly()
+        {
+            // ARRANGE
+            var moduleName = "OverridesWork";
+            var displayName = "Overrides Work";
+
+            var fileNameL = "LMFDOverride.jpg";
+            var fileNameR = "RMFDOverride.jpg";
+            var configurationCount = 2;
+
+            // ACT and ASSERT
+            TestNamedModuleConfiguredCorrectly("OverridesWork.config", moduleName, configurationCount, (module) =>
+            {
+                Assert.AreEqual(displayName, module.DisplayName);
+                Assert.AreEqual(configurationCount, module.Configurations.Count);
+                var mfdConfiguration1 = module.Configurations.Where(cfg => cfg.Name == NameL).FirstOrDefault();
+                Assert.AreEqual(NameL, mfdConfiguration1.Name);
+                Assert.AreEqual(fileNameL, mfdConfiguration1.FileName);
+                Assert.AreEqual(1, mfdConfiguration1.Left);
+                Assert.AreEqual(1, mfdConfiguration1.Top);
+                Assert.AreEqual(1, mfdConfiguration1.XOffsetStart);
+                Assert.AreEqual(1, mfdConfiguration1.YOffsetStart);
+                Assert.AreEqual(50, mfdConfiguration1.XOffsetFinish);
+                Assert.AreEqual(50, mfdConfiguration1.YOffsetFinish);
+                Assert.AreEqual(50, mfdConfiguration1.Width);
+                Assert.AreEqual(50, mfdConfiguration1.Height);
+
+                var mfdConfiguration2 = module.Configurations.Where(cfg => cfg.Name == NameR).FirstOrDefault();
+                Assert.AreEqual(NameR, mfdConfiguration2.Name);
+                Assert.AreEqual(fileNameR, mfdConfiguration2.FileName);
+                Assert.AreEqual(100, mfdConfiguration2.Left);
+                Assert.AreEqual(100, mfdConfiguration2.Top);
+                Assert.AreEqual(100, mfdConfiguration2.XOffsetStart);
+                Assert.AreEqual(100, mfdConfiguration2.YOffsetStart);
+                Assert.AreEqual(200, mfdConfiguration2.XOffsetFinish);
+                Assert.AreEqual(200, mfdConfiguration2.YOffsetFinish);
+                Assert.AreEqual(200, mfdConfiguration2.Width);
+                Assert.AreEqual(200, mfdConfiguration2.Height);
+
             });
         }
 
@@ -74,12 +141,10 @@ namespace Tests_MFDisplay
             // ARRANGE
             var moduleName = "PartialOverridesWork";
             var displayName = "PartialOverrides Work";
-            var configurationCount = 6;
+            var configurationCount = 7;
             var lmfdFileName = "PartialOverridesWork.jpg";
             var rmfdFileName = "filename.jpg";
             var overrideFileName = "RMFDOverride.jpg";
-            var leftTopCoordAndOffsetStartsForRmfd = 100;
-            var widthHeightAndOffsetFinishForRmfd = 200;
 
             //ACT and ASSERT
             TestNamedModuleConfiguredCorrectly("OverridesWork.config", moduleName, configurationCount, (module) =>
@@ -87,74 +152,85 @@ namespace Tests_MFDisplay
                 Assert.AreEqual(displayName, module.DisplayName);
                 Assert.AreEqual(configurationCount, module.Configurations.Count);
 
-                var mfdConfiguration1 = module.Configurations.Where(cfg => cfg.Name == "LMFD").FirstOrDefault();
-                Assert.AreEqual(Name1, mfdConfiguration1.Name);
+                // Since the LMFD is defined as a config for the module without any values then those values are all 0
+                var mfdConfiguration1 = module.Configurations.Where(cfg => cfg.Name == NameL).FirstOrDefault();
+                Assert.AreEqual(NameL, mfdConfiguration1.Name);
                 Assert.AreEqual(lmfdFileName, mfdConfiguration1.FileName);
-                Assert.AreEqual(left, mfdConfiguration1.Left);
+                Assert.AreEqual(leftL, mfdConfiguration1.Left);
                 Assert.AreEqual(top, mfdConfiguration1.Top);
-                Assert.AreEqual(xOffsetStart, mfdConfiguration1.XOffsetStart);
+                Assert.AreEqual(xOffsetStartL, mfdConfiguration1.XOffsetStart);
                 Assert.AreEqual(yOffsetStart, mfdConfiguration1.YOffsetStart);
-                Assert.AreEqual(xOffsetFinish, mfdConfiguration1.XOffsetFinish);
+                Assert.AreEqual(xOffsetFinishL, mfdConfiguration1.XOffsetFinish);
                 Assert.AreEqual(yOffsetFinish, mfdConfiguration1.YOffsetFinish);
                 Assert.AreEqual(width, mfdConfiguration1.Width);
                 Assert.AreEqual(height, mfdConfiguration1.Height);
 
-                var mfdConfiguration2 = module.Configurations.Where(cfg => cfg.Name == "RMFD").FirstOrDefault();
-                Assert.AreEqual(Name2, mfdConfiguration2.Name);
+                var mfdConfiguration2 = module.Configurations.Where(cfg => cfg.Name == NameR).FirstOrDefault();
+                Assert.AreEqual(NameR, mfdConfiguration2.Name);
                 Assert.AreEqual(overrideFileName, mfdConfiguration2.FileName);
-                Assert.AreEqual(leftTopCoordAndOffsetStartsForRmfd, mfdConfiguration2.Left);
-                Assert.AreEqual(leftTopCoordAndOffsetStartsForRmfd, mfdConfiguration2.Top);
-                Assert.AreEqual(leftTopCoordAndOffsetStartsForRmfd, mfdConfiguration2.XOffsetStart);
-                Assert.AreEqual(leftTopCoordAndOffsetStartsForRmfd, mfdConfiguration2.YOffsetStart);
-                Assert.AreEqual(widthHeightAndOffsetFinishForRmfd, mfdConfiguration2.XOffsetFinish);
-                Assert.AreEqual(widthHeightAndOffsetFinishForRmfd, mfdConfiguration2.YOffsetFinish);
-                Assert.AreEqual(widthHeightAndOffsetFinishForRmfd, mfdConfiguration2.Width);
-                Assert.AreEqual(widthHeightAndOffsetFinishForRmfd, mfdConfiguration2.Height);
+                Assert.AreEqual(100, mfdConfiguration2.Left);
+                Assert.AreEqual(100, mfdConfiguration2.Top);
+                Assert.AreEqual(100, mfdConfiguration2.XOffsetStart);
+                Assert.AreEqual(100, mfdConfiguration2.YOffsetStart);
+                Assert.AreEqual(200, mfdConfiguration2.XOffsetFinish);
+                Assert.AreEqual(200, mfdConfiguration2.YOffsetFinish);
+                Assert.AreEqual(200, mfdConfiguration2.Width);
+                Assert.AreEqual(200, mfdConfiguration2.Height);
 
                 var mfdConfiguration3 = module.Configurations.Where(cfg => cfg.Name == "POSITION").FirstOrDefault();
                 Assert.AreEqual(lmfdFileName, mfdConfiguration3.FileName);
                 Assert.AreEqual(300, mfdConfiguration3.Left);
                 Assert.AreEqual(300, mfdConfiguration3.Top);
-                Assert.AreEqual(xOffsetStart, mfdConfiguration3.XOffsetStart);
-                Assert.AreEqual(yOffsetStart, mfdConfiguration3.YOffsetStart);
-                Assert.AreEqual(xOffsetFinish, mfdConfiguration3.XOffsetFinish);
-                Assert.AreEqual(yOffsetFinish, mfdConfiguration3.YOffsetFinish);
-                Assert.AreEqual(width, mfdConfiguration3.Width);
-                Assert.AreEqual(height, mfdConfiguration3.Height);
+                Assert.AreEqual(0, mfdConfiguration3.XOffsetStart);
+                Assert.AreEqual(0, mfdConfiguration3.YOffsetStart);
+                Assert.AreEqual(0, mfdConfiguration3.XOffsetFinish);
+                Assert.AreEqual(0, mfdConfiguration3.YOffsetFinish);
+                Assert.AreEqual(0, mfdConfiguration3.Width);
+                Assert.AreEqual(0, mfdConfiguration3.Height);
 
                 var mfdConfiguration4 = module.Configurations.Where(cfg => cfg.Name == "SIZE").FirstOrDefault();
                 Assert.AreEqual(lmfdFileName, mfdConfiguration4.FileName);
-                Assert.AreEqual(left, mfdConfiguration4.Left);
-                Assert.AreEqual(top, mfdConfiguration4.Top);
-                Assert.AreEqual(xOffsetStart, mfdConfiguration4.XOffsetStart);
-                Assert.AreEqual(yOffsetStart, mfdConfiguration4.YOffsetStart);
-                Assert.AreEqual(xOffsetFinish, mfdConfiguration4.XOffsetFinish);
-                Assert.AreEqual(yOffsetFinish, mfdConfiguration4.YOffsetFinish);
+                Assert.AreEqual(0, mfdConfiguration4.Left);
+                Assert.AreEqual(0, mfdConfiguration4.Top);
+                Assert.AreEqual(0, mfdConfiguration4.XOffsetStart);
+                Assert.AreEqual(0, mfdConfiguration4.YOffsetStart);
+                Assert.AreEqual(0, mfdConfiguration4.XOffsetFinish);
+                Assert.AreEqual(0, mfdConfiguration4.YOffsetFinish);
                 Assert.AreEqual(300, mfdConfiguration4.Width);
                 Assert.AreEqual(300, mfdConfiguration4.Height);
 
                 var mfdConfiguration5 = module.Configurations.Where(cfg => cfg.Name == "OFFSET").FirstOrDefault();
                 Assert.AreEqual(lmfdFileName, mfdConfiguration5.FileName);
-                Assert.AreEqual(left, mfdConfiguration5.Left);
-                Assert.AreEqual(top, mfdConfiguration5.Top);
+                Assert.AreEqual(0, mfdConfiguration5.Left);
+                Assert.AreEqual(0, mfdConfiguration5.Top);
                 Assert.AreEqual(10, mfdConfiguration5.XOffsetStart);
                 Assert.AreEqual(10, mfdConfiguration5.YOffsetStart);
                 Assert.AreEqual(20, mfdConfiguration5.XOffsetFinish);
                 Assert.AreEqual(20, mfdConfiguration5.YOffsetFinish);
-                Assert.AreEqual(width, mfdConfiguration5.Width);
-                Assert.AreEqual(height, mfdConfiguration5.Height);
+                Assert.AreEqual(0, mfdConfiguration5.Width);
+                Assert.AreEqual(0, mfdConfiguration5.Height);
 
                 var mfdConfiguration6 = module.Configurations.Where(cfg => cfg.Name == "FILENAME").FirstOrDefault();
                 Assert.AreEqual(rmfdFileName, mfdConfiguration6.FileName);
-                Assert.AreEqual(left, mfdConfiguration6.Left);
-                Assert.AreEqual(top, mfdConfiguration6.Top);
-                Assert.AreEqual(xOffsetStart, mfdConfiguration6.XOffsetStart);
-                Assert.AreEqual(yOffsetStart, mfdConfiguration6.YOffsetStart);
-                Assert.AreEqual(xOffsetFinish, mfdConfiguration6.XOffsetFinish);
-                Assert.AreEqual(yOffsetFinish, mfdConfiguration6.YOffsetFinish);
-                Assert.AreEqual(width, mfdConfiguration6.Width);
-                Assert.AreEqual(height, mfdConfiguration6.Height);
+                Assert.AreEqual(0, mfdConfiguration6.Left);
+                Assert.AreEqual(0, mfdConfiguration6.Top);
+                Assert.AreEqual(0, mfdConfiguration6.XOffsetStart);
+                Assert.AreEqual(0, mfdConfiguration6.YOffsetStart);
+                Assert.AreEqual(0, mfdConfiguration6.XOffsetFinish);
+                Assert.AreEqual(0, mfdConfiguration6.YOffsetFinish);
+                Assert.AreEqual(0, mfdConfiguration6.Width);
+                Assert.AreEqual(0, mfdConfiguration6.Height);
 
+                var mfdConfiguration7 = module.Configurations.Where(cfg => cfg.Name == "NEW_DEFAULT").FirstOrDefault();
+                Assert.AreEqual(lmfdFileName, mfdConfiguration7.FileName);
+                Assert.AreEqual(1, mfdConfiguration7.Left);
+                Assert.AreEqual(5, mfdConfiguration7.Top);
+                Assert.AreEqual(90, mfdConfiguration7.XOffsetStart);
+                Assert.AreEqual(25, mfdConfiguration7.YOffsetStart);
+                Assert.AreEqual(158, mfdConfiguration7.XOffsetFinish);
+                Assert.AreEqual(90, mfdConfiguration7.YOffsetFinish);
+                Assert.AreEqual(85, mfdConfiguration7.Width);
+                Assert.AreEqual(85, mfdConfiguration7.Height);
             });
         }
 

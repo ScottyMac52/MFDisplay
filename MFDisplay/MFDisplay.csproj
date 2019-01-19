@@ -302,6 +302,9 @@
     <Content Include="Docs\readme.rtf">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
+    <None Include="Docs\mfdisplay.xsd">
+      <SubType>Designer</SubType>
+    </None>
     <None Include="MFDisplay_TemporaryKey.pfx" />
     <None Include="packages.config">
       <SubType>Designer</SubType>
