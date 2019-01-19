@@ -2,8 +2,10 @@
 using log4net.Config;
 using MFDSettingsManager.Configuration;
 using MFDSettingsManager.Extensions;
-using MFDSettingsManager.Mappers;
 using MFDSettingsManager.Models;
+using Microsoft.Shell;
+using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Reflection;
 using System.Windows;
@@ -13,8 +15,45 @@ namespace MFDisplay
     /// <summary>
     /// Interaction logic for App.xaml
     /// </summary>
-    public partial class MFDisplayApp : Application
+    public partial class MFDisplayApp : Application, ISingleInstanceApp
     {
+        private const string Unique = "Vyper_MFD4CTS_Application";
+
+        /// <summary>
+        /// Main entry point
+        /// </summary>
+        [STAThread]
+        public static void Main()
+        {
+            if (SingleInstance<MFDisplayApp>.InitializeAsFirstInstance(Unique))
+            {
+                var application = new MFDisplayApp();
+
+                application.InitializeComponent();
+                application.Run();
+
+                // Allow single instance code to perform cleanup operations
+                SingleInstance<MFDisplayApp>.Cleanup();
+            }
+        }
+
+        #region ISingleInstanceApp Members
+
+        /// <summary>
+        /// Second instance handler
+        /// </summary>
+        /// <param name="args"></param>
+        /// <returns></returns>
+        public bool SignalExternalCommandLineArgs(IList<string> args)
+        {
+            // handle command line arguments of second instance
+            // …
+
+            return true;
+        }
+
+        #endregion ISingleInstanceApp Members
+
         /// <summary>
         /// Configuration section for the MFDs
         /// </summary>
@@ -70,6 +109,7 @@ namespace MFDisplay
                 };
                 configWindow.ShowInTaskbar = true;
                 configWindow.ShowDialog();
+                sectionConfig = MFDConfigurationSection.GetConfig(Logger);
                 Configuration = sectionConfig.ToModel(Logger);
                 if (!Directory.Exists(Configuration.FilePath))
                 {
@@ -90,7 +130,6 @@ namespace MFDisplay
                 Logger.Info($"Startup");
                 var maindWindow = new MainWindow()
                 {
-                    Config = Configuration,
                     Logger = Logger
                 };
                 MainWindow.ShowDialog();
@@ -114,7 +153,5 @@ namespace MFDisplay
             Logger?.Error($"{sender?.GetType()?.Name} threw an exception", e?.Exception);
             Shutdown(-1);
         }
-
-
     }
 }

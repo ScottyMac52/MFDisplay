@@ -1,7 +1,9 @@
 ﻿using log4net;
 using MFDSettingsManager.Configuration;
+using MFDSettingsManager.Extensions;
 using MFDSettingsManager.Mappers;
 using MFDSettingsManager.Models;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -45,8 +47,6 @@ namespace MFDisplay
         /// </summary>
         public MainWindow()
         {
-            MFDList = new SortedList<string, MFDWindow>();
-            AvailableModules = new List<ModuleDefinition>();
             InitializeComponent();
         }
 
@@ -77,7 +77,10 @@ namespace MFDisplay
         /// </summary>
         public void SetupWindow()
         {
-            //var model = ConfigSectionModelMapper.MapFromConfigurationSection(Config);
+            var sectionConfig = MFDConfigurationSection.GetConfig(Logger);
+            Config = sectionConfig.ToModel(Logger);
+
+            MFDList = new SortedList<string, MFDWindow>();
             AvailableModules = Config?.Modules;
 
             cbModules.ItemsSource = AvailableModules;
@@ -91,10 +94,10 @@ namespace MFDisplay
         /// </summary>
         public void CreateMFDs()
         {
-            Logger.Debug($"Creating configuration {SelectedModule.DisplayName}");
-            SelectedModule.Configurations.ForEach(config =>
+            Logger.Debug($"Creating configuration {SelectedModule?.DisplayName}");
+            SelectedModule?.Configurations?.ForEach(config =>
             {
-                Logger.Info($"Creatiing {config.ToReadableString()}");
+                Logger.Info($"Creating {config.ToReadableString()}");
                 var newmfdWindow = new MFDWindow()
                 {
                     Logger = Logger,
@@ -134,6 +137,10 @@ namespace MFDisplay
         /// <returns></returns>
         public void GetSelectedDefinition(string moduleName)
         {
+            if(string.IsNullOrEmpty(moduleName))
+            {
+                return;
+            }
             Logger.Info($"Configuration requested for {moduleName}");
             SelectedModule = AvailableModules.Where(am => am.ModuleName == moduleName).FirstOrDefault();
         }
@@ -142,10 +149,17 @@ namespace MFDisplay
         {
             Logger.Info($"Selected module changing...");
             DestroyMFDs();
-            var selectedModule = (ModuleDefinition)e.AddedItems[0];
-            Logger.Info($"Module selected {selectedModule.DisplayName}");
-            GetSelectedDefinition(selectedModule.ModuleName);
-            CreateMFDs();
+            try
+            {
+                var selectedModule = e.AddedItems.Count > 0 ? (ModuleDefinition)e.AddedItems[0] : e.RemovedItems.Count > 0 ? (ModuleDefinition)e.RemovedItems[0] : null;
+                Logger.Info($"Module selected {selectedModule?.DisplayName}");
+                GetSelectedDefinition(selectedModule?.ModuleName);
+                CreateMFDs();
+            }
+            catch(IndexOutOfRangeException ioorx)
+            {
+                Logger.Error($"Not able to determine selected module", ioorx);
+            }
         }
 
         private void Window_Closed(object sender, System.EventArgs e)
@@ -172,7 +186,7 @@ namespace MFDisplay
                 Owner = this
             };
             configWindow.ShowDialog();
-            CreateMFDs();
+            SetupWindow();
         }
 
         private void HelpMenuItem_Click(object sender, RoutedEventArgs e)
