@@ -101,6 +101,7 @@ namespace MFDSettingsManager.Models
         /// <param name="dc"></param>
         public ConfigurationDefinition(ConfigurationDefinition dc)
         {
+            Logger = dc.Logger;
             FileName = dc.FileName;
             ModuleName = dc.ModuleName;
             Left = dc.Left;

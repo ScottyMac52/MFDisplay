@@ -117,11 +117,6 @@ namespace MFDisplay
             savedConfig.SaveClips = chkSaveClips.IsChecked;
             savedConfig.DefaultConfig = cbDefaultModule.SelectedValue?.ToString();
             Logger.Info($"Saving the configuration file {savedConfig.CurrentConfiguration.FilePath}...");
-            savedConfig?.Modules.List.ForEach(sc =>
-            {
-            });
-
-
             // TODO: Update the Configuration Section from the Model
 
             savedConfig.CurrentConfiguration.Save();
@@ -186,6 +181,7 @@ namespace MFDisplay
             {
                 case System.Windows.Forms.DialogResult.OK:
                     txtFilePath.Text = dlgChooseFolder.SelectedPath;
+                    IsDataDirty = true;
                     break;
                 default:
                     break;
