@@ -7,8 +7,10 @@ using Microsoft.Shell;
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using System.Reflection;
 using System.Windows;
+using System.Windows.Media;
 
 namespace MFDisplay
 {
@@ -46,9 +48,12 @@ namespace MFDisplay
         /// <returns></returns>
         public bool SignalExternalCommandLineArgs(IList<string> args)
         {
-            // handle command line arguments of second instance
-            // …
-
+            var modSpecified = args?.Where(arg => arg.StartsWith("mod:"))?.FirstOrDefault()?.Split(':')?[1];
+            if(!string.IsNullOrEmpty(modSpecified))
+            {
+                Logger.Info($"External request to change module to {modSpecified}.");
+                ((MainWindow)MainWindow).ChangeSelectedModule(modSpecified);
+            }
             return true;
         }
 
@@ -59,11 +64,9 @@ namespace MFDisplay
         /// </summary>
         public ModulesConfiguration Configuration { get; protected set; }
 
-        private static readonly ILog Logger;
-
+        private ILog Logger;
         private static readonly bool configPresent = true;
         private static readonly string configurationFile = "";
-        private static readonly string logPath = "";
 
         static MFDisplayApp()
         {
@@ -76,15 +79,9 @@ namespace MFDisplay
                 return;
             }
 
-            logPath = Path.Combine($"{(new FileInfo(exeAssem.Location)).Directory.FullName}", "mfdisplay.log");
-            if (!File.Exists(logPath))
-            {
-                File.Create(logPath);
-            }
-
             XmlConfigurator.Configure();
-            Logger = LogManager.GetLogger(typeof(MFDisplayApp));
         }
+
 
         /// <summary>
         /// Executed when the application starts
@@ -92,12 +89,15 @@ namespace MFDisplay
         /// <param name="e"></param>
         protected override void OnStartup(StartupEventArgs e)
         {
-            if(!configPresent)
+            var modSpecified = e.Args?.Where(arg => arg.StartsWith("mod:"))?.FirstOrDefault()?.Split(':')?[1];
+
+            if (!configPresent)
             {
                 Shutdown(2);
                 return;
             }
 
+            Logger = LogManager.GetLogger(typeof(MFDisplayApp));
             var assmLocation = Assembly.GetExecutingAssembly().Location;
             var sectionConfig = MFDConfigurationSection.GetConfig(Logger);
             Configuration = sectionConfig.ToModel(Logger);
@@ -128,11 +128,14 @@ namespace MFDisplay
             else
             {
                 Logger.Info($"Startup");
-                var maindWindow = new MainWindow()
+                var mainWindow = new MainWindow()
                 {
-                    Logger = Logger
+                    Config = Configuration,
+                    Logger = Logger,
+                    WindowState = WindowState.Minimized,
+                    PassedModule = string.IsNullOrEmpty(modSpecified) ? null : modSpecified
                 };
-                MainWindow.ShowDialog();
+                mainWindow.ShowDialog();
                 Shutdown(0);
             }
             base.OnStartup(e);

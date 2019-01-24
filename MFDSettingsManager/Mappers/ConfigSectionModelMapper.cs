@@ -22,22 +22,22 @@ namespace MFDSettingsManager.Mappers
             var logger = section.Logger;
 
             // Get the default MFD configuration for all modules
+            logger.Info("Loading the default configurations...");
             var defaultConfigurations = GetMfdDefaults(section);
-
             // Create the top level model
             var moduleConfigurations = ConvertFromConfigSection(section);
             var moduleList = section.Modules.List;
-            logger.Debug($"Loading {moduleList.Count} Modules.");
+            logger.Info($"Loading {moduleList.Count} Modules...");
             moduleList.ForEach(currentModule =>
             {
-                logger.Debug($"Loading the Module named {currentModule.DisplayName} as {currentModule.ModuleName} using {currentModule.FileName}");
+                logger.Debug($"Loading the Module named {currentModule.DisplayName} as {currentModule.ModuleName} using {currentModule.FileName}...");
                 var modelModule = ConvertFromConfigSectionModule(moduleConfigurations, currentModule);
                 var configurationList = currentModule.MFDConfigurations.List;
                 // Add the Configurations
                 configurationList.ForEach(currentConfig =>
                 {
                     var mfdConfiguration = ConvertFromConfigSectionDefinition(section, modelModule, currentConfig);
-                    logger.Debug($"Loaded Configuration {currentModule.DisplayName}-{currentConfig.Name} as {mfdConfiguration.ToReadableString()}");
+                    logger.Debug($"Loading Configuration {currentModule.DisplayName}-{currentConfig.Name} as {mfdConfiguration.ToReadableString()}...");
                     modelModule.Configurations.Add(mfdConfiguration);
                 });
 
@@ -51,7 +51,7 @@ namespace MFDSettingsManager.Mappers
                         dc.ModuleName = modelModule.ModuleName;
                         dc.FileName = !string.IsNullOrEmpty(modelModule.FileName) ? modelModule.FileName : dc.FileName;
                         dc.SaveResults = dc.SaveResults ?? section.SaveClips ?? false;
-                        logger.Debug($"Adding configuration {dc.ToReadableString()} to module {modelModule.DisplayName}");
+                        logger.Info($"Adding configuration {dc.ToReadableString()} to module {modelModule.DisplayName}...");
                         var newMfdConfiguration = new ConfigurationDefinition(dc);
                         modelModule.Configurations.Add(newMfdConfiguration);
                     }
@@ -68,12 +68,14 @@ namespace MFDSettingsManager.Mappers
                         existConfig.FileName = string.IsNullOrEmpty(existConfig.FileName) ? dc.FileName : existConfig.FileName;
                         existConfig.SaveResults = existConfig.SaveResults ?? dc.SaveResults ?? false;
                         existConfig.ModuleName = modelModule.ModuleName;
+                        logger.Info($"Modifiying configuration {existConfig.ToReadableString()} in module {modelModule.DisplayName}...");
                     }
                 });
 
-                logger.Debug($"Loaded Module {modelModule.ModuleName}");
+                logger.Debug($"Loaded Module {modelModule.ModuleName} with {modelModule.Configurations.Count} Configurations.");
                 moduleConfigurations.Modules.Add(modelModule);
             });
+            logger.Debug($"Loaded {moduleConfigurations.Modules.Count} Modules.");
             return moduleConfigurations;
         }
 
