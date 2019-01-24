@@ -14,6 +14,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Docs", "Docs", "{EC07B551-2
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MFDSettingsManager", "MFDSettingsManager\MFDSettingsManager.csproj", "{BB12C431-7568-4AB3-AC21-4D6396744F22}"
 EndProject
+Project("{54435603-DBB4-11D2-8724-00A0C9A8B90C}") = "Setup", "Setup\Setup.vdproj", "{02517BB3-3B9C-4574-A934-2C05A6A29928}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		All|Any CPU = All|Any CPU
@@ -81,16 +83,15 @@ Global
 		{BB12C431-7568-4AB3-AC21-4D6396744F22}.Release|x64.Build.0 = Release|Any CPU
 		{BB12C431-7568-4AB3-AC21-4D6396744F22}.Release|x86.ActiveCfg = Release|Any CPU
 		{BB12C431-7568-4AB3-AC21-4D6396744F22}.Release|x86.Build.0 = Release|Any CPU
-		{2B40FED4-7A1B-4A2C-BD6E-FAD7AE803844}.All|Any CPU.ActiveCfg = Release
-		{2B40FED4-7A1B-4A2C-BD6E-FAD7AE803844}.All|x64.ActiveCfg = Release
-		{2B40FED4-7A1B-4A2C-BD6E-FAD7AE803844}.All|x86.ActiveCfg = Release
-		{2B40FED4-7A1B-4A2C-BD6E-FAD7AE803844}.Debug|Any CPU.ActiveCfg = Debug
-		{2B40FED4-7A1B-4A2C-BD6E-FAD7AE803844}.Debug|x64.ActiveCfg = Debug
-		{2B40FED4-7A1B-4A2C-BD6E-FAD7AE803844}.Debug|x86.ActiveCfg = Debug
-		{2B40FED4-7A1B-4A2C-BD6E-FAD7AE803844}.Debug|x86.Build.0 = Debug
-		{2B40FED4-7A1B-4A2C-BD6E-FAD7AE803844}.Release|Any CPU.ActiveCfg = Release
-		{2B40FED4-7A1B-4A2C-BD6E-FAD7AE803844}.Release|x64.ActiveCfg = Release
-		{2B40FED4-7A1B-4A2C-BD6E-FAD7AE803844}.Release|x86.ActiveCfg = Release
+		{02517BB3-3B9C-4574-A934-2C05A6A29928}.All|Any CPU.ActiveCfg = Release
+		{02517BB3-3B9C-4574-A934-2C05A6A29928}.All|x64.ActiveCfg = Release
+		{02517BB3-3B9C-4574-A934-2C05A6A29928}.All|x86.ActiveCfg = Release
+		{02517BB3-3B9C-4574-A934-2C05A6A29928}.Debug|Any CPU.ActiveCfg = Debug
+		{02517BB3-3B9C-4574-A934-2C05A6A29928}.Debug|x64.ActiveCfg = Debug
+		{02517BB3-3B9C-4574-A934-2C05A6A29928}.Debug|x86.ActiveCfg = Debug
+		{02517BB3-3B9C-4574-A934-2C05A6A29928}.Release|Any CPU.ActiveCfg = Release
+		{02517BB3-3B9C-4574-A934-2C05A6A29928}.Release|x64.ActiveCfg = Release
+		{02517BB3-3B9C-4574-A934-2C05A6A29928}.Release|x86.ActiveCfg = Release
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
