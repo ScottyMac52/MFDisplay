@@ -28,20 +28,20 @@ Utility that allows the display of any image cropped from another image displaye
  - RMFD Monitor = 1024X768 positioned bottom right of the LMFD Monitor
  - This means that my total display area is 4608X1440 
 
-  ##### Modules
-    - Each module entry, which starts with the markup <add moduleName... Can create as many named configurations underneath the markup <Configurations>. Each configuration can override any property that matches the name of a DefaultConfiguration. Each configuration can also be a brand new configuration for a module. An example of this is the CDU configuration for the A-10C:
-    - name="CDU" left="500" top="600" width="694" height="352" xOffsetStart="1" xOffsetFinish="694" yOffsetStart="1" yOffsetFinish="352" filename="DCS A10C CDU.jpg" opacity="1.0"
-    
-  ##### Configuration Options
-    - xOffsetStart : X coord for the offset to use for the start of the horizontal cropping of an image
-    - xOffsetFinish : X coord for the offset to use for the finish of the horizontal cropping of an image
-    - yOffsetStart : Y coord for the offset to use for the start of the vertical cropping of an image
-    - yOffsetFinish : Y coord for the offset to use for the finish of the vertical cropping of an image
-    - width : Width for the resultant image to be displayed in.
-    - height : Height for the resultant image to be displayed in.
-    - top : Y coordinate for the top position of the image 
-    - left : X coordinate for the left position of the image when displayed
-    - top : Y coordinate for the left position of the image when displayed
+ ##### Modules
+ Each module entry, which starts with the markup <add moduleName... Can create as many named configurations underneath the markup <Configurations>. Each configuration can override any property that matches the name of a DefaultConfiguration. Each configuration can also be a brand new configuration for a module. An example of this is the CDU configuration for the A-10C:
+ ###### name="CDU" left="500" top="600" width="694" height="352" xOffsetStart="1" xOffsetFinish="694" yOffsetStart="1" yOffsetFinish="352" filename="DCS A10C CDU.jpg" opacity="1.0"
+   
+##### Configuration Options
+- xOffsetStart : X coord for the offset to use for the start of the horizontal cropping of an image
+- xOffsetFinish : X coord for the offset to use for the finish of the horizontal cropping of an image
+- yOffsetStart : Y coord for the offset to use for the start of the vertical cropping of an image
+- yOffsetFinish : Y coord for the offset to use for the finish of the vertical cropping of an image
+- width : Width for the resultant image to be displayed in.
+- height : Height for the resultant image to be displayed in.
+- top : Y coordinate for the top position of the image 
+- left : X coordinate for the left position of the image when displayed
+- top : Y coordinate for the left position of the image when displayed
 
 ## Please report all isues via: https://github.com/ScottyMac52/MFDisplay/issues
 
