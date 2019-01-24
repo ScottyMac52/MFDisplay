@@ -19,8 +19,8 @@ Utility that allows the display of any image cropped from another image displaye
  X_{XOffsetStart}To{XOffsetFinish}Y_{YOffsetStart}To{YOffsetFinish}\_{Opacity}\_{ModuleName}\_{ConfigurationName}\_{Width}\_{Height}.png     
   - DefaultConfigurations
     - Here is where as many named configurations can be placed as you want associated with every module. Good examples are LMFD and RMFD. Any attributes that you do not specify in the named configuration will need to be defined in the modules configuration that matches the same name. The recommended configuration is to use the LMFD and RMFD to define the size (Width, Height) of all LMFD and RMFD images. You may also define the defaults for cropping LMFD and RMFD, the defaults for the current images are:
-   - name="LMFD" opacity="1" width="885" height="700" xOffsetStart="101" xOffsetFinish="776" yOffsetStart="250" yOffsetFinish="900"
-   - name="RMFD" opacity="1" width="885" height="700" xOffsetStart="903" xOffsetFinish="1576" yOffsetStart="250" yOffsetFinish="900"
+    - name="LMFD" opacity="1" width="885" height="700" xOffsetStart="101" xOffsetFinish="776" yOffsetStart="250" yOffsetFinish="900"
+    - name="RMFD" opacity="1" width="885" height="700" xOffsetStart="903" xOffsetFinish="1576" yOffsetStart="250" yOffsetFinish="900"
 
    - The defaults for Left & Top in the shipped config matches my configuration which is that I have the following:
      - Main Monitor = 2560X1440
@@ -44,15 +44,12 @@ Utility that allows the display of any image cropped from another image displaye
     - top : Y coordinate for the top position of the image 
     - left : X coordinate for the left position of the image when displayed
     - top : Y coordinate for the left position of the image when displayed
-  
-    Each module entry below, which starts with the markup <add moduleName... Can create as many named configurations underneath 
-    the markup <Configurations>. LMFD and RMFD are "special" names and should always remain. Each configuration can override any 
-    of the properties that are labeled as "Default" above. An example of this is the CDU configuration for the A-10C:
-    
-    <add name="CDU" rMfdLeft="500" top="600" width="694" height="352" xRMFDOffsetStart="1" xRMFDOffsetFinish="694" yOffsetStart="1" yOffsetFinish="352" filename="DCS A10C CDU.jpg" opacity="1.0" />
+ 
+  - Module Configurations
+   - Each module can also define it's own configurations, for instance the CDU for the A-10C
+     - name="CDU" rMfdLeft="500" top="600" width="694" height="352" xRMFDOffsetStart="1" xRMFDOffsetFinish="694" yOffsetStart="1" yOffsetFinish="352" filename="DCS A10C CDU.jpg" opacity="1.0"
     
   4. Once the coordinates match your display preferences you can save the file, exit and execute the executable.
-  ### NOTE, if the exe fails you may not have the correct .NET runtime installed. This application using .NET Framework 4.7.1 and is built in C#.NET on Visual Studio 2017. If you need to install the .NET Framework, it's free, here is the link: https://www.microsoft.com/en-us/download/details.aspx?id=56115.   
-  
+
 ## Please report all isues via: https://github.com/ScottyMac52/MFDisplay/issues
 
