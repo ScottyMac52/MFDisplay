@@ -50,7 +50,6 @@ namespace MFDSettingsManager.Mappers
                         dc.Logger = logger;
                         dc.ModuleName = modelModule.ModuleName;
                         dc.FileName = !string.IsNullOrEmpty(modelModule.FileName) ? modelModule.FileName : dc.FileName;
-                        dc.ImageType = modelModule.ImageType ?? section.ImageType ?? SavedImageType.Jpeg;
                         dc.SaveResults = dc.SaveResults ?? section.SaveClips ?? false;
                         logger.Debug($"Adding configuration {dc.ToReadableString()} to module {modelModule.DisplayName}");
                         var newMfdConfiguration = new ConfigurationDefinition(dc);
@@ -106,7 +105,6 @@ namespace MFDSettingsManager.Mappers
                 FilePath = section.FilePath,
                 DefaultConfig = section.DefaultConfig,
                 SaveClips = section.SaveClips ?? false,
-                ImageType = section.ImageType
             };
         }
 
@@ -126,12 +124,11 @@ namespace MFDSettingsManager.Mappers
             return new ConfigurationDefinition()
             {
                 Logger = section.Logger,
-                ImageType = parent?.ImageType ?? parent?.Parent?.ImageType ?? SavedImageType.Jpeg,
                 ModuleName = parent?.ModuleName,
                 FileName = !string.IsNullOrEmpty(currentConfig.FileName) ? currentConfig.FileName : parent?.FileName,
                 Height = currentConfig.Height ?? 0,
                 Name = currentConfig.Name,
-                Opacity = currentConfig.Opacity,
+                Opacity = currentConfig.Opacity ?? 1,
                 Left = currentConfig.Left ?? 0,
                 Top = currentConfig.Top ?? 0,
                 Width = currentConfig.Width ?? 0,

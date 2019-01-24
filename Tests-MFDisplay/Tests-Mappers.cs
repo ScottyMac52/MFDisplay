@@ -29,8 +29,9 @@ namespace Tests_MFDisplay
         private readonly float opacity = 1.0F;
         private readonly string NameL = "LMFD";
         private readonly string NameR = "RMFD";
+        private readonly string NEW_DEFAULT = "NEW_DEFAULT";
 
-        /// <summary>
+        /// <summary>7
         /// TestToEnsureThatDefaultsFunctionCorrectly
         /// </summary>
         [TestMethod]
@@ -98,13 +99,14 @@ namespace Tests_MFDisplay
 
             var fileNameL = "LMFDOverride.jpg";
             var fileNameR = "RMFDOverride.jpg";
-            var configurationCount = 2;
+            var configurationCount = 3;
 
             // ACT and ASSERT
             TestNamedModuleConfiguredCorrectly("OverridesWork.config", moduleName, configurationCount, (module) =>
             {
                 Assert.AreEqual(displayName, module.DisplayName);
                 Assert.AreEqual(configurationCount, module.Configurations.Count);
+
                 var mfdConfiguration1 = module.Configurations.Where(cfg => cfg.Name == NameL).FirstOrDefault();
                 Assert.AreEqual(NameL, mfdConfiguration1.Name);
                 Assert.AreEqual(fileNameL, mfdConfiguration1.FileName);
@@ -129,6 +131,17 @@ namespace Tests_MFDisplay
                 Assert.AreEqual(200, mfdConfiguration2.Width);
                 Assert.AreEqual(200, mfdConfiguration2.Height);
 
+                var mfdConfiguration3 = module.Configurations.Where(cfg => cfg.Name == NEW_DEFAULT).FirstOrDefault();
+                Assert.AreEqual(NEW_DEFAULT, mfdConfiguration3.Name);
+                Assert.AreEqual($"{moduleName}.jpg", mfdConfiguration3.FileName);
+                Assert.AreEqual(1, mfdConfiguration3.Left);
+                Assert.AreEqual(5, mfdConfiguration3.Top);
+                Assert.AreEqual(90, mfdConfiguration3.XOffsetStart);
+                Assert.AreEqual(25, mfdConfiguration3.YOffsetStart);
+                Assert.AreEqual(158, mfdConfiguration3.XOffsetFinish);
+                Assert.AreEqual(90, mfdConfiguration3.YOffsetFinish);
+                Assert.AreEqual(85, mfdConfiguration3.Width);
+                Assert.AreEqual(85, mfdConfiguration3.Height);
             });
         }
 

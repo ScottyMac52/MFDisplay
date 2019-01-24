@@ -2,7 +2,6 @@
 using MFDisplay.Extenisons;
 using MFDSettingsManager.Configuration;
 using MFDSettingsManager.Extensions;
-using MFDSettingsManager.Mappers;
 using MFDSettingsManager.Models;
 using System;
 using System.Collections.Generic;

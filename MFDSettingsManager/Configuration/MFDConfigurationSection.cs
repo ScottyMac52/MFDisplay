@@ -12,15 +12,19 @@ namespace MFDSettingsManager.Configuration
     /// </summary>
     public class MFDConfigurationSection : ConfigurationSection
     {
+        private const string XmlNamespaceConfigurationPropertyName = "xmlns";
+        private const string XsiNamespaceConfigurationPropertyName = "xmlns:xsi";
+        private const string XsiSchemaLocationNamespaceConfigurationPropertyName = "xsi:schemaLocation";
+
         /// <summary>
-        /// 
+        /// Tracks changes 
         /// </summary>
-        public bool IsDataDirty { get; set; }
+        public bool IsDataDirty { get; internal set; }
 
         /// <summary>
         /// Logger 
         /// </summary>
-        public ILog Logger { get; set; }
+        public ILog Logger { get; internal set; }
 
         /// <summary>
         /// Gets the configurations section
@@ -68,20 +72,9 @@ namespace MFDSettingsManager.Configuration
                         var existingConfig = currentModule.MFDConfigurations.List.FirstOrDefault(mfdConfig => mfdConfig.Name == dc.Name);
                         if(existingConfig == null)
                         {
-                            currentModule.MFDConfigurations.Add(new MFDDefintion()
-                            {
-                                FileName = currentModule.FileName,
-                                Height = dc.Height,
-                                Width = dc.Width,
-                                Left = dc.Left,
-                                Top = dc.Top,
-                                Name = dc.Name,
-                                XOffsetStart = dc.XOffsetStart,
-                                XOffsetFinish = dc.XOffsetFinish,
-                                YOffsetStart = dc.YOffsetStart,
-                                YOffsetFinish = dc.YOffsetFinish,
-                                Opacity = dc.Opacity
-                            });
+                            var newDef = new MFDDefintion(dc);
+                            dc.FileName = currentModule.FileName;
+                            currentModule.MFDConfigurations.Add(newDef);
                         }
                     });
                     return currentModule;
@@ -89,6 +82,58 @@ namespace MFDSettingsManager.Configuration
             }
             return null;
         }
+
+        #region Properties to support schema definitions 
+
+        /// <summary>
+        /// Define the xmlns attribute
+        /// </summary>
+        [ConfigurationProperty(XmlNamespaceConfigurationPropertyName, IsRequired = false)]
+        public string XmlNamespace
+        {
+            get
+            {
+                return (string)this[XmlNamespaceConfigurationPropertyName];
+            }
+            internal set
+            {
+                this[XmlNamespaceConfigurationPropertyName] = value;
+            }
+        }
+
+        /// <summary>
+        /// Define the xmlns:xsi attribute
+        /// </summary>
+        [ConfigurationProperty(XsiNamespaceConfigurationPropertyName, IsRequired = false)]
+        public string XsiNamespaceConfigurationName
+        {
+            get
+            {
+                return (string)this[XsiNamespaceConfigurationPropertyName];
+            }
+            internal set
+            {
+                this[XsiNamespaceConfigurationPropertyName] = value;
+            }
+        }
+
+        /// <summary>
+        /// Define the xsi:schemaLocation attribute
+        /// </summary>
+        [ConfigurationProperty(XsiSchemaLocationNamespaceConfigurationPropertyName, IsRequired = false)]
+        public string XsiSchemaLocationNamespaceConfigurationName
+        {
+            get
+            {
+                return (string)this[XsiSchemaLocationNamespaceConfigurationPropertyName];
+            }
+            internal set
+            {
+                this[XsiSchemaLocationNamespaceConfigurationPropertyName] = value;
+            }
+        }
+
+        #endregion Properties to support schema definitions 
 
         #region Main configuration properties
 
@@ -108,34 +153,6 @@ namespace MFDSettingsManager.Configuration
                 this["saveClips"] = value;
             }
         }
-
-        /// <summary>
-        /// ImageType to use when SaveClips == true
-        /// </summary>
-        [ConfigurationProperty("imageType", IsRequired = false)]
-        public SavedImageType? ImageType
-        {
-            get
-            {
-                try
-                {
-                    var result = this["imageType"] == null ? SavedImageType.Bmp : (SavedImageType) this["imageType"];
-                    return result;
-                }
-                catch (Exception ex)
-                {
-                    Logger?.Error("There was an error in determining the ImageType", ex);
-                    return SavedImageType.Bmp;
-                }
-            }
-
-            set
-            {
-                IsDataDirty = true;
-                this["imageType"] = value ?? SavedImageType.Bmp;
-            }
-        }
-
 
         /// <summary>
         /// The file path to the images to be cropped
@@ -190,6 +207,7 @@ namespace MFDSettingsManager.Configuration
 
             set
             {
+                IsDataDirty = true;
                 this["DefaultConfigurations"] = value;
             }
         }

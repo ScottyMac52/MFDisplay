@@ -27,10 +27,6 @@ namespace MFDSettingsManager.Models
         /// </summary>
         public bool? SaveClips { get; set; }
         /// <summary>
-        /// Type to use for SaveClips == true
-        /// </summary>
-        public SavedImageType? ImageType { get; set; }
-        /// <summary>
         /// List of modules available
         /// </summary>
         public List<ModuleDefinition> Modules { get; set; }
