@@ -1,15 +1,11 @@
 ## Please report all isues via: https://github.com/ScottyMac52/MFDisplay/issues
 
-# MFDisplay
-
+# MFD4CTS
 Utility that allows the display of any image cropped from another image displayed anywhere on the display coordinates of a users computer as any size image.
-
-  ### NOTE, if the exe fails you may not have the correct .NET runtime installed. This application using .NET Framework 4.7.1 and is built in C#.NET on Visual Studio 2017. If you need to install the .NET Framework, it's free, here is the link: https://www.microsoft.com/en-us/download/details.aspx?id=56115.   
 
 ## Installation
  - Download the release: https://github.com/ScottyMac52/MFDisplay/releases
  - Follow the instructions for the specified release.
- ### NOTE, the application may crash as of release 0.0.3 due to the fact that the click once installer automatically executes the program during the install process and the intial profile path in the config file is E:\HOTAS\TARGET\CTS\Docs\Profile JPGs which is the path on my computer. If it does crash then you need to edit the MFDisplay.exe.config file and make sure that under MFDSettings the FilePath parameter is set a valid directory where the CTS Profile images are stored.
 
  ## MFDSettings Configuration Section Guide
   ### Provides encapsulated configuration for All Modules
@@ -23,10 +19,11 @@ Utility that allows the display of any image cropped from another image displaye
  X_{XOffsetStart}To{XOffsetFinish}Y_{YOffsetStart}To{YOffsetFinish}\_{Opacity}\_{ModuleName}\_{ConfigurationName}\_{Width}\_{Height}.png     
   - DefaultConfigurations
     - Here is where as many named configurations can be placed as you want associated with every module. Good examples are LMFD and RMFD. Any attributes that you do not specify in the named configuration will need to be defined in the modules configuration that matches the same name. The recommended configuration is to use the LMFD and RMFD to define the size (Width, Height) of all LMFD and RMFD images. You may also define the defaults for cropping LMFD and RMFD, the defaults for the current images are:
-    
--<add name="LMFD" opacity="1" width="885" height="700" xOffsetStart="101" xOffsetFinish="776" yOffsetStart="250" yOffsetFinish="900"/>
--<add name="RMFD" opacity="1" width="885" height="700" xOffsetStart="903" xOffsetFinish="1576" yOffsetStart="250" yOffsetFinish="900"/>
-  -The defaults for Left & Top in the shipped config matches my configuration which is that I have the following:
+
+<add name="LMFD" opacity="1" width="885" height="700" xOffsetStart="101" xOffsetFinish="776" yOffsetStart="250" yOffsetFinish="900"/>
+<add name="RMFD" opacity="1" width="885" height="700" xOffsetStart="903" xOffsetFinish="1576" yOffsetStart="250" yOffsetFinish="900"/>
+
+  - The defaults for Left & Top in the shipped config matches my configuration which is that I have the following:
     - Main Monitor = 2560*1440
     - LMFD Monitor = 1024*768 positioned bottom right of Main Monitor
     - RMFD Monitor = 1024*768 positioned bottom right of the LMFD Monitor
