@@ -13,7 +13,7 @@ Utility that allows the display of any image cropped from another image displaye
 
  ## MFDSettings Configuration Section Guide
   ### Provides encapsulated configuration for All Modules
-  #### Edit MFDisplay.exe.config 
+  #### Edit MFD4CTS.exe.config 
   - filePath : Location where the CTS profile jpgs are located 
   - defaultConfig : Name of the default module to load, e.g. A-4E
   - saveClips : If true then every cropped image is saved in the following format:
@@ -24,10 +24,9 @@ Utility that allows the display of any image cropped from another image displaye
   - DefaultConfigurations
     - Here is where as many named configurations can be placed as you want associated with every module. Good examples are LMFD and RMFD. Any attributes that you do not specify in the named configuration will need to be defined in the modules configuration that matches the same name. The recommended configuration is to use the LMFD and RMFD to define the size (Width, Height) of all LMFD and RMFD images. You may also define the defaults for cropping LMFD and RMFD, the defaults for the current images are:
     
-<add name="LMFD" opacity="1" width="885" height="700" xOffsetStart="101" xOffsetFinish="776" yOffsetStart="250" yOffsetFinish="900"/>
-<add name="RMFD" opacity="1" width="885" height="700" xOffsetStart="903" xOffsetFinish="1576" yOffsetStart="250" yOffsetFinish="900"/>
-  
-  - The defaults for Left & Top in the shipped config matches my configuration which is that I have the following:
+-<add name="LMFD" opacity="1" width="885" height="700" xOffsetStart="101" xOffsetFinish="776" yOffsetStart="250" yOffsetFinish="900"/>
+-<add name="RMFD" opacity="1" width="885" height="700" xOffsetStart="903" xOffsetFinish="1576" yOffsetStart="250" yOffsetFinish="900"/>
+  -The defaults for Left & Top in the shipped config matches my configuration which is that I have the following:
     - Main Monitor = 2560*1440
     - LMFD Monitor = 1024*768 positioned bottom right of Main Monitor
     - RMFD Monitor = 1024*768 positioned bottom right of the LMFD Monitor
