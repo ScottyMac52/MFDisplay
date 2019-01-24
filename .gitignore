@@ -213,3 +213,10 @@
 /Output/mfdsettings.xsd
 /Setup/Debug/setup.exe
 /Setup/Debug/Setup.msi
+/Output/MFD4CTS.xml
+/Output/MFD4CTS.pdb
+/Output/MFD4CTS.exe.manifest
+/Output/MFD4CTS.exe.config
+/Output/MFD4CTS.exe
+/Output/MFD4CTS.application
+/Output/app.publish/MFD4CTS.exe

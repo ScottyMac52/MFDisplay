@@ -7,7 +7,7 @@
     <ProjectGuid>{1AC90D5B-6DB5-4AAA-8C7E-B6B28FD75A47}</ProjectGuid>
     <OutputType>WinExe</OutputType>
     <RootNamespace>MFDisplay</RootNamespace>
-    <AssemblyName>MFDisplay</AssemblyName>
+    <AssemblyName>MFD4CTS</AssemblyName>
     <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <ProjectTypeGuids>{60dc8134-eba5-43b8-bcc9-bb4bc16c2548};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
@@ -48,7 +48,7 @@
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
-    <DocumentationFile>..\Output\MFDisplay.xml</DocumentationFile>
+    <DocumentationFile>..\Output\MFD4CTS.xml</DocumentationFile>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <PlatformTarget>AnyCPU</PlatformTarget>
@@ -58,7 +58,7 @@
     <DefineConstants>TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
-    <DocumentationFile>..\Output\MFDisplay.xml</DocumentationFile>
+    <DocumentationFile>..\Output\MFD4CTS.xml</DocumentationFile>
   </PropertyGroup>
   <PropertyGroup>
     <ManifestCertificateThumbprint>752CCF5210A3BF79887E5D4EAC12E352BCFBAB0B</ManifestCertificateThumbprint>
