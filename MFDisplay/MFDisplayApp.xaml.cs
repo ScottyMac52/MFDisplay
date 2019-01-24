@@ -97,7 +97,7 @@ namespace MFDisplay
                 return;
             }
 
-            Logger = LogManager.GetLogger(typeof(MFDisplayApp));
+            Logger = LogManager.GetLogger("MFD4CTS");
             var assmLocation = Assembly.GetExecutingAssembly().Location;
             var sectionConfig = MFDConfigurationSection.GetConfig(Logger);
             Configuration = sectionConfig.ToModel(Logger);

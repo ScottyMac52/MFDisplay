@@ -20,24 +20,29 @@ namespace MFDSettingsManager.Mappers
         internal static ModulesConfiguration MapFromConfigurationSection(MFDConfigurationSection section)
         {
             var logger = section.Logger;
+            var logSep = new string('-', 160);
 
             // Get the default MFD configuration for all modules
             logger.Info("Loading the default configurations...");
+            logger.Info(logSep);
             var defaultConfigurations = GetMfdDefaults(section);
+            logger.Info($"{defaultConfigurations.Count} default configurations were loaded.");
+            logger.Info(logSep);
             // Create the top level model
             var moduleConfigurations = ConvertFromConfigSection(section);
             var moduleList = section.Modules.List;
             logger.Info($"Loading {moduleList.Count} Modules...");
+            logger.Info(logSep);
             moduleList.ForEach(currentModule =>
             {
-                logger.Debug($"Loading the Module named {currentModule.DisplayName} as {currentModule.ModuleName} using {currentModule.FileName}...");
+                logger.Info($"Loading the Module named {currentModule.DisplayName} as {currentModule.ModuleName} using {currentModule.FileName}...");
                 var modelModule = ConvertFromConfigSectionModule(moduleConfigurations, currentModule);
                 var configurationList = currentModule.MFDConfigurations.List;
                 // Add the Configurations
                 configurationList.ForEach(currentConfig =>
                 {
                     var mfdConfiguration = ConvertFromConfigSectionDefinition(section, modelModule, currentConfig);
-                    logger.Debug($"Loading Configuration {currentModule.DisplayName}-{currentConfig.Name} as {mfdConfiguration.ToReadableString()}...");
+                    logger.Info($"Loading Configuration {mfdConfiguration.ToReadableString()}...");
                     modelModule.Configurations.Add(mfdConfiguration);
                 });
 
@@ -51,7 +56,7 @@ namespace MFDSettingsManager.Mappers
                         dc.ModuleName = modelModule.ModuleName;
                         dc.FileName = !string.IsNullOrEmpty(modelModule.FileName) ? modelModule.FileName : dc.FileName;
                         dc.SaveResults = dc.SaveResults ?? section.SaveClips ?? false;
-                        logger.Info($"Adding configuration {dc.ToReadableString()} to module {modelModule.DisplayName}...");
+                        logger.Info($"Adding configuration {dc.ToReadableString()}...");
                         var newMfdConfiguration = new ConfigurationDefinition(dc);
                         modelModule.Configurations.Add(newMfdConfiguration);
                     }
@@ -68,11 +73,12 @@ namespace MFDSettingsManager.Mappers
                         existConfig.FileName = string.IsNullOrEmpty(existConfig.FileName) ? dc.FileName : existConfig.FileName;
                         existConfig.SaveResults = existConfig.SaveResults ?? dc.SaveResults ?? false;
                         existConfig.ModuleName = modelModule.ModuleName;
-                        logger.Info($"Modifiying configuration {existConfig.ToReadableString()} in module {modelModule.DisplayName}...");
+                        logger.Info($"Modifying configuration {existConfig.ToReadableString()}...");
                     }
                 });
 
-                logger.Debug($"Loaded Module {modelModule.ModuleName} with {modelModule.Configurations.Count} Configurations.");
+                logger.Info($"Loaded Module named {modelModule.DisplayName} as {modelModule.ModuleName} with {modelModule.Configurations.Count} Configurations.");
+                logger.Info(logSep);
                 moduleConfigurations.Modules.Add(modelModule);
             });
             logger.Debug($"Loaded {moduleConfigurations.Modules.Count} Modules.");
@@ -92,7 +98,7 @@ namespace MFDSettingsManager.Mappers
             defaultsCollection.ForEach(dc =>
             {
                 var mfdDefaultConfiguration = ConvertFromConfigSectionDefinition(section, null, dc);
-                logger.Debug($"Loading the default Configuration {mfdDefaultConfiguration.ToReadableString()}");
+                logger.Info($"Loading the default Configuration {mfdDefaultConfiguration.ToReadableString()}...");
                 defaultConfigurations.Add(mfdDefaultConfiguration);
 
             });
