@@ -25,7 +25,7 @@ int EventHandle(int type, alias o, int x)
 int launch_mfdisplay()
 {
 GameOutput(&Throttle, OUT_ID_LED_1, 2);
-printf("attempting to launch MFDisplay\xa");
-int launched = system("spawn -w \"E:\\HOTAS\\TARGET\\CTS\\MFD4CTS\" \"E:\\HOTAS\\TARGET\\CTS\\MFD4CTS\\MFDisplay.exe\""); 
+printf("attempting to launch MFD4CTS\xa");
+int launched = system("spawn -w \"C:\\Program Files (x86)\\Vyper Industries\\MFD 4 CTS\" \"C:\\Program Files (x86)\\Vyper Industries\\MFD 4 CTS\\MFD4CTS.exe\" mod:FA-18C"); 
 printf("Result was %d", launched);
 }

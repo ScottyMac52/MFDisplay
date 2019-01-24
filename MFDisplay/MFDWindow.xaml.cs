@@ -57,7 +57,6 @@ namespace MFDisplay
         /// <returns></returns>
         public bool InitializeMFD(ConfigurationDefinition definition)
         {
-            Logger.Debug($"Loading the configuration for {definition.Name}");
             Configuration = definition;
             Title = definition?.Name;
             ResizeMode = ResizeMode.NoResize;
@@ -76,6 +75,7 @@ namespace MFDisplay
         /// <param name="e"></param>
         private void Window_Loaded(object sender, RoutedEventArgs e)
         {
+            Logger.Debug($"Loading the configuration for {Configuration.Name} from Module {Configuration.ModuleName}");
             InitializeMFD(Configuration);
             LoadImage();
         }
@@ -98,7 +98,7 @@ namespace MFDisplay
                 imgMain.Height = Height;
                 imgMain.Source = Configuration.CropImage(filePath);
                 IsMFDLoaded = true;
-                Logger.Debug($"Image {filePath} is loaded at ({Left}, {Top}) for ({Width}, {Height}) Opacity: {Opacity}");
+                Logger.Debug($"Image {filePath} is loaded.");
             }
         }
 
@@ -184,12 +184,12 @@ namespace MFDisplay
 
         private void Window_Closed(object sender, EventArgs e)
         {
-            Logger.Info($"MFD Is Closed -> {Configuration.ToReadableString()}");
+            Logger.Info($"MFD Is Closed -> {Configuration.Name}.");
         }
 
         private void ChkCloseAndSave_Click(object sender, RoutedEventArgs e)
         {
-            Logger.Debug($"MFD Is Closing -> {Configuration.ToReadableString()}");
+            Logger.Debug($"MFD Is Closing... -> {Configuration.ToReadableString()}");
             Close();
         }
     }

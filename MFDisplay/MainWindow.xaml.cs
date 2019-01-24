@@ -43,6 +43,11 @@ namespace MFDisplay
         protected ModuleDefinition SelectedModule { get; set; }
 
         /// <summary>
+        /// The name of the module that was passed in
+        /// </summary>
+        public string PassedModule { get; internal set; }
+
+        /// <summary>
         /// Ctor, initializes component, logging, sorted list and loads the configuration  
         /// </summary>
         public MainWindow()
@@ -58,7 +63,6 @@ namespace MFDisplay
         private void Window_Loaded(object sender, RoutedEventArgs e)
         {
             SetupWindow();
-            Logger.Info("is Loaded");
         }
 
         /// <summary>
@@ -77,9 +81,6 @@ namespace MFDisplay
         /// </summary>
         public void SetupWindow()
         {
-            var sectionConfig = MFDConfigurationSection.GetConfig(Logger);
-            Config = sectionConfig.ToModel(Logger);
-
             MFDList = new SortedList<string, MFDWindow>();
             AvailableModules = Config?.Modules;
 
@@ -131,30 +132,64 @@ namespace MFDisplay
         }
 
         /// <summary>
+        /// Used to change the selected module 
+        /// </summary>
+        /// <param name="moduleName"></param>
+        public void ChangeSelectedModule(string moduleName)
+        {
+            if (moduleName != (string)cbModules?.SelectedValue)
+            {
+                cbModules.SelectedValue = moduleName;
+            }
+        }
+
+        private void ProcessChangedModule(string moduleName)
+        {
+            if (GetSelectedDefinition(moduleName))
+            {
+                DestroyMFDs();
+                try
+                {
+                    CreateMFDs();
+                    Logger.Info($"Module loaded {moduleName}.");
+                }
+                catch (IndexOutOfRangeException ioorx)
+                {
+                    Logger.Error($"Not able to determine selected module", ioorx);
+                }
+            }
+            else
+            {
+                Logger.Error($"{moduleName} does not exist as a module in the current configuration.");
+            }
+
+        }
+
+        /// <summary>
         /// Gets the specified Definition
         /// </summary>
         /// <param name="moduleName"></param>
         /// <returns></returns>
-        public void GetSelectedDefinition(string moduleName)
+        public bool GetSelectedDefinition(string moduleName)
         {
             if(string.IsNullOrEmpty(moduleName))
             {
-                return;
+                return false;
             }
             Logger.Info($"Configuration requested for {moduleName}");
             SelectedModule = AvailableModules.Where(am => am.ModuleName == moduleName).FirstOrDefault();
+            return SelectedModule != null;
         }
+
+
         
         private void ComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            Logger.Info($"Selected module changing...");
-            DestroyMFDs();
             try
             {
                 var selectedModule = e.AddedItems.Count > 0 ? (ModuleDefinition)e.AddedItems[0] : e.RemovedItems.Count > 0 ? (ModuleDefinition)e.RemovedItems[0] : null;
                 Logger.Info($"Module selected {selectedModule?.DisplayName}");
-                GetSelectedDefinition(selectedModule?.ModuleName);
-                CreateMFDs();
+                ProcessChangedModule(selectedModule.ModuleName);
             }
             catch(IndexOutOfRangeException ioorx)
             {
@@ -169,17 +204,23 @@ namespace MFDisplay
 
         private void CbModules_Loaded(object sender, RoutedEventArgs e)
         {
-            if (!string.IsNullOrEmpty(Config.DefaultConfig))
+            if (!string.IsNullOrEmpty(Config.DefaultConfig) || !string.IsNullOrEmpty(PassedModule))
             {
-                Logger.Info($"Loading the default configuration {Config.DefaultConfig}...");
-                cbModules.SelectedValue = Config.DefaultConfig;
+                if (string.IsNullOrEmpty(PassedModule))
+                {
+                    Logger.Info($"Loading the default configuration {Config.DefaultConfig}...");
+                }
+                else
+                {
+                    Logger.Info($"Loading the requested configuration {PassedModule}...");
+                }
+                cbModules.SelectedValue = PassedModule ?? Config.DefaultConfig;
             }
         }
 
         private void ConfigurationMenuItem_Click(object sender, RoutedEventArgs e)
         {
             DestroyMFDs();
-            var sectionConfig = MFDConfigurationSection.GetConfig(Logger);
             var configWindow = new ConfigurationWindow()
             {
                 Logger = Logger,

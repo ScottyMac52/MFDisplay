@@ -190,17 +190,17 @@
         "Entry"
         {
         "MsmKey" = "8:_2851B831A73928BDC946DC5F831EDAC4"
-        "OwnerKey" = "8:_755EC872BC62416C812644B810D0401A"
-        "MsmSig" = "8:_UNDEFINED"
-        }
-        "Entry"
-        {
-        "MsmKey" = "8:_2851B831A73928BDC946DC5F831EDAC4"
         "OwnerKey" = "8:_DCB806C34BABF14B10DC9D27E92C18E3"
         "MsmSig" = "8:_UNDEFINED"
         }
         "Entry"
         {
+        "MsmKey" = "8:_2851B831A73928BDC946DC5F831EDAC4"
+        "OwnerKey" = "8:_755EC872BC62416C812644B810D0401A"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
         "MsmKey" = "8:_2977C6C169D14C223BFC1F4696ECB306"
         "OwnerKey" = "8:_5C490CFEF632485FA4C4D957379F7C4F"
         "MsmSig" = "8:_UNDEFINED"
@@ -221,6 +221,12 @@
         {
         "MsmKey" = "8:_2A0A733C9D3645F7F3E587214B4BC70E"
         "OwnerKey" = "8:_755EC872BC62416C812644B810D0401A"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_2B693B4C488D47F9B253ADBD652E7DEE"
+        "OwnerKey" = "8:_UNDEFINED"
         "MsmSig" = "8:_UNDEFINED"
         }
         "Entry"
@@ -441,6 +447,12 @@
         }
         "Entry"
         {
+        "MsmKey" = "8:_74E1B3E1D6B64347A3A68537D3B9C1FA"
+        "OwnerKey" = "8:_UNDEFINED"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
         "MsmKey" = "8:_755EC872BC62416C812644B810D0401A"
         "OwnerKey" = "8:_UNDEFINED"
         "MsmSig" = "8:_UNDEFINED"
@@ -478,13 +490,13 @@
         "Entry"
         {
         "MsmKey" = "8:_7A5706EDD071BEEEFAB43A1EEA0BFE35"
-        "OwnerKey" = "8:_755EC872BC62416C812644B810D0401A"
+        "OwnerKey" = "8:_DCB806C34BABF14B10DC9D27E92C18E3"
         "MsmSig" = "8:_UNDEFINED"
         }
         "Entry"
         {
         "MsmKey" = "8:_7A5706EDD071BEEEFAB43A1EEA0BFE35"
-        "OwnerKey" = "8:_DCB806C34BABF14B10DC9D27E92C18E3"
+        "OwnerKey" = "8:_755EC872BC62416C812644B810D0401A"
         "MsmSig" = "8:_UNDEFINED"
         }
         "Entry"
@@ -520,13 +532,13 @@
         "Entry"
         {
         "MsmKey" = "8:_83EC349ADF0B60C8510AAAB7A550A531"
-        "OwnerKey" = "8:_755EC872BC62416C812644B810D0401A"
+        "OwnerKey" = "8:_DCB806C34BABF14B10DC9D27E92C18E3"
         "MsmSig" = "8:_UNDEFINED"
         }
         "Entry"
         {
         "MsmKey" = "8:_83EC349ADF0B60C8510AAAB7A550A531"
-        "OwnerKey" = "8:_DCB806C34BABF14B10DC9D27E92C18E3"
+        "OwnerKey" = "8:_755EC872BC62416C812644B810D0401A"
         "MsmSig" = "8:_UNDEFINED"
         }
         "Entry"
@@ -550,13 +562,13 @@
         "Entry"
         {
         "MsmKey" = "8:_872DE738F6A304AD629A654EC2EACAF5"
-        "OwnerKey" = "8:_755EC872BC62416C812644B810D0401A"
+        "OwnerKey" = "8:_96F0F6C8787F40D385286407F0F5279C"
         "MsmSig" = "8:_UNDEFINED"
         }
         "Entry"
         {
         "MsmKey" = "8:_872DE738F6A304AD629A654EC2EACAF5"
-        "OwnerKey" = "8:_96F0F6C8787F40D385286407F0F5279C"
+        "OwnerKey" = "8:_755EC872BC62416C812644B810D0401A"
         "MsmSig" = "8:_UNDEFINED"
         }
         "Entry"
@@ -976,13 +988,7 @@
         "Entry"
         {
         "MsmKey" = "8:_UNDEFINED"
-        "OwnerKey" = "8:_02C79E46C5FD946A205E3608DA722495"
-        "MsmSig" = "8:_UNDEFINED"
-        }
-        "Entry"
-        {
-        "MsmKey" = "8:_UNDEFINED"
-        "OwnerKey" = "8:_755EC872BC62416C812644B810D0401A"
+        "OwnerKey" = "8:_5C490CFEF632485FA4C4D957379F7C4F"
         "MsmSig" = "8:_UNDEFINED"
         }
         "Entry"
@@ -1000,7 +1006,7 @@
         "Entry"
         {
         "MsmKey" = "8:_UNDEFINED"
-        "OwnerKey" = "8:_5C490CFEF632485FA4C4D957379F7C4F"
+        "OwnerKey" = "8:_755EC872BC62416C812644B810D0401A"
         "MsmSig" = "8:_UNDEFINED"
         }
         "Entry"
@@ -1441,6 +1447,12 @@
         "OwnerKey" = "8:_782FCDBC9A5E9B0B36E06DF322CE0B68"
         "MsmSig" = "8:_UNDEFINED"
         }
+        "Entry"
+        {
+        "MsmKey" = "8:_UNDEFINED"
+        "OwnerKey" = "8:_02C79E46C5FD946A205E3608DA722495"
+        "MsmSig" = "8:_UNDEFINED"
+        }
     }
     "Configurations"
     {
@@ -1459,6 +1471,22 @@
         "PrivateKeyFile" = "8:"
         "TimeStampServer" = "8:"
         "InstallerBootstrapper" = "3:2"
+            "BootstrapperCfg:{63ACBE69-63AA-4F98-B2B6-99F9E24495F2}"
+            {
+            "Enabled" = "11:TRUE"
+            "PromptEnabled" = "11:TRUE"
+            "PrerequisitesLocation" = "2:1"
+            "Url" = "8:"
+            "ComponentsUrl" = "8:"
+                "Items"
+                {
+                    "{EDC2488A-8267-493A-A98E-7D9C3B36CDF3}:.NETFramework,Version=v4.6.1"
+                    {
+                    "Name" = "8:Microsoft .NET Framework 4.6.1 (x86 and x64)"
+                    "ProductCode" = "8:.NETFramework,Version=v4.6.1"
+                    }
+                }
+            }
         }
         "Release"
         {
@@ -1475,6 +1503,14 @@
         "PrivateKeyFile" = "8:"
         "TimeStampServer" = "8:"
         "InstallerBootstrapper" = "3:2"
+            "BootstrapperCfg:{63ACBE69-63AA-4F98-B2B6-99F9E24495F2}"
+            {
+            "Enabled" = "11:TRUE"
+            "PromptEnabled" = "11:TRUE"
+            "PrerequisitesLocation" = "2:1"
+            "Url" = "8:"
+            "ComponentsUrl" = "8:"
+            }
         }
     }
     "Deployable"
@@ -2031,6 +2067,26 @@
             "IsDependency" = "11:TRUE"
             "IsolateTo" = "8:"
             }
+            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_2B693B4C488D47F9B253ADBD652E7DEE"
+            {
+            "SourcePath" = "8:..\\mfdisp_exe_test.tmc"
+            "TargetName" = "8:mfdisp_exe_test.tmc"
+            "Tag" = "8:"
+            "Folder" = "8:_C9DED627D0A74F77B13C6FC6B8C705FA"
+            "Condition" = "8:"
+            "Transitive" = "11:FALSE"
+            "Vital" = "11:TRUE"
+            "ReadOnly" = "11:FALSE"
+            "Hidden" = "11:FALSE"
+            "System" = "11:FALSE"
+            "Permanent" = "11:FALSE"
+            "SharedLegacy" = "11:FALSE"
+            "PackageAs" = "3:1"
+            "Register" = "3:1"
+            "Exclude" = "11:FALSE"
+            "IsDependency" = "11:FALSE"
+            "IsolateTo" = "8:"
+            }
             "{9F6F8455-1EF1-4B85-886A-4223BCC8E7F7}:_2C047171743B002848E2BF24DE679EBE"
             {
             "AssemblyRegister" = "3:1"
@@ -2527,6 +2583,26 @@
             "IsDependency" = "11:TRUE"
             "IsolateTo" = "8:"
             }
+            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_74E1B3E1D6B64347A3A68537D3B9C1FA"
+            {
+            "SourcePath" = "8:..\\MFDisplay\\Images\\Vyper_FC.png"
+            "TargetName" = "8:Vyper_FC.png"
+            "Tag" = "8:"
+            "Folder" = "8:_1E1F1E7898AD453989E7B4684362A4DE"
+            "Condition" = "8:"
+            "Transitive" = "11:FALSE"
+            "Vital" = "11:TRUE"
+            "ReadOnly" = "11:FALSE"
+            "Hidden" = "11:FALSE"
+            "System" = "11:FALSE"
+            "Permanent" = "11:FALSE"
+            "SharedLegacy" = "11:FALSE"
+            "PackageAs" = "3:1"
+            "Register" = "3:1"
+            "Exclude" = "11:TRUE"
+            "IsDependency" = "11:FALSE"
+            "IsolateTo" = "8:"
+            }
             "{9F6F8455-1EF1-4B85-886A-4223BCC8E7F7}:_777DC689C0F163A29CEFE6F80BB979FE"
             {
             "AssemblyRegister" = "3:1"
@@ -2624,7 +2700,7 @@
             {
             "AssemblyRegister" = "3:1"
             "AssemblyIsInGAC" = "11:FALSE"
-            "AssemblyAsmDisplayName" = "8:MFDSettingsManager, Version=1.0.0.0, Culture=neutral, processorArchitecture=x86"
+            "AssemblyAsmDisplayName" = "8:MFDSettingsManager, Version=2.0.0.0, Culture=neutral, processorArchitecture=x86"
                 "ScatterAssemblies"
                 {
                     "_7DEEA384806125832B2C659F0A5B68A0"
@@ -3878,6 +3954,28 @@
                 {
                 }
             }
+            "{1525181F-901A-416C-8A58-119130FE478E}:_7879150F769E46828F8B6215BEC0B114"
+            {
+            "Name" = "8:#1918"
+            "AlwaysCreate" = "11:FALSE"
+            "Condition" = "8:"
+            "Transitive" = "11:FALSE"
+            "Property" = "8:PersonalFolder"
+                "Folders"
+                {
+                    "{9EF0B969-E518-4E46-987F-47570745A589}:_C9DED627D0A74F77B13C6FC6B8C705FA"
+                    {
+                    "Name" = "8:MFD4CTS"
+                    "AlwaysCreate" = "11:FALSE"
+                    "Condition" = "8:"
+                    "Transitive" = "11:FALSE"
+                    "Property" = "8:_5CE33A60583E4016B0A33F19E9F86B98"
+                        "Folders"
+                        {
+                        }
+                    }
+                }
+            }
             "{1525181F-901A-416C-8A58-119130FE478E}:_D4D595DC60794791922BC179A0D84BD5"
             {
             "Name" = "8:#1916"
@@ -3938,22 +4036,22 @@
         {
         "Name" = "8:Microsoft Visual Studio"
         "ProductName" = "8:MFD 4 CTS"
-        "ProductCode" = "8:{7BF951F9-38AA-4F91-B8AD-9491667C125F}"
-        "PackageCode" = "8:{7C9C6FD5-86B2-44E4-A137-FE2492B1DAE4}"
+        "ProductCode" = "8:{0A2CFBD8-6446-429C-8EBF-67D81B3C3623}"
+        "PackageCode" = "8:{4A965D3B-20E1-464A-8D04-9BFBFFF7BDEF}"
         "UpgradeCode" = "8:{684D58BF-80C4-4679-8A57-A5856787407F}"
         "AspNetVersion" = "8:4.0.30319.0"
         "RestartWWWService" = "11:FALSE"
         "RemovePreviousVersions" = "11:TRUE"
         "DetectNewerInstalledVersion" = "11:TRUE"
         "InstallAllUsers" = "11:TRUE"
-        "ProductVersion" = "8:1.1.5"
+        "ProductVersion" = "8:2.0.0"
         "Manufacturer" = "8:Vyper Industries"
         "ARPHELPTELEPHONE" = "8:"
         "ARPHELPLINK" = "8:https://github.com/ScottyMac52/MFDisplay/issues"
         "Title" = "8:MFD 4 CTS"
         "Subject" = "8:CTS MFD Display"
         "ARPCONTACT" = "8:Vyper"
-        "Keywords" = "8:CTS MFD"
+        "Keywords" = "8:MFD, CTS, DCS"
         "ARPCOMMENTS" = "8:Displays any of the images from the CTS docs anywhere on your screen."
         "ARPURLINFOABOUT" = "8:https://github.com/ScottyMac52/MFDisplay"
         "ARPPRODUCTICON" = "8:_5C490CFEF632485FA4C4D957379F7C4F"
@@ -4105,6 +4203,42 @@
                             }
                         }
                     }
+                    "{688940B3-5CA9-4162-8DEE-2993FA9D8CBC}:_470443A4EF0242CE849F9C12518E70F6"
+                    {
+                    "Sequence" = "3:100"
+                    "DisplayName" = "8:Splash"
+                    "UseDynamicProperties" = "11:TRUE"
+                    "IsDependency" = "11:FALSE"
+                    "SourcePath" = "8:<VsdDialogDir>\\VsdSplashDlg.wid"
+                        "Properties"
+                        {
+                            "SplashBitmap"
+                            {
+                            "Name" = "8:SplashBitmap"
+                            "DisplayName" = "8:#1013"
+                            "Description" = "8:#1113"
+                            "Type" = "3:8"
+                            "ContextData" = "8:Bitmap"
+                            "Attributes" = "3:0"
+                            "Setting" = "3:2"
+                            "Value" = "8:_74E1B3E1D6B64347A3A68537D3B9C1FA"
+                            "UsePlugInResources" = "11:TRUE"
+                            }
+                            "Sunken"
+                            {
+                            "Name" = "8:Sunken"
+                            "DisplayName" = "8:#1007"
+                            "Description" = "8:#1107"
+                            "Type" = "3:5"
+                            "ContextData" = "8:4;True=4;False=0"
+                            "Attributes" = "3:0"
+                            "Setting" = "3:0"
+                            "Value" = "3:4"
+                            "DefaultValue" = "3:4"
+                            "UsePlugInResources" = "11:TRUE"
+                            }
+                        }
+                    }
                     "{688940B3-5CA9-4162-8DEE-2993FA9D8CBC}:_A3172F6C38164FB1B6D39BFECB399DB6"
                     {
                     "Sequence" = "3:200"
@@ -4142,7 +4276,7 @@
                     }
                     "{688940B3-5CA9-4162-8DEE-2993FA9D8CBC}:_D612335244334AB182960B9FD3EA3D6C"
                     {
-                    "Sequence" = "3:100"
+                    "Sequence" = "3:110"
                     "DisplayName" = "8:Welcome"
                     "UseDynamicProperties" = "11:TRUE"
                     "IsDependency" = "11:FALSE"
@@ -4558,7 +4692,7 @@
             }
             "{5259A561-127C-4D43-A0A1-72F10C7B3BF8}:_5C490CFEF632485FA4C4D957379F7C4F"
             {
-            "SourcePath" = "8:..\\MFDisplay\\obj\\Debug\\MFDisplay.exe"
+            "SourcePath" = "8:..\\MFDisplay\\obj\\Debug\\MFD4CTS.exe"
             "TargetName" = "8:"
             "Tag" = "8:"
             "Folder" = "8:_1E1F1E7898AD453989E7B4684362A4DE"
@@ -4614,7 +4748,7 @@
             }
             "{5259A561-127C-4D43-A0A1-72F10C7B3BF8}:_755EC872BC62416C812644B810D0401A"
             {
-            "SourcePath" = "8:..\\MFDisplay\\obj\\Debug\\MFDisplay.exe"
+            "SourcePath" = "8:..\\MFDisplay\\obj\\Debug\\MFD4CTS.exe"
             "TargetName" = "8:"
             "Tag" = "8:"
             "Folder" = "8:_6968F23B99964F65A1A7288EB8E95F71"
