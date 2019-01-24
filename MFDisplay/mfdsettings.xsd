@@ -1,0 +1,226 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<!--Created with Liquid Studio 2018 (https://www.liquid-technologies.com)-->
+<xs:schema xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+           attributeFormDefault="unqualified"
+           elementFormDefault="qualified"
+           xmlns:xs="http://www.w3.org/2001/XMLSchema">
+  <xs:complexType abstract="true"
+                  id="configuration"
+                  name="Configuration">
+    <xs:annotation>
+      <xs:documentation>Configuration defines all properties required to crop and image, re-size it and display it on the screen. The image is derived from the image filename specified either by the Module or by the configuration itself. </xs:documentation>
+    </xs:annotation>
+    <xs:attribute name="name"
+                  type="xs:string"
+                  use="required">
+      <xs:annotation>
+        <xs:documentation>Name of the configuration.</xs:documentation>
+      </xs:annotation>
+    </xs:attribute>
+    <xs:attribute name="filename"
+                  type="xs:string"
+                  use="optional">
+      <xs:annotation>
+        <xs:documentation>Filename for the configuration. Default Configurations do not include this but in the case of Module Configurations the module filename is used if the module configration filename is not present. </xs:documentation>
+      </xs:annotation>
+    </xs:attribute>
+    <xs:attribute name="opacity"
+                  default="1"
+                  type="xs:float"
+                  use="optional">
+      <xs:annotation>
+        <xs:documentation>Opacity of the image as rendered on the screen expressed as a percentage of 1. 30% Opacity is .3.</xs:documentation>
+      </xs:annotation>
+    </xs:attribute>
+    <xs:attribute name="width"
+                  default="100"
+                  type="xs:int"
+                  use="optional">
+      <xs:annotation>
+        <xs:documentation>Width of the image in screen pixels.</xs:documentation>
+      </xs:annotation>
+    </xs:attribute>
+    <xs:attribute name="height"
+                  default="100"
+                  type="xs:int"
+                  use="optional">
+      <xs:annotation>
+        <xs:documentation>Height of the image in screen pixels.</xs:documentation>
+      </xs:annotation>
+    </xs:attribute>
+    <xs:attribute name="left"
+                  default="1"
+                  type="xs:int"
+                  use="optional">
+      <xs:annotation>
+        <xs:documentation>Left position of the image in screen pixels.</xs:documentation>
+      </xs:annotation>
+    </xs:attribute>
+    <xs:attribute name="top"
+                  default="1"
+                  type="xs:int"
+                  use="optional">
+      <xs:annotation>
+        <xs:documentation>Top position of the image in screen pixels.</xs:documentation>
+      </xs:annotation>
+    </xs:attribute>
+    <xs:attribute name="xOffsetStart"
+                  default="1"
+                  type="xs:int"
+                  use="optional">
+      <xs:annotation>
+        <xs:documentation>Position in the X axis in screen pixels of the cropped area for the referenced image to start cropping.</xs:documentation>
+      </xs:annotation>
+    </xs:attribute>
+    <xs:attribute name="xOffsetFinish"
+                  default="100"
+                  type="xs:int"
+                  use="optional">
+      <xs:annotation>
+        <xs:documentation>Position in the X axis in screen pixels of the cropped area for the referenced image to stop cropping.</xs:documentation>
+      </xs:annotation>
+    </xs:attribute>
+    <xs:attribute name="yOffsetStart"
+                  default="1"
+                  type="xs:int"
+                  use="optional">
+      <xs:annotation>
+        <xs:documentation>Position in the Y axis in screen pixels of the cropped area for the referenced image to start cropping.</xs:documentation>
+      </xs:annotation>
+    </xs:attribute>
+    <xs:attribute name="yOffsetFinish"
+                  default="100"
+                  type="xs:int"
+                  use="optional">
+      <xs:annotation>
+        <xs:documentation>Position in the Y axis in screen pixels of the cropped area for the referenced image to stop cropping.</xs:documentation>
+      </xs:annotation>
+    </xs:attribute>
+  </xs:complexType>
+  <xs:complexType name="Module">
+    <xs:annotation>
+      <xs:documentation>Defines a module configuration. The moduleName, displayName and filename </xs:documentation>
+    </xs:annotation>
+    <xs:sequence>
+      <xs:element name="Configurations"
+                  minOccurs="0"
+                  maxOccurs="unbounded"
+                  nillable="true">
+        <xs:annotation>
+          <xs:documentation>Configurations for the Module</xs:documentation>
+        </xs:annotation>
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element name="add"
+                        minOccurs="0"
+                        maxOccurs="unbounded"
+                        nillable="true">
+              <xs:annotation>
+                <xs:documentation>Module configuration.</xs:documentation>
+              </xs:annotation>
+              <xs:complexType>
+                <xs:complexContent>
+                  <xs:extension base="Configuration" />
+                </xs:complexContent>
+              </xs:complexType>
+            </xs:element>
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+    </xs:sequence>
+    <xs:attribute name="moduleName"
+                  type="xs:string"
+                  use="required">
+      <xs:annotation>
+        <xs:documentation>Name of the module. Cooresponds to the directory below the filePath where the images for the module are located.</xs:documentation>
+      </xs:annotation>
+    </xs:attribute>
+    <xs:attribute name="displayName"
+                  type="xs:string"
+                  use="required">
+      <xs:annotation>
+        <xs:documentation>Name of the module as displayed in the UI.</xs:documentation>
+      </xs:annotation>
+    </xs:attribute>
+    <xs:attribute name="filename"
+                  type="xs:string"
+                  use="optional" />
+  </xs:complexType>
+  <xs:element name="MFDSettings">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element name="DefaultConfigurations"
+                    minOccurs="0"
+                    maxOccurs="1"
+                    nillable="true">
+          <xs:annotation>
+            <xs:documentation>Any named configurations defined here are applied to ALL modules. If a module defines the named configuration then any values for the named configuration in the Module are used as overides for the named configuration in DefaultConfigurations. 
+</xs:documentation>
+          </xs:annotation>
+          <xs:complexType>
+            <xs:sequence>
+              <xs:annotation>
+                <xs:documentation>WHere does this appear in schema?</xs:documentation>
+              </xs:annotation>
+              <xs:element name="add"
+                          minOccurs="0"
+                          maxOccurs="unbounded"
+                          nillable="true">
+                <xs:annotation>
+                  <xs:documentation>A default configuration.</xs:documentation>
+                </xs:annotation>
+                <xs:complexType>
+                  <xs:complexContent>
+                    <xs:extension base="Configuration">
+                      <xs:sequence />
+                    </xs:extension>
+                  </xs:complexContent>
+                </xs:complexType>
+              </xs:element>
+            </xs:sequence>
+          </xs:complexType>
+        </xs:element>
+        <xs:element name="Modules"
+                    minOccurs="1"
+                    maxOccurs="unbounded"
+                    nillable="false">
+          <xs:complexType>
+            <xs:sequence>
+              <xs:element name="add"
+                          minOccurs="0"
+                          maxOccurs="unbounded"
+                          nillable="true">
+                <xs:complexType>
+                  <xs:complexContent>
+                    <xs:extension base="Module" />
+                  </xs:complexContent>
+                </xs:complexType>
+              </xs:element>
+            </xs:sequence>
+          </xs:complexType>
+        </xs:element>
+      </xs:sequence>
+      <xs:attribute name="saveClips"
+                    type="xs:string"
+                    use="required">
+        <xs:annotation>
+          <xs:documentation>If true then PNG images of the cropped configurations are saved in the save directory they originated from in the following format:</xs:documentation>
+        </xs:annotation>
+      </xs:attribute>
+      <xs:attribute name="filePath"
+                    type="xs:string"
+                    use="required">
+        <xs:annotation>
+          <xs:documentation>The location of the CTS graphic files to be used. Typically at. ..\TARGET\CTS\Docs\Profile JPGs</xs:documentation>
+        </xs:annotation>
+      </xs:attribute>
+      <xs:attribute name="defaultConfig"
+                    type="xs:string"
+                    use="required">
+        <xs:annotation>
+          <xs:documentation>Module that is loaded on startup.</xs:documentation>
+        </xs:annotation>
+      </xs:attribute>
+    </xs:complexType>
+  </xs:element>
+</xs:schema>

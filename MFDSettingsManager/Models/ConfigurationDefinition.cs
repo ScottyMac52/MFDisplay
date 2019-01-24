@@ -4,6 +4,7 @@ using MFDSettingsManager.Extensions;
 using System;
 using System.IO;
 using System.Windows;
+using System.Windows.Media;
 using System.Windows.Media.Imaging;
 
 namespace MFDSettingsManager.Models
@@ -79,10 +80,6 @@ namespace MFDSettingsManager.Models
         /// If true then the results of the cropping are saved
         /// </summary>
         public bool? SaveResults { get; set; }
-        /// <summary>
-        /// The type to use when saving images
-        /// </summary>
-        public SavedImageType? ImageType { get; set; }
         #endregion Image cropping properties
 
         #region Public methods
@@ -108,7 +105,6 @@ namespace MFDSettingsManager.Models
             Top = dc.Top;
             Width = dc.Width;
             Height = dc.Height;
-            ImageType = dc.ImageType;
             Name = dc.Name;
             XOffsetStart = dc.XOffsetStart;
             XOffsetFinish = dc.XOffsetFinish;
@@ -125,7 +121,6 @@ namespace MFDSettingsManager.Models
         /// <returns></returns>
         public BitmapSource CropImage(string imagePath)
         {
-            BitmapSource retResult = null;
             Int32Rect offSet;
             BitmapImage src = new BitmapImage();
             src.BeginInit();
@@ -135,22 +130,21 @@ namespace MFDSettingsManager.Models
 
             offSet = new Int32Rect(XOffsetStart, YOffsetStart, XOffsetFinish - XOffsetStart, YOffsetFinish - YOffsetStart);
             var croppedBitmap = new CroppedBitmap(src, offSet);
+
+            var noAlphaSource = new FormatConvertedBitmap();
+            noAlphaSource.BeginInit();
+            noAlphaSource.Source = croppedBitmap;
+            noAlphaSource.DestinationFormat = PixelFormats.Bgr24;
+            noAlphaSource.AlphaThreshold = 0;
+            noAlphaSource.EndInit();
+                       
             if ((SaveResults ?? false) == true)
             {
                 var fi = new FileInfo(imagePath);
 
-                SaveImage(croppedBitmap, fi.Directory.FullName, "Before");
+                SaveImage(noAlphaSource, fi.Directory.FullName, $"X_{XOffsetStart}To{XOffsetFinish}Y_{YOffsetStart}To{YOffsetFinish}_{Opacity}");
             }
-            var bitmap = croppedBitmap.BitmapImage2Bitmap();
-            bitmap = bitmap.Crop();
-            retResult = bitmap.ToBitmapSource();
-            if ((SaveResults ?? false) == true)
-            {
-                var fi = new FileInfo(imagePath);
-                SaveImage(retResult, fi.Directory.FullName, "After");
-            }
-
-            return retResult;
+            return noAlphaSource;
         }
 
         /// <summary>
@@ -174,30 +168,9 @@ namespace MFDSettingsManager.Models
         /// <param name="imagePrefix">Prefix to add to the filename</param>
         private void SaveImage(BitmapSource retResult, string filePath, string imagePrefix)
         {
-            switch (ImageType)
-            {
-                case SavedImageType.Jpeg:
-                    {
-                        var fileName = Path.Combine(filePath, $"{imagePrefix}_{ModuleName}_{Name}_{Width}_{Height}.jpg");
-                        retResult?.SaveToJpeg(fileName);
-                        Logger.Debug($"Cropped image saved as {fileName}.");
-                    }
-                    break;
-                case SavedImageType.Png:
-                    {
-                        var fileName = Path.Combine(filePath, $"{imagePrefix}_{ModuleName}_{Name}_{Width}_{Height}.png");
-                        retResult?.SaveToPng(fileName);
-                        Logger.Debug($"Cropped image saved as {fileName}.");
-                    }
-                    break;
-                default:
-                    {
-                        var fileName = Path.Combine(filePath, $"{imagePrefix}_{ModuleName}_{Name}_{Width}_{Height}.bmp");
-                        retResult?.SaveToBmp(fileName);
-                        Logger.Debug($"Cropped image saved as {fileName}.");
-                    }
-                    break;
-            }
+            var fileName = Path.Combine(filePath, $"{imagePrefix}_{ModuleName}_{Name}_{Width}_{Height}.png");
+            retResult?.SaveToPng(fileName);
+            Logger.Debug($"Cropped image saved as {fileName}.");
         }
 
         #endregion Private helpers

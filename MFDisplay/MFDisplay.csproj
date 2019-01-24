@@ -299,13 +299,21 @@
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
     <None Include="ClassDiagram1.cd" />
-    <Content Include="Docs\readme.rtf">
+    <Content Include="readme.rtf">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <None Include="Docs\mfdisplay.xsd">
+    <Content Include="mfdsettings.xsd">
       <SubType>Designer</SubType>
-    </None>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="log4net.config">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
     <None Include="MFDisplay_TemporaryKey.pfx" />
+    <Content Include="mfdsettings.config">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      <SubType>Designer</SubType>
+    </Content>
     <None Include="packages.config">
       <SubType>Designer</SubType>
     </None>
@@ -345,7 +353,7 @@
     <Resource Include="mfd_icon_F2V_icon.ico" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Docs\readme.txt">
+    <Content Include="readme.txt">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
   </ItemGroup>

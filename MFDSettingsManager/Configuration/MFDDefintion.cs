@@ -9,6 +9,32 @@ namespace MFDSettingsManager.Configuration
     public class MFDDefintion : ConfigurationElement
     {
 
+        /// <summary>
+        /// Default constructor
+        /// </summary>
+        public MFDDefintion()
+        {
+        }
+
+        /// <summary>
+        /// Copy constructor
+        /// </summary>
+        /// <param name="dc"></param>
+        public MFDDefintion(MFDDefintion dc)
+        {
+            FileName = dc.FileName;
+            Height = dc.Height;
+            Width = dc.Width;
+            Left = dc.Left;
+            Top = dc.Top;
+            Name = dc.Name;
+            XOffsetStart = dc.XOffsetStart;
+            XOffsetFinish = dc.XOffsetFinish;
+            YOffsetStart = dc.YOffsetStart;
+            YOffsetFinish = dc.YOffsetFinish;
+            Opacity = dc.Opacity;
+        }
+
         #region General configuration properties
 
         /// <summary>
@@ -30,11 +56,15 @@ namespace MFDSettingsManager.Configuration
         /// <summary>
         /// Opacity setting for the image
         /// </summary>
-        [ConfigurationProperty("opacity", IsRequired = true)]
-        public float Opacity
+        [ConfigurationProperty("opacity", IsRequired = false)]
+        public float? Opacity
         {
             get
             {
+                if (this["opacity"] == null)
+                {
+                    return null;
+                }
                 return (float)Convert.ChangeType(this["opacity"], typeof(float));
             }
             set

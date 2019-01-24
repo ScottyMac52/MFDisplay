@@ -29,10 +29,6 @@ namespace MFDSettingsManager.Models
         /// </summary>
         public List<ConfigurationDefinition> Configurations { get; internal set; }
         /// <summary>
-        /// ImageType to use for saving
-        /// </summary>
-        public SavedImageType? ImageType => Parent?.ImageType ?? SavedImageType.Jpeg;
-        /// <summary>
         /// Ctor
         /// </summary>        
         public ModuleDefinition()
