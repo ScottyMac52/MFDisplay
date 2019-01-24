@@ -19,8 +19,8 @@ Utility that allows the display of any image cropped from another image displaye
  X_{XOffsetStart}To{XOffsetFinish}Y_{YOffsetStart}To{YOffsetFinish}\_{Opacity}\_{ModuleName}\_{ConfigurationName}\_{Width}\_{Height}.png     
   ##### DefaultConfigurations
   Here is where as many named configurations can be placed as you want associated with every module. Good examples are LMFD and RMFD. Any attributes that you do not specify in the named configuration will need to be defined in the modules configuration that matches the same name. The recommended configuration is to use the LMFD and RMFD to define the size (Width, Height) of all LMFD and RMFD images. You may also define the defaults for cropping LMFD and RMFD, the defaults for the current images are:
-  ###### <add name="LMFD" opacity="1" width="885" height="700" xOffsetStart="101" xOffsetFinish="776" yOffsetStart="250" yOffsetFinish="900"/>
-  ###### <add name="RMFD" opacity="1" width="885" height="700" xOffsetStart="903" xOffsetFinish="1576" yOffsetStart="250" yOffsetFinish="900"/>
+  ###### name="LMFD" opacity="1" width="885" height="700" xOffsetStart="101" xOffsetFinish="776" yOffsetStart="250" yOffsetFinish="900"
+  ###### name="RMFD" opacity="1" width="885" height="700" xOffsetStart="903" xOffsetFinish="1576" yOffsetStart="250" yOffsetFinish="900"
 
    - The defaults for Left & Top in the shipped config matches my configuration which is that I have the following:
      - Main Monitor = 2560X1440
