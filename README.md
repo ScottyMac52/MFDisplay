@@ -44,12 +44,6 @@ Utility that allows the display of any image cropped from another image displaye
     - top : Y coordinate for the top position of the image 
     - left : X coordinate for the left position of the image when displayed
     - top : Y coordinate for the left position of the image when displayed
- 
-  - Module Configurations
-   - Each module can also define it's own configurations, for instance the CDU for the A-10C
-     - name="CDU" rMfdLeft="500" top="600" width="694" height="352" xRMFDOffsetStart="1" xRMFDOffsetFinish="694" yOffsetStart="1" yOffsetFinish="352" filename="DCS A10C CDU.jpg" opacity="1.0"
-    
-  4. Once the coordinates match your display preferences you can save the file, exit and execute the executable.
 
 ## Please report all isues via: https://github.com/ScottyMac52/MFDisplay/issues
 
