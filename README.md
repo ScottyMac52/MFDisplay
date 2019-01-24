@@ -22,17 +22,17 @@ Utility that allows the display of any image cropped from another image displaye
  - name="LMFD" opacity="1" width="885" height="700" xOffsetStart="101" xOffsetFinish="776" yOffsetStart="250" yOffsetFinish="900"
  - name="RMFD" opacity="1" width="885" height="700" xOffsetStart="903" xOffsetFinish="1576" yOffsetStart="250" yOffsetFinish="900"
 
-  - The defaults for Left & Top in the shipped config matches my configuration which is that I have the following:
-    - Main Monitor = 2560*1440
-    - LMFD Monitor = 1024*768 positioned bottom right of Main Monitor
-    - RMFD Monitor = 1024*768 positioned bottom right of the LMFD Monitor
-  - This means that my total display area is 4608*1440 so my configurations for Left and Top are...
-    - name="LMFD" left="2575" top="700"
-    - name="RMFD" left="4250" top="700"
-      
+    - The defaults for Left & Top in the shipped config matches my configuration which is that I have the following:
+     - Main Monitor = 2560*1440
+     - LMFD Monitor = 1024*768 positioned bottom right of Main Monitor
+     - RMFD Monitor = 1024*768 positioned bottom right of the LMFD Monitor
+    - This means that my total display area is 4608*1440 so my configurations for Left and Top are...
+     - name="LMFD" left="2575" top="700"
+     - name="RMFD" left="4250" top="700"
+
   - Modules
     - Each module entry, which starts with the markup <add moduleName... Can create as many named configurations underneath the markup <Configurations>. Each configuration can override any property that matches the name of a DefaultConfiguration. Each configuration can also be a brand new configuration for a module. An example of this is the CDU configuration for the A-10C:
-    - <add name="CDU" left="500" top="600" width="694" height="352" xOffsetStart="1" xOffsetFinish="694" yOffsetStart="1" yOffsetFinish="352" filename="DCS A10C CDU.jpg" opacity="1.0" />
+    - name="CDU" left="500" top="600" width="694" height="352" xOffsetStart="1" xOffsetFinish="694" yOffsetStart="1" yOffsetFinish="352" filename="DCS A10C CDU.jpg" opacity="1.0"
     
   - Configuration Options
     - xOffsetStart : X coord for the offset to use for the start of the horizontal cropping of an image
