@@ -27,8 +27,8 @@ Utility that allows the display of any image cropped from another image displaye
      - LMFD Monitor = 1024X768 positioned bottom right of Main Monitor
      - RMFD Monitor = 1024X768 positioned bottom right of the LMFD Monitor
     - This means that my total display area is 4608X1440 so my configurations for Left and Top are...
-     - name="LMFD" left="2575" top="700"
-     - name="RMFD" left="4250" top="700"
+      - name="LMFD" left="2575" top="700"
+      - name="RMFD" left="4250" top="700"
 
   - Modules
     - Each module entry, which starts with the markup <add moduleName... Can create as many named configurations underneath the markup <Configurations>. Each configuration can override any property that matches the name of a DefaultConfiguration. Each configuration can also be a brand new configuration for a module. An example of this is the CDU configuration for the A-10C:
