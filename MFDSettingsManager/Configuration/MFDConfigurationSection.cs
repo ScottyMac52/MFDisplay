@@ -1,9 +1,7 @@
-﻿using System;
+﻿using log4net;
 using System.Configuration;
-using System.IO;
 using System.Linq;
-using log4net;
-using MFDSettingsManager.Enum;
+using System.Reflection;
 
 namespace MFDSettingsManager.Configuration
 {
@@ -36,7 +34,8 @@ namespace MFDSettingsManager.Configuration
 
             if(string.IsNullOrEmpty(fullPathtoConfig))
             {
-                currentConfiguration = ConfigurationManager.OpenExeConfiguration(Path.Combine(Environment.CurrentDirectory, "MFDisplay.exe"));
+                var exeAssem = Assembly.GetEntryAssembly();
+                currentConfiguration = ConfigurationManager.OpenExeConfiguration(exeAssem.Location);
             }
             else
             {
