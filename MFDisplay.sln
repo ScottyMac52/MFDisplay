@@ -10,6 +10,7 @@ EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Docs", "Docs", "{EC07B551-29B0-4ACE-B45F-44A5871DC8A2}"
 	ProjectSection(SolutionItems) = preProject
 		mfdisp_exe_test.tmc = mfdisp_exe_test.tmc
+		MFDisplay\Docs\testfunction.tmc = MFDisplay\Docs\testfunction.tmc
 	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MFDSettingsManager", "MFDSettingsManager\MFDSettingsManager.csproj", "{BB12C431-7568-4AB3-AC21-4D6396744F22}"

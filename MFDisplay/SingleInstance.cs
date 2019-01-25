@@ -198,8 +198,16 @@ namespace Microsoft.Shell
 
     }
 
+    /// <summary>
+    /// Interface that defines a Singleton App
+    /// </summary>
     public interface ISingleInstanceApp
     {
+        /// <summary>
+        /// Method called on subsequent execution
+        /// </summary>
+        /// <param name="args"></param>
+        /// <returns></returns>
         bool SignalExternalCommandLineArgs(IList<string> args);
     }
 

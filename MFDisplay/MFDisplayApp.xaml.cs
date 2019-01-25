@@ -48,7 +48,7 @@ namespace MFDisplay
         /// <returns></returns>
         public bool SignalExternalCommandLineArgs(IList<string> args)
         {
-            var modSpecified = args?.Where(arg => arg.StartsWith("mod:"))?.FirstOrDefault()?.Split(':')?[1];
+            var modSpecified = args.GetSafeArgumentFrom("-mod");
             if(!string.IsNullOrEmpty(modSpecified))
             {
                 Logger.Info($"External request to change module to {modSpecified}.");
@@ -89,7 +89,7 @@ namespace MFDisplay
         /// <param name="e"></param>
         protected override void OnStartup(StartupEventArgs e)
         {
-            var modSpecified = e.Args?.Where(arg => arg.StartsWith("mod:"))?.FirstOrDefault()?.Split(':')?[1];
+            var modSpecified = e.Args.GetSafeArgumentFrom("-mod");
 
             if (!configPresent)
             {

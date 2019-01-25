@@ -1,12 +1,7 @@
-﻿using MFDSettingsManager.Configuration;
-using MFDSettingsManager.Models;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using log4net;
+using MFDSettingsManager.Configuration;
 using MFDSettingsManager.Mappers;
-using log4net;
+using MFDSettingsManager.Models;
 
 namespace MFDSettingsManager.Extensions
 {
