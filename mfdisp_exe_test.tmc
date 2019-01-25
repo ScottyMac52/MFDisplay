@@ -1,9 +1,23 @@
 include "target.tmh"
 
+define MAX_ARRAY	255
+define MAX_EXECUTE	512
+
+
+alias moduleName = "C-101";
+alias programLocation = "C:\\\\Program Files (x86)\\\\Vyper Industries\\\\MFD4CTS";
+alias programFullPath = "C:\\\\Program Files (x86)\\\\Vyper Industries\\\\MFD4CTS\\MFD4CTS.exe";
+
+char argumentString[MAX_ARRAY];
+char programString[MAX_ARRAY];
+char executeString[MAX_ARRAY];
+
+
 //program startup
 int main()
 {
     if(Init(&EventHandle)) return 1; // declare the event handler, return on error
+    
 	
 	//add initialization code here
 	Configure(&LMFD,MODE_EXCLUDED);
@@ -12,7 +26,8 @@ int main()
 	Configure(&TFRPRudder,MODE_EXCLUDED);
 	Configure(&TFRPHARudder,MODE_EXCLUDED);	
 	
-MapKey	(&Throttle,	APENG,	EXEC("launch_mfdisplay();"));
+
+	MapKey	(&Throttle,	APENG,	EXEC("launch_mfdisplay();"));
 }
 
 //event handler
@@ -22,10 +37,21 @@ int EventHandle(int type, alias o, int x)
 	
 	//add event handling code here
 }
+
 int launch_mfdisplay()
 {
-GameOutput(&Throttle, OUT_ID_LED_1, 2);
-printf("attempting to launch MFD4CTS\xa");
-int launched = system("spawn -w \"C:\\Program Files (x86)\\Vyper Industries\\MFD 4 CTS\" \"C:\\Program Files (x86)\\Vyper Industries\\MFD 4 CTS\\MFD4CTS.exe\" mod:FA-18C"); 
-printf("Result was %d", launched);
-}
+	GameOutput(&Throttle, OUT_ID_LED_1, 2);
+	
+	sprintf(&argumentString, "attempting to launch MFD4CTS\xa%s\xa", &moduleName);
+	printf(&argumentString);
+
+	sprintf(&executeString, "spawn -w \\\"%s\\\" \\\"%s\" -mod %s\xa", &programLocation, &programFullPath, &moduleName);
+    printf(&executeString);
+	
+	// int launched = system("spawn -w \C:\\Program Files (x86)\\Vyper Industries\\MFD4CTS\ \C:\\Program Files (x86)\\Vyper Industries\\MFD4CTS\MFD4CTS.exe\ -mod C-101"); 
+	int launched = system(&executeString); 
+	//int launched = system("spawn -w \"C:\\Program Files (x86)\\Vyper Industries\\MFD4CTS\" \"C:\\Program Files (x86)\\Vyper Industries\\MFD4CTS\\MFD4CTS.exe\" -mod FA-18C"); 
+	
+	sprintf(&argumentString, "Result of system: %d\xa", launched);
+	printf(&argumentString);
+} 

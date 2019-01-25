@@ -1,0 +1,50 @@
+include "target.tmh" //here we link this file to the file that contains the default Thrustmaster function code
+
+int Chaff_Flare_program_1; //we declare our new function
+
+int StopChaffAndFlares()
+{
+	StopAutoRepeat(1);
+	printf("Stopping the Chaff and Flares Program!\xa");
+	return 0;
+}
+
+int StartChaffAndFlaresProgram(int repeatMode)
+{
+	if(repeatMode == 0)
+	{
+		printf("Chaff and Flares Program until Release\xa");
+	}
+	else
+	{
+		printf("Chaff and Flares Program until Stopped\xa");
+	}
+	ActKey(KEYON+Chaff_Flare_program_1);
+}
+
+int NotifyStopProgram()
+{
+	printf("Chaff and Flares Program is stopping.\xa");
+}
+
+int main()
+{
+ if(Init(&EventHandle)) return 1;
+ MapKey(&Joystick, H4P, EXEC("StopChaffAndFlares();")); //stop repeating chaff and flare program 1
+ MapKey(&Joystick, H4U, REXEC(0, 6800, "StartChaffAndFlaresProgram(0);")); //execute and loop chaff and flare program 1 until I release the button
+ MapKeyR(&Joystick, H4U, EXEC("NotifyStopProgram();")); // Chaff and Flares program will stop on Release
+ MapKey(&Joystick, H4D, REXEC(1, 6800, "StartChaffAndFlaresProgram(1);", RNOSTOP)); //execute and loop chaff and flare program 1
+ Chaff_Flare_program_1 = CHAIN(
+ PULSE+INS,D(400),
+ PULSE+INS,D(400),
+ PULSE+INS,D(400),
+ PULSE+INS,D(400),
+ PULSE+DEL,D(400),
+ PULSE+DEL,D(400),
+ PULSE+DEL,D(400),
+ PULSE+DEL); //contents of the chaff and flare program 1
+}
+int EventHandle(int type, alias o, int x)
+{
+	DefaultMapping(&o, x);
+} 
