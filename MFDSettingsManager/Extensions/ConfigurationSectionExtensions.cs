@@ -18,6 +18,10 @@ namespace MFDSettingsManager.Extensions
         /// <returns></returns>
         public static ModulesConfiguration ToModel(this MFDConfigurationSection section, ILog logger)
         {
+            if(section == null)
+            {
+                return null;
+            }
             var model = ConfigSectionModelMapper.MapFromConfigurationSection(section);
             model.Logger = logger;
             return model;

@@ -12,6 +12,7 @@ using System.Windows.Controls;
 using System.Windows.Forms;
 using System.Windows.Input;
 using System.Windows.Media;
+using Application = System.Windows.Application;
 using MenuItem = System.Windows.Controls.MenuItem;
 using MessageBox = System.Windows.MessageBox;
 
@@ -69,38 +70,47 @@ namespace MFDisplay
         private void Window_Loaded(object sender, RoutedEventArgs e)
         {
             txtFilePath.TextChanged += TxtFilePath_TextChanged;
-            LoadConfig();
+            if(!LoadConfig())
+            {
+                ((MFDisplayApp)Application.Current).ShowConfigurationError(this);
+                Close();
+            }
         }
 
         private void LoadConfigurationSectionAsModel()
         {
             var configSection = MFDConfigurationSection.GetConfig(Logger);
-            Config = configSection.ToModel(Logger);
+            Config = configSection?.ToModel(Logger);
         }
 
-        private void LoadConfig()
+        private bool LoadConfig()
         {
             LoadConfigurationSectionAsModel();
-            cbModules.ItemsSource = Config.Modules;
+            if(Config == null)
+            {
+                return false;
+            }
+            cbModules.ItemsSource = Config?.Modules;
             cbModules.DisplayMemberPath = "DisplayName";
             cbModules.SelectedValuePath = "ModuleName";
 
-            cbDefaultModule.ItemsSource = Config.Modules;
+            cbDefaultModule.ItemsSource = Config?.Modules;
             cbDefaultModule.DisplayMemberPath = "DisplayName";
             cbDefaultModule.SelectedValuePath = "ModuleName";
 
-            txtFilePath.Text = Config.FilePath;
+            txtFilePath.Text = Config?.FilePath;
             chkIsValidPath.IsChecked = IsValidConfig;
-            chkSaveClips.IsChecked = Config.SaveClips;
+            chkSaveClips.IsChecked = Config?.SaveClips;
 
-            if (!string.IsNullOrEmpty(Config.DefaultConfig))
+            if (!string.IsNullOrEmpty(Config?.DefaultConfig))
             {
-                cbModules.SelectedValue = Config.DefaultConfig;
-                cbDefaultModule.SelectedValue = Config.DefaultConfig;
+                cbModules.SelectedValue = Config?.DefaultConfig;
+                cbDefaultModule.SelectedValue = Config?.DefaultConfig;
                 ModuleChanged();
             }
 
             IsDataDirty = false;
+            return true;
         }
 
 
@@ -241,7 +251,7 @@ namespace MFDisplay
                 SizeToContent = SizeToContent.WidthAndHeight,
                 WindowStyle = WindowStyle.None,
                 Owner = this,
-                FilePath = Path.Combine(Config.FilePath, config.ModuleName),
+                FilePath = Config.FilePath,
                 BorderThickness = new Thickness(5.0F),
                 AllowsTransparency = false
             };

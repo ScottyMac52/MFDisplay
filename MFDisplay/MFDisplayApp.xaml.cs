@@ -7,10 +7,8 @@ using Microsoft.Shell;
 using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Linq;
 using System.Reflection;
 using System.Windows;
-using System.Windows.Media;
 
 namespace MFDisplay
 {
@@ -82,6 +80,23 @@ namespace MFDisplay
             XmlConfigurator.Configure();
         }
 
+        /// <summary>
+        /// Reports on Configuration errors
+        /// </summary>
+        /// <param name="parent">Parent Window</param>
+        internal void ShowConfigurationError(Window parent = null)
+        {
+            var logPath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), @"Vyper Industries\MFD4CTS\status.log");
+            if(parent != null)
+            {
+                MessageBox.Show(parent, $"Unable to load the configuration. Please check the log at {logPath} for details.", "Error in Configuration", MessageBoxButton.OK, MessageBoxImage.Error);
+            }
+            else
+            {
+                MessageBox.Show($"Unable to load the configuration. Please check the log at {logPath} for details.", "Error in Configuration", MessageBoxButton.OK, MessageBoxImage.Error);
+            }
+        }
+
 
         /// <summary>
         /// Executed when the application starts
@@ -100,8 +115,16 @@ namespace MFDisplay
             Logger = LogManager.GetLogger("MFD4CTS");
             var assmLocation = Assembly.GetExecutingAssembly().Location;
             var sectionConfig = MFDConfigurationSection.GetConfig(Logger);
+
+            if(sectionConfig == null)
+            {
+                ShowConfigurationError();
+                Shutdown(5);
+                return;
+            }
+
             Configuration = sectionConfig.ToModel(Logger);
-            while (!Directory.Exists(Configuration.FilePath))
+            while (!Directory.Exists(Configuration?.FilePath))
             {
                 var configWindow = new ConfigurationWindow()
                 {
@@ -111,9 +134,9 @@ namespace MFDisplay
                 configWindow.ShowDialog();
                 sectionConfig = MFDConfigurationSection.GetConfig(Logger);
                 Configuration = sectionConfig.ToModel(Logger);
-                if (!Directory.Exists(Configuration.FilePath))
+                if (!Directory.Exists(Configuration?.FilePath))
                 {
-                    var msgResult = MessageBox.Show($"{Configuration.FilePath} is not a valid path. Do you wish to try another path?", "Invalid Path Configuration", MessageBoxButton.YesNo, MessageBoxImage.Hand);
+                    var msgResult = MessageBox.Show($"{Configuration?.FilePath} is not a valid path. Do you wish to try another path?", "Invalid Path Configuration", MessageBoxButton.YesNo, MessageBoxImage.Hand);
                     if(msgResult != MessageBoxResult.Yes)
                     {
                         break;
@@ -121,7 +144,7 @@ namespace MFDisplay
                 }
             }
 
-            if (!Directory.Exists(Configuration.FilePath))
+            if (!Directory.Exists(Configuration?.FilePath))
             {
                 Shutdown(2);
             }

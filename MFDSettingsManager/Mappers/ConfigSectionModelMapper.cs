@@ -19,6 +19,11 @@ namespace MFDSettingsManager.Mappers
         /// <returns></returns>
         internal static ModulesConfiguration MapFromConfigurationSection(MFDConfigurationSection section)
         {
+            if(section == null)
+            {
+                return null;
+            }
+
             var logger = section.Logger;
             var logSep = new string('-', 160);
 
