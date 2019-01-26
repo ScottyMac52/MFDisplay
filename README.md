@@ -38,7 +38,7 @@ Here is where as many named configurations can be placed as you want associated 
    
 #### Configuration Options
 - fileName : The path of the image to crop, the origin is the filePath in the MFDSettings config.
- - For example to reference a fileName for the F/A-18C the fileName would be **FA-18C\filename.jpg** 
+    - For example to reference a fileName for the F/A-18C the fileName would be **FA-18C\filename.jpg** 
 - xOffsetStart : X coord for the offset to use for the start of the horizontal cropping of an image
 - xOffsetFinish : X coord for the offset to use for the finish of the horizontal cropping of an image
 - yOffsetStart : Y coord for the offset to use for the start of the vertical cropping of an image
