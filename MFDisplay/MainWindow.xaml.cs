@@ -103,7 +103,7 @@ namespace MFDisplay
                 {
                     Logger = Logger,
                     Configuration = config,
-                    FilePath = Path.Combine(Config.FilePath, SelectedModule.ModuleName)
+                    FilePath = Config.FilePath
                 };
                 newmfdWindow.Show();
                 if (newmfdWindow.IsMFDLoaded)
@@ -214,7 +214,8 @@ namespace MFDisplay
                 {
                     Logger.Info($"Loading the requested configuration {PassedModule}...");
                 }
-                cbModules.SelectedValue = PassedModule ?? Config.DefaultConfig;
+                var selectedModule = PassedModule ?? Config.DefaultConfig;
+                cbModules.SelectedValue = selectedModule;
             }
         }
 

@@ -46,10 +46,20 @@ namespace MFDSettingsManager.Configuration
                 currentConfiguration = ConfigurationManager.OpenMappedExeConfiguration(exeFileMap, ConfigurationUserLevel.None);
             }
 
-            var configSection = (MFDConfigurationSection)currentConfiguration.GetSection("MFDSettings");
-            configSection.Logger = logger;
-            configSection.IsDataDirty = false;
-            return configSection ?? new MFDConfigurationSection();
+            try
+            {
+                var configSection = (MFDConfigurationSection)currentConfiguration.GetSection("MFDSettings");
+                configSection.Logger = logger;
+                configSection.IsDataDirty = false;
+                return configSection ?? new MFDConfigurationSection();
+            }
+            catch (System.Exception ex)
+            {
+                logger.Error($"Unable to load the configuration due to errors.", ex);
+            }
+
+            return null;
+
         }
 
         /// <summary>
