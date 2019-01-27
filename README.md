@@ -9,5 +9,8 @@ Utility that allows the display of any image cropped from another image displaye
 ## Configuration Guide 
 https://github.com/ScottyMac52/MFDisplay/wiki/Configuration-Guide
 
+## Command Arguments Guide
+https://github.com/ScottyMac52/MFDisplay/wiki/Passing-module-to-display
+
 ## Please report all isues via: https://github.com/ScottyMac52/MFDisplay/issues
 
