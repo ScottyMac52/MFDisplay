@@ -132,7 +132,7 @@
                   type="xs:string"
                   use="required">
       <xs:annotation>
-        <xs:documentation>Name of the module. Cooresponds to the directory below the filePath where the images for the module are located.</xs:documentation>
+        <xs:documentation>Name of the module. Must be unique in each configuration file.</xs:documentation>
       </xs:annotation>
     </xs:attribute>
     <xs:attribute name="displayName"
@@ -144,7 +144,11 @@
     </xs:attribute>
     <xs:attribute name="filename"
                   type="xs:string"
-                  use="optional" />
+                  use="optional">
+      <xs:annotation>
+        <xs:documentation>The filename for the module to use by default, must include the path starting with the filePath.</xs:documentation>
+      </xs:annotation>
+    </xs:attribute>
   </xs:complexType>
   <xs:element name="MFDSettings">
     <xs:complexType>
@@ -211,7 +215,7 @@
                     type="xs:string"
                     use="required">
         <xs:annotation>
-          <xs:documentation>The location of the CTS graphic files to be used. Typically at. ..\TARGET\CTS\Docs\Profile JPGs</xs:documentation>
+          <xs:documentation>The location of the CTS graphic files to be used. Typically at. TARGET\CTS\Docs\Profile JPGs</xs:documentation>
         </xs:annotation>
       </xs:attribute>
       <xs:attribute name="defaultConfig"

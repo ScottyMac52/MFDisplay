@@ -5,6 +5,7 @@ using System.IO;
 using System.Windows;
 using System.Windows.Input;
 using System.Windows.Shapes;
+using Path = System.IO.Path;
 
 namespace MFDisplay
 {
@@ -88,12 +89,12 @@ namespace MFDisplay
             IsMFDLoaded = false;
             if (!IsValid)
             {
-                Logger.Error($"The configuration {Configuration.ToReadableString()} cannot be loaded using the FilePath: {FilePath}.");
+                Logger.Error($"The configuration {Configuration.ToReadableString()} cannot be loaded using the full path: {Path.Combine(FilePath, Configuration.FileName)}.");
                 Close();
             }
             else
             {
-                var filePath = System.IO.Path.Combine(FilePath, Configuration.FileName);
+                var filePath = Path.Combine(FilePath, Configuration.FileName);
                 imgMain.Width = Width;
                 imgMain.Height = Height;
                 imgMain.Source = Configuration.CropImage(filePath);

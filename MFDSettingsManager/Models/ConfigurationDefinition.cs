@@ -153,7 +153,7 @@ namespace MFDSettingsManager.Models
         /// <returns></returns>
         public string ToReadableString()
         {
-            return $"{Name} at ({Left}, {Top}) for ({Width}, {Height}) with Opacity {Opacity} from {FileName ?? "Unknown Image"} at ({XOffsetStart}, {YOffsetStart}) for ({XOffsetFinish - XOffsetStart}, {YOffsetFinish - YOffsetStart}).";
+            return $"Config {Name} for {ModuleName} at ({Left}, {Top}) for ({Width}, {Height}) with Opacity {Opacity} from {FileName ?? "Unknown Image"} at ({XOffsetStart}, {YOffsetStart}) for ({XOffsetFinish - XOffsetStart}, {YOffsetFinish - YOffsetStart}).";
         }
 
         #endregion Public methods
