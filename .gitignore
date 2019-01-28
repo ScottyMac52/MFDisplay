@@ -222,3 +222,4 @@
 /Output/app.publish/MFD4CTS.exe
 /Output/Logs/mfd4cts.log
 /Output/setup.log
+/MFDSettingsManager/obj/Release/MFDSettingsManager.csprojAssemblyReference.cache
