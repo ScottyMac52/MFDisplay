@@ -34,8 +34,7 @@ steps:
 
 - task: CopyFiles@2
   inputs:
-    #sourceFolder: 
-    contents: '**/Outputs/setup.*' 
+    contents: '**\Output\setup.*' 
     targetFolder: '$(Build.ArtifactStagingDirectory)'
     cleanTargetFolder: true
     overWrite: true
