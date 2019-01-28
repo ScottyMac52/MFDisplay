@@ -1029,7 +1029,7 @@
         "DisplayName" = "8:Debug"
         "IsDebugOnly" = "11:TRUE"
         "IsReleaseOnly" = "11:FALSE"
-        "OutputFilename" = "8:..\\Output\\setup.msi"
+        "OutputFilename" = "8:..\\Deploy\\setup.msi"
         "PackageFilesAs" = "3:2"
         "PackageFileSize" = "3:-2147483648"
         "CabType" = "3:1"
@@ -1061,7 +1061,7 @@
         "DisplayName" = "8:Release"
         "IsDebugOnly" = "11:FALSE"
         "IsReleaseOnly" = "11:TRUE"
-        "OutputFilename" = "8:..\\Output\\setup.msi"
+        "OutputFilename" = "8:..\\Deploy\\setup.msi"
         "PackageFilesAs" = "3:2"
         "PackageFileSize" = "3:-2147483648"
         "CabType" = "3:1"
@@ -2276,7 +2276,7 @@
             {
             "AssemblyRegister" = "3:1"
             "AssemblyIsInGAC" = "11:FALSE"
-            "AssemblyAsmDisplayName" = "8:MFDSettingsManager, Version=2.0.0.0, Culture=neutral, processorArchitecture=x86"
+            "AssemblyAsmDisplayName" = "8:MFDSettingsManager, Version=2.2.1.0, Culture=neutral, processorArchitecture=x86"
                 "ScatterAssemblies"
                 {
                     "_7DEEA384806125832B2C659F0A5B68A0"
@@ -4358,7 +4358,7 @@
             }
             "{5259A561-127C-4D43-A0A1-72F10C7B3BF8}:_5C490CFEF632485FA4C4D957379F7C4F"
             {
-            "SourcePath" = "8:..\\MFDisplay\\obj\\Debug\\MFD4CTS.exe"
+            "SourcePath" = "8:..\\MFDisplay\\obj\\Release\\MFD4CTS.exe"
             "TargetName" = "8:"
             "Tag" = "8:"
             "Folder" = "8:_1E1F1E7898AD453989E7B4684362A4DE"
@@ -4414,7 +4414,7 @@
             }
             "{5259A561-127C-4D43-A0A1-72F10C7B3BF8}:_96F0F6C8787F40D385286407F0F5279C"
             {
-            "SourcePath" = "8:..\\MFDSettingsManager\\obj\\Debug\\MFDSettingsManager.dll"
+            "SourcePath" = "8:..\\MFDSettingsManager\\obj\\Release\\MFDSettingsManager.dll"
             "TargetName" = "8:"
             "Tag" = "8:"
             "Folder" = "8:_1E1F1E7898AD453989E7B4684362A4DE"

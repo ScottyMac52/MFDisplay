@@ -34,7 +34,7 @@ steps:
 
 - task: CopyFiles@2
   inputs:
-    contents: '**\Output\**'
+    contents: '**\Deploy\**'
     targetFolder: '$(Build.ArtifactStagingDirectory)'
     cleanTargetFolder: true
     overWrite: true
@@ -43,8 +43,5 @@ steps:
 - task: PublishBuildArtifacts@1
   inputs:
     pathtoPublish: '$(Build.ArtifactStagingDirectory)' 
-    artifactName: 'drop' 
+    artifactName: 'setup' 
     publishLocation: 'Container'
-    #targetPath: # Required when publishLocation == FilePath
-    #parallel: false # Optional
-    #parallelCount: # Optional
