@@ -32,6 +32,15 @@ steps:
     platform: '$(buildPlatform)'
     configuration: '$(buildConfiguration)'
 
+- task: CopyFiles@2
+  inputs:
+    #sourceFolder: 
+    contents: '**/Outputs/setup.*' 
+    targetFolder: '$(Build.ArtifactStagingDirectory)'
+    cleanTargetFolder: true
+    overWrite: true
+    flattenFolders: true
+
 - task: PublishBuildArtifacts@1
   inputs:
     pathtoPublish: '$(Build.ArtifactStagingDirectory)' 
