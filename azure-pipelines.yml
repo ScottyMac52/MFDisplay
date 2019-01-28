@@ -34,7 +34,7 @@ steps:
 
 - task: CopyFiles@2
   inputs:
-    contents: **\Output\**'
+    contents: '**\Output\**'
     targetFolder: '$(Build.ArtifactStagingDirectory)'
     cleanTargetFolder: true
     overWrite: true
