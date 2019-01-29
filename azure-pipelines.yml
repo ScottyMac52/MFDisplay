@@ -7,7 +7,7 @@ trigger:
 - master
 
 pool:
-  name: 'DESKTOP-1ABRJ32'  
+  name: 'Default'  
 
 variables:
   solution: '**/*.sln'
