@@ -4,31 +4,22 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:MFDisplay"
-        x:Class="MFDisplay.MainWindow"
+    x:Class="MFDisplay.MainWindow"
         mc:Ignorable="d"
-        Title="MFD 4 CTS" Topmost="True" HorizontalAlignment="Stretch" Height="100" Width="275" MinWidth="250" Loaded="Window_Loaded" Closing="Window_Closing" ResizeMode="CanMinimize" Cursor="Arrow" Closed="Window_Closed" WindowStartupLocation="CenterScreen">
-    <Grid HorizontalAlignment="Left" VerticalAlignment="Top">
-        <StackPanel HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
-            <DockPanel>
-                <Menu DockPanel.Dock="Top">
-                    <MenuItem Header="_File">
-                        <MenuItem Header="_Exit" CommandParameter="Exit" Click="FileMenuItem_Click" />
-                    </MenuItem>
-                        <MenuItem IsEnabled="False" Header="_Configuration">
-                        <MenuItem IsEnabled="False" CommandParameter="Modify"  Header="_Modify" Click="ConfigurationMenuItem_Click"/>
-                    </MenuItem>
-                    <MenuItem Header="_Help">
-                        <MenuItem CommandParameter="About" Header="_About" Click="HelpMenuItem_Click"/>
-                    </MenuItem>
-                </Menu>
-                <StackPanel Height="10"></StackPanel>
-            </DockPanel>
-            <StackPanel Orientation="Horizontal"  HorizontalAlignment="Stretch">
-                <Label Content="Pick Module: "/>
-                <ComboBox Name="cbModules" HorizontalAlignment="Stretch" SelectionChanged="ComboBox_SelectionChanged" Loaded="CbModules_Loaded">
-                </ComboBox>
-            </StackPanel>
-        </StackPanel>
-        
-    </Grid>
+        Title="MFD 4 CTS" Topmost="True" Loaded="Window_Loaded" MaxHeight="150" MaxWidth="300"  Closing="Window_Closing" ResizeMode="CanMinimize" Cursor="Arrow" Closed="Window_Closed" WindowStartupLocation="CenterScreen" Height="115.048">
+    <StackPanel VerticalAlignment="Top" Width="auto" Height="auto">
+        <Menu DockPanel.Dock="Top" Margin="0,0,0,0" Height="22">
+            <MenuItem Header="_File">
+                <MenuItem Header="_Exit" CommandParameter="Exit" Click="FileMenuItem_Click" />
+            </MenuItem>
+            <MenuItem Header="_Configuration">
+                <MenuItem Header="_Modify" CommandParameter="Modify" Click="ConfigurationMenuItem_Click"/>
+            </MenuItem>
+            <MenuItem Header="_Help">
+                <MenuItem Header="_About" CommandParameter="About" Click="HelpMenuItem_Click"/>
+            </MenuItem>
+        </Menu>
+        <Label Content="Pick Module: "/>
+        <ComboBox Width="auto" x:Name="cbModules" SelectionChanged="ComboBox_SelectionChanged" Loaded="CbModules_Loaded" />
+    </StackPanel>
 </Window>

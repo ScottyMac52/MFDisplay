@@ -5,16 +5,22 @@ using MFDSettingsManager.Extensions;
 using MFDSettingsManager.Models;
 using System;
 using System.Collections.Generic;
+using System.Drawing;
 using System.IO;
 using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Data;
 using System.Windows.Forms;
 using System.Windows.Input;
 using System.Windows.Media;
 using Application = System.Windows.Application;
+using Button = System.Windows.Controls.Button;
+using Image = System.Windows.Controls.Image;
 using MenuItem = System.Windows.Controls.MenuItem;
 using MessageBox = System.Windows.MessageBox;
+using Point = System.Drawing.Point;
+using Size = System.Drawing.Size;
 
 namespace MFDisplay
 {
@@ -23,6 +29,11 @@ namespace MFDisplay
     /// </summary>
     public partial class ConfigurationWindow : Window
     {
+        /// <summary>
+        /// If true then editing is allowed
+        /// </summary>
+        public static bool EDIT_ACTIVE = false;
+
         /// <summary>
         /// Logger for the window
         /// </summary>
@@ -44,14 +55,19 @@ namespace MFDisplay
         public bool IsDataDirty { get; private set; }
 
         /// <summary>
-        /// The current preview window
+        /// The current list of preview windows
         /// </summary>
-        public MFDWindow PreviewWindow { get; private set; }
+        public List<MFDWindow> PreviewWindows { get; private set; }
 
         /// <summary>
         /// Is the configuration Valid?
         /// </summary>
         public bool IsValidConfig => !string.IsNullOrEmpty(Config?.FilePath) ? Directory.Exists(Config.FilePath) : false;
+
+        /// <summary>
+        /// Gets the currently selected definition
+        /// </summary>
+        public ConfigurationDefinition CurrentConfiguration => GetCurrentDefintion();
 
         /// <summary>
         /// Ctor
@@ -75,6 +91,8 @@ namespace MFDisplay
                 ((MFDisplayApp)Application.Current).ShowConfigurationError(this);
                 Close();
             }
+
+            PreviewWindows = new List<MFDWindow>();
         }
 
         private void LoadConfigurationSectionAsModel()
@@ -217,69 +235,26 @@ namespace MFDisplay
             return null;
         }
 
+        private ConfigurationDefinition GetCurrentDefintion()
+        {
+            return dgConfigurations.CurrentItem as ConfigurationDefinition;
+        }
 
         private void ModuleChanged()
         {
             var selectedMod = CurrentModule;
             if (selectedMod != null)
             {
+                PreviewWindows?.ForEach(pw =>
+                {
+                    if(pw.IsLoaded)
+                    {
+                        pw.Close();
+                    }
+                });
+                PreviewWindows?.Clear();
                 dgConfigurations.ItemsSource = CurrentModule.Configurations;
             }
-        }
-
-        /// <summary>
-        /// Provides for the ability to preview a window configuration and change it on the fly
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
-        private void PreviewClick(object sender, RoutedEventArgs e)
-        {
-            if(!IsValidConfig)
-            {
-                MessageBox.Show("The configuration is not valid for preview");
-                e.Handled = true;
-            }
-
-            var btn = sender as System.Windows.Controls.Button;
-            var config = ((List<ConfigurationDefinition>)dgConfigurations.ItemsSource).SingleOrDefault(currentConfig => currentConfig.Name == (string)btn.CommandParameter);
-
-            PreviewWindow = new MFDWindow()
-            {
-                Logger = Logger,
-                Configuration = config,
-                ResizeMode = ResizeMode.NoResize,
-                SizeToContent = SizeToContent.WidthAndHeight,
-                WindowStyle = WindowStyle.None,
-                Owner = this,
-                FilePath = Config.FilePath,
-                BorderThickness = new Thickness(5.0F),
-                AllowsTransparency = false
-            };
-
-            PreviewWindow.imgMain.MouseDown += ImgMain_MouseDown;
-            PreviewWindow.ToggleCloseCheckBox(true);
-            PreviewWindow.ShowDialog();
-            PreviewWindow.ToggleCloseCheckBox(false);
-
-            config.Left = (int)PreviewWindow.Left;
-            config.Top = (int)PreviewWindow.Top;
-            config.Width = (int)PreviewWindow.Width;
-            config.Height = (int)PreviewWindow.Height;
-            
-            var savedConfig = MFDConfigurationSection.GetConfig(Logger);
-            var savedModule = savedConfig?.GetModuleConfiguration(config.ModuleName);
-            var savedConfiguration = savedModule?.GetMFDConfiguration(config.Name);
-
-            if (savedConfiguration != null)
-            {
-                savedConfiguration.Top = config.Top;
-                savedConfiguration.Width = config.Width;
-                savedConfiguration.Height = config.Height;
-                savedConfiguration.Left = config.Left;
-            }
-
-            savedConfig.CurrentConfiguration.Save();
-            LoadConfig();
         }
 
         private void ImgMain_MouseDown(object sender, MouseButtonEventArgs e)
@@ -388,12 +363,23 @@ namespace MFDisplay
 
         private void DgConfigurations_CellEditEnding(object sender, DataGridCellEditEndingEventArgs e)
         {
-            // the data Context is the item edited
+            var currentDef = CurrentConfiguration;
+            var txtControl = e.EditingElement as System.Windows.Controls.TextBox;
+            var bindingExpression = (BindingExpression)txtControl.BindingGroup.BindingExpressions.FirstOrDefault(be => be.Target == txtControl);
+            var propertyName = bindingExpression.ResolvedSourcePropertyName;
+            var propertyInfo = currentDef.GetType().GetProperties(System.Reflection.BindingFlags.Public).SingleOrDefault(prop => prop.Name == propertyName);
+
+            if (!EDIT_ACTIVE)
+            {
+                var oldValue = propertyInfo.GetValue(currentDef);
+                ((System.Windows.Controls.TextBox)e.EditingElement).Text = oldValue?.ToString();
+                e.Cancel = true;
+                return;
+            }
+
             var screens = Screen.AllScreens;
             var screen = this.GetScreen();
             var mfdConfiguration = e.Row.DataContext as ConfigurationDefinition;
-            var txtControl = e.EditingElement as System.Windows.Controls.TextBox;
-            var propertyName = (string) ((System.Windows.Controls.DataGridCell)txtControl?.Parent)?.Column?.Header;
 
             if(int.TryParse(txtControl.Text, out int newValue))
             {
@@ -432,6 +418,77 @@ namespace MFDisplay
                 }
             }
             IsDataDirty = true;
+        }
+
+        /// <summary>
+        /// Processes a request to preview a configuration
+        /// </summary>
+        /// <param name="button"></param>
+        public void ProcessPreviewRequest(Button button)
+        {
+            var currentPreview = PreviewWindows.FirstOrDefault(pw => pw.Tag.Equals(button.Tag));
+            if (currentPreview == null)
+            {
+                var currentDef = CurrentConfiguration;
+                var newPreview = new MFDWindow()
+                {
+                    Logger = Logger,
+                    Owner = this,
+                    Configuration = currentDef,
+                    FilePath = Config.FilePath,
+                    Tag = button.Tag,
+                    AllowsTransparency = false,
+                    WindowState = WindowState.Normal,
+                    WindowStyle = WindowStyle.ToolWindow,
+                    ResizeMode = ResizeMode.CanResizeWithGrip
+                };
+                newPreview.Show();
+                var screens = Screen.AllScreens;
+                var rectPosition = new Rectangle(new Point((int)newPreview.Left, (int)newPreview.Top), new Size((int)newPreview.Width, (int)newPreview.Height));
+                var matchingScreen = screens.FirstOrDefault(screen => rectPosition.IntersectsWith(screen.WorkingArea));
+
+                if (matchingScreen == null)
+                {
+                    MessageBox.Show($"The preview cannot be displayed using the current configuration of {currentDef.ToReadableString()}", "Preview error", MessageBoxButton.OK, MessageBoxImage.Stop);
+                    Logger.Error($"Unable to preview, configuration {currentDef.ToReadableString()}.");
+                    newPreview.Close();
+                }
+                else
+                {
+                    Logger.Info($"Preview of {currentDef.Name} for Module {currentDef.ModuleName} is started.");
+                    button.Content = "Close";
+                    newPreview.Closed += NewPreview_Closed;
+                    PreviewWindows.Add(newPreview);
+                }
+            }
+            else
+            {
+                currentPreview.Closed -= NewPreview_Closed;
+                if (currentPreview.IsLoaded)
+                {
+                    currentPreview.Close();
+                }
+                button.Content = "Preview";
+                Logger.Info($"Preview of {currentPreview.Tag} is finished.");
+                PreviewWindows.Remove(currentPreview);
+            }
+        }
+
+        private void NewPreview_Closed(object sender, EventArgs e)
+        {
+            var windowClosed = sender as MFDWindow;
+            Logger.Debug($"User closed {windowClosed.Tag}");
+        }
+
+        /// <summary>
+        /// Allows any of the configurations to be previewed and checks the coordinates
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void PreviewClick(object sender, RoutedEventArgs e)
+        {
+            var button = sender as Button;
+            ProcessPreviewRequest(button);
         }
     }
 }

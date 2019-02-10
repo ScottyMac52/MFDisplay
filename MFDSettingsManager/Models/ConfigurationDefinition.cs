@@ -33,6 +33,11 @@ namespace MFDSettingsManager.Models
         /// </summary>
         public string FileName { get; set; }
 
+        /// <summary>
+        /// The starting file path for the configuration
+        /// </summary>
+        public string FilePath { get; set; }
+
         #endregion Identifying properties
 
         #region Basic Image Properties Left, Top, Width, Height and Opacity
@@ -121,16 +126,14 @@ namespace MFDSettingsManager.Models
         /// <returns></returns>
         public BitmapSource CropImage(string imagePath)
         {
-            Int32Rect offSet;
             BitmapImage src = new BitmapImage();
             src.BeginInit();
             src.UriSource = new Uri(imagePath, UriKind.Relative);
             src.CacheOption = BitmapCacheOption.OnLoad;
             src.EndInit();
 
-            offSet = new Int32Rect(XOffsetStart, YOffsetStart, XOffsetFinish - XOffsetStart, YOffsetFinish - YOffsetStart);
-            var croppedBitmap = new CroppedBitmap(src, offSet);
-
+            Int32Rect offSet = new Int32Rect(XOffsetStart, YOffsetStart, XOffsetFinish - XOffsetStart, YOffsetFinish - YOffsetStart);
+            CroppedBitmap croppedBitmap = new CroppedBitmap(src, offSet);
             var noAlphaSource = new FormatConvertedBitmap();
             noAlphaSource.BeginInit();
             noAlphaSource.Source = croppedBitmap;
@@ -153,7 +156,16 @@ namespace MFDSettingsManager.Models
         /// <returns></returns>
         public string ToReadableString()
         {
-            return $"Config {Name} for {ModuleName} at ({Left}, {Top}) for ({Width}, {Height}) with Opacity {Opacity} from {FileName ?? "Unknown Image"} at ({XOffsetStart}, {YOffsetStart}) for ({XOffsetFinish - XOffsetStart}, {YOffsetFinish - YOffsetStart}).";
+            string completePath = null;
+            string fileStatus = null;
+            var pathExists = false;
+            if(!string.IsNullOrEmpty(FilePath) && Directory.Exists(FilePath) && !string.IsNullOrEmpty(FileName))
+            {
+                completePath = Path.Combine(FilePath, FileName);
+                pathExists = File.Exists(completePath);
+                fileStatus = pathExists ? "found " : "not found ";
+            }
+            return $"Config {Name} for {ModuleName} at ({Left}, {Top}) for ({Width}, {Height}) with Opacity {Opacity} from {completePath ?? "Unknown Image"} was {fileStatus} at Offset ({XOffsetStart}, {YOffsetStart}) for ({XOffsetFinish - XOffsetStart}, {YOffsetFinish - YOffsetStart}).";
         }
 
         #endregion Public methods

@@ -5,70 +5,8 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:MFDisplay"
         mc:Ignorable="d"
-        Title="MFD" Name="mfdWindow" Height="450" Width="800" BorderThickness="0" Topmost="True" Loaded="Window_Loaded" Closed="Window_Closed" SizeToContent="WidthAndHeight" ResizeMode="NoResize" WindowStyle="None" ShowInTaskbar="False" AllowsTransparency="True" Opacity="0">
-    <Window.Resources>
-        <Style x:Key="RectBorderStyle" TargetType="Rectangle">
-            <Setter Property="Focusable" Value="False" />
-            <Setter Property="Fill" Value="Transparent" />
-            <Setter Property="Tag" Value="{Binding RelativeSource={RelativeSource AncestorType=Window}}" />
-            <EventSetter Event="MouseLeftButtonDown" Handler="Resize_Init"/>
-            <EventSetter Event="MouseLeftButtonUp" Handler="Resize_End"/>
-            <EventSetter Event="MouseMove" Handler="Resizeing_Form"/>
-        </Style>
-    </Window.Resources>
+        Title="MFD" Name="mfdWindow" BorderThickness="0" Topmost="True" Loaded="Window_Loaded" Closed="Window_Closed" ResizeMode="NoResize" WindowStyle="None" ShowInTaskbar="False" Opacity=".3" AllowsTransparency="True">
     <Grid>
-        <Rectangle x:Name="leftSizeGrip"
-    Width="7"
-    HorizontalAlignment="Left"
-    Cursor="SizeWE"
-    Style="{StaticResource RectBorderStyle}" />
-        <Rectangle x:Name="rightSizeGrip"
-    Width="7"
-    HorizontalAlignment="Right"
-    Cursor="SizeWE"
-    Style="{StaticResource RectBorderStyle}" />
-        <Rectangle x:Name="topSizeGrip"
-    Height="7"
-    VerticalAlignment="Top"
-    Cursor="SizeNS"
-    Style="{StaticResource RectBorderStyle}" />
-        <Rectangle x:Name="bottomSizeGrip"
-    Height="7"
-    VerticalAlignment="Bottom"
-    Cursor="SizeNS"
-    Style="{StaticResource RectBorderStyle}" />
-        <!--  Corners  -->
-        <Rectangle Name="topLeftSizeGrip"
-    Width="7"
-    Height="7"
-    HorizontalAlignment="Left"
-    VerticalAlignment="Top"
-    Cursor="SizeNWSE"
-    Style="{StaticResource RectBorderStyle}" />
-        <Rectangle Name="bottomRightSizeGrip"
-    Width="7"
-    Height="7"
-    HorizontalAlignment="Right"
-    VerticalAlignment="Bottom"
-    Cursor="SizeNWSE"
-    Style="{StaticResource RectBorderStyle}" />
-        <Rectangle Name="topRightSizeGrip"
-    Width="7"
-    Height="7"
-    HorizontalAlignment="Right"
-    VerticalAlignment="Top"
-    Cursor="SizeNESW"
-    Style="{StaticResource RectBorderStyle}" />
-        <Rectangle Name="bottomLeftSizeGrip"
-    Width="7"
-    Height="7"
-    HorizontalAlignment="Left"
-    VerticalAlignment="Bottom"
-    Cursor="SizeNESW"
-    Style="{StaticResource RectBorderStyle}" />
-        <StackPanel HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
-            <CheckBox Opacity=".5" TabIndex="1" ClickMode="Release" Name="chkCloseAndSave" Visibility="Hidden" Click="ChkCloseAndSave_Click" Background="Blue"/>
-            <Image x:Name="imgMain" HorizontalAlignment="Stretch" Height="430" Margin="0" VerticalAlignment="Stretch" Width="780" Stretch="Fill"/>
-        </StackPanel>
+        <Image Width="auto" Height="auto" x:Name="imgMain" Stretch="Fill"  Margin="0"/>
     </Grid>
 </Window>

@@ -223,3 +223,9 @@
 /Output/Logs/mfd4cts.log
 /Output/setup.log
 /MFDSettingsManager/obj/Release/MFDSettingsManager.csprojAssemblyReference.cache
+/Deploy/setup.exe
+/Deploy/setup.msi
+/MFDSettingsManager/obj/Debug/MFDSettingsManager.csproj.CopyComplete
+/MFDSettingsManager/obj/Release/DesignTimeResolveAssemblyReferencesInput.cache
+/TestOutput
+/Tests-MFDisplay/obj/Release

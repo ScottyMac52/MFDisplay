@@ -18,6 +18,8 @@ namespace MFDisplay
     public partial class MFDisplayApp : Application, ISingleInstanceApp
     {
         private const string Unique = "Vyper_MFD4CTS_Application";
+        private const string Company = "Vyper Industries";
+        private const string Years = "2018, 2019"; 
 
         /// <summary>
         /// Main entry point
@@ -61,6 +63,19 @@ namespace MFDisplay
         /// Configuration section for the MFDs
         /// </summary>
         public ModulesConfiguration Configuration { get; protected set; }
+
+        /// <summary>
+        /// Gets the Name and version of the application
+        /// </summary>
+        public string VersionString => GetVersionString();
+
+        private string GetVersionString()
+        {
+            char copyChar = (char) 169;
+            var exeAssem = Assembly.GetExecutingAssembly();
+            return $"{exeAssem.GetName().Name} {copyChar} {Years} {Company}, Version: {exeAssem.GetName().Version.Major}.{exeAssem.GetName().Version.Minor}.{exeAssem.GetName().Version.Build}.{exeAssem.GetName().Version.Revision}";
+        }
+
 
         private ILog Logger;
         private static readonly bool configPresent = true;
@@ -158,6 +173,7 @@ namespace MFDisplay
                     WindowState = WindowState.Minimized,
                     PassedModule = string.IsNullOrEmpty(modSpecified) ? null : modSpecified
                 };
+
                 mainWindow.ShowDialog();
                 Shutdown(0);
             }

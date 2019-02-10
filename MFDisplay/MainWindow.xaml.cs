@@ -1,11 +1,7 @@
 ﻿using log4net;
-using MFDSettingsManager.Configuration;
-using MFDSettingsManager.Extensions;
-using MFDSettingsManager.Mappers;
 using MFDSettingsManager.Models;
 using System;
 using System.Collections.Generic;
-using System.IO;
 using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
@@ -109,6 +105,10 @@ namespace MFDisplay
                 if (newmfdWindow.IsMFDLoaded)
                 {
                     MFDList.Add(config.Name, newmfdWindow);
+                }
+                else
+                {
+                    newmfdWindow?.Close();
                 }
             });
         }
@@ -233,7 +233,7 @@ namespace MFDisplay
 
         private void HelpMenuItem_Click(object sender, RoutedEventArgs e)
         {
-
+            MessageBox.Show(((MFDisplayApp)Application.Current).VersionString);
         }
 
         private void FileMenuItem_Click(object sender, RoutedEventArgs e)
