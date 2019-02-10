@@ -1,5 +1,7 @@
 ﻿using log4net;
+using System;
 using System.Configuration;
+using System.IO;
 using System.Linq;
 using System.Reflection;
 
@@ -30,6 +32,7 @@ namespace MFDSettingsManager.Configuration
         /// <returns></returns>
         public static MFDConfigurationSection GetConfig(ILog logger, string fullPathtoConfig = null)
         {
+
             System.Configuration.Configuration currentConfiguration = null;
 
             if(string.IsNullOrEmpty(fullPathtoConfig))

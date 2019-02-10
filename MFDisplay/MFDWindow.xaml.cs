@@ -3,8 +3,7 @@ using MFDSettingsManager.Models;
 using System;
 using System.IO;
 using System.Windows;
-using System.Windows.Input;
-using System.Windows.Shapes;
+using System.Windows.Media.Imaging;
 using Path = System.IO.Path;
 
 namespace MFDisplay
@@ -76,9 +75,17 @@ namespace MFDisplay
         /// <param name="e"></param>
         private void Window_Loaded(object sender, RoutedEventArgs e)
         {
-            Logger.Debug($"Loading the configuration for {Configuration.Name} from Module {Configuration.ModuleName}");
             InitializeMFD(Configuration);
+
+            if(Opacity == 0)
+            {
+                Logger?.Info($"Skipped {Configuration.ToReadableString()}...");
+                Close();
+                return;
+            }
+
             LoadImage();
+            Logger?.Debug($"Loading the configuration for {Configuration.Name} from Module {Configuration.ModuleName}");
         }
 
         /// <summary>
@@ -86,10 +93,11 @@ namespace MFDisplay
         /// </summary>
         public void LoadImage()
         {
+            BitmapSource bitmapSource = null;
             IsMFDLoaded = false;
             if (!IsValid)
             {
-                Logger.Error($"The configuration {Configuration.ToReadableString()} cannot be loaded using the full path: {Path.Combine(FilePath, Configuration.FileName)}.");
+                Logger?.Error($"The configuration {Configuration.ToReadableString()} cannot be loaded using the full path: {Path.Combine(FilePath, Configuration.FileName)}.");
                 Close();
             }
             else
@@ -97,101 +105,29 @@ namespace MFDisplay
                 var filePath = Path.Combine(FilePath, Configuration.FileName);
                 imgMain.Width = Width;
                 imgMain.Height = Height;
-                imgMain.Source = Configuration.CropImage(filePath);
-                IsMFDLoaded = true;
-                Logger.Debug($"Image {filePath} is loaded.");
-            }
-        }
-
-        /// <summary>
-        /// Toggles the visibility of the Close check box on the window
-        /// </summary>
-        /// <param name="showCheckbox"></param>
-        public void ToggleCloseCheckBox(bool showCheckbox = false)
-        {
-            chkCloseAndSave.Visibility = showCheckbox ? Visibility.Visible : Visibility.Hidden;
-            chkCloseAndSave.UpdateLayout();
-        }
-
-        #region ResizeWindows
-        bool ResizeInProcess = false;
-        private void Resize_Init(object sender, MouseButtonEventArgs e)
-        {
-            Rectangle senderRect = sender as Rectangle;
-            if (senderRect != null)
-            {
-                ResizeInProcess = true;
-                senderRect.CaptureMouse();
-            }
-        }
-
-        private void Resize_End(object sender, MouseButtonEventArgs e)
-        {
-            Rectangle senderRect = sender as Rectangle;
-            if (senderRect != null)
-            {
-                ResizeInProcess = false; ;
-                senderRect.ReleaseMouseCapture();
-            }
-        }
-
-        private void Resizeing_Form(object sender, MouseEventArgs e)
-        {
-            if (ResizeInProcess)
-            {
-                Rectangle senderRect = sender as Rectangle;
-                Window mainWindow = senderRect.Tag as Window;
-                if (senderRect != null)
+                try
                 {
-                    double width = e.GetPosition(mainWindow).X;
-                    double height = e.GetPosition(mainWindow).Y;
-                    senderRect.CaptureMouse();
-                    if (senderRect.Name.ToLower().Contains("right"))
+                    bitmapSource = Configuration.CropImage(filePath);
+                }
+                catch (Exception ex)
+                {
+                    Logger?.Error($"Unable to load {Configuration.ToReadableString()}.", ex);
+                }
+                finally
+                {
+                    if(bitmapSource != null)
                     {
-                        width += 5;
-                        if (width > 0)
-                            mainWindow.Width = width;
-                    }
-                    if (senderRect.Name.ToLower().Contains("left"))
-                    {
-                        width -= 5;
-                        mainWindow.Left += width;
-                        width = mainWindow.Width - width;
-                        if (width > 0)
-                        {
-                            mainWindow.Width = width;
-                        }
-                    }
-                    if (senderRect.Name.ToLower().Contains("bottom"))
-                    {
-                        height += 5;
-                        if (height > 0)
-                            mainWindow.Height = height;
-                    }
-                    if (senderRect.Name.ToLower().Contains("top"))
-                    {
-                        height -= 5;
-                        mainWindow.Top += height;
-                        height = mainWindow.Height - height;
-                        if (height > 0)
-                        {
-                            mainWindow.Height = height;
-                        }
+                        imgMain.Source = bitmapSource;
+                        IsMFDLoaded = true;
+                        Logger?.Debug($"Image {filePath} is loaded.");
                     }
                 }
             }
         }
-        #endregion
 
         private void Window_Closed(object sender, EventArgs e)
         {
-            Logger.Info($"MFD Is Closed -> {Configuration.Name}.");
-        }
-
-        private void ChkCloseAndSave_Click(object sender, RoutedEventArgs e)
-        {
-            Logger.Debug($"MFD Is Closing... -> {Configuration.ToReadableString()}");
-            Close();
+            Logger?.Info($"MFD Is Closed -> {Configuration.Name}.");
         }
     }
 }

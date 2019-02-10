@@ -22,8 +22,8 @@
             <StackPanel Height="10"></StackPanel>
         </DockPanel>
         <!-- Horizontal StackPanel for the top level configuration options -->
-        <StackPanel Orientation="Vertical">
-            <StackPanel HorizontalAlignment="Stretch" Orientation="Horizontal" VerticalAlignment="Stretch">
+        <StackPanel Width="auto" Orientation="Vertical">
+            <StackPanel Width="auto" HorizontalAlignment="Stretch" Orientation="Horizontal" VerticalAlignment="Stretch">
                 <!-- FilePath Configuration -->
                 <Label VerticalAlignment="Center" Content="FilePath:"/>
                 <TextBox Name="txtFilePath" VerticalAlignment="Center" ToolTip="The FilePath to the images" Text="" Focusable="False" MaxLines="1" IsReadOnly="True" IsEnabled="False"/>
@@ -31,26 +31,35 @@
                 <Label VerticalAlignment="Center" Content="Valid path: "/>
                 <CheckBox IsEnabled="False" Name="chkIsValidPath" VerticalAlignment="Center" ToolTip="Is the FilePath valid?"/>
             </StackPanel>
-            <StackPanel HorizontalAlignment="Stretch" Orientation="Horizontal" VerticalAlignment="Stretch">
+            <StackPanel Width="auto" HorizontalAlignment="Stretch" Orientation="Horizontal" VerticalAlignment="Stretch">
                 <!-- DefaultModule Configuration -->
                 <Label VerticalAlignment="Center" Content="Default Module:"/>
                 <ComboBox Name="cbDefaultModule" VerticalAlignment="Center" ToolTip="Default module" SelectionChanged="CbDefaultModule_SelectionChanged" />
             </StackPanel>
-            <StackPanel HorizontalAlignment="Stretch" Orientation="Horizontal" VerticalAlignment="Stretch">
+            <StackPanel Width="auto" HorizontalAlignment="Stretch" Orientation="Horizontal" VerticalAlignment="Stretch">
                 <!-- SaveClips Configuration -->
                 <Label VerticalAlignment="Center" Content="SaveClips:" />
                 <CheckBox Name="chkSaveClips" VerticalAlignment="Center" ToolTip="If checked then each cropped image will be saved." IsThreeState="True" Click="ChkSaveClips_Click" />
             </StackPanel>
-            <StackPanel HorizontalAlignment="Stretch" Orientation="Vertical" VerticalAlignment="Stretch">
+            <StackPanel Width="auto" HorizontalAlignment="Stretch" Orientation="Vertical" VerticalAlignment="Stretch">
                 <StackPanel Orientation="Horizontal">
                     <Label VerticalAlignment="Center" Content="Selected Module:"/>
                     <GroupBox HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Header="Module Configuration">
                         <ComboBox Name="cbModules" VerticalAlignment="Center" SelectionChanged="CbModules_SelectionChanged"  />
                     </GroupBox>
                 </StackPanel>
-                <StackPanel Orientation="Horizontal">
-                    <DataGrid Name="dgConfigurations" CanUserAddRows="False" CanUserDeleteRows="True" CanUserReorderColumns="true" CanUserResizeColumns="false" CanUserResizeRows="false" FontSize="8" SelectionMode="Single" AutoGenerateColumns="False" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" CellEditEnding="DgConfigurations_CellEditEnding">
+                <StackPanel Orientation="Horizontal" Width="auto">
+                    <DataGrid Name="dgConfigurations" Width="auto" CanUserAddRows="False" CanUserDeleteRows="False" CanUserReorderColumns="true" CanUserResizeColumns="true" CanUserResizeRows="false" FontSize="8" SelectionMode="Single"  AutoGenerateColumns="False" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" CellEditEnding="DgConfigurations_CellEditEnding">
                         <DataGrid.Columns>
+                            <DataGridTemplateColumn Width="35" Header="Preview">
+                                <DataGridTemplateColumn.CellTemplate>
+                                    <DataTemplate>
+                                        <StackPanel>
+                                            <Button IsEnabled="{Binding Opacity}" Content="Preview" Tag="{Binding Name}" Click="PreviewClick"/>
+                                        </StackPanel>
+                                    </DataTemplate>
+                                </DataGridTemplateColumn.CellTemplate>
+                            </DataGridTemplateColumn>
                             <DataGridTextColumn Header="Name" Binding="{Binding Name}" Width="30" />
                             <DataGridTextColumn Header="File Name" Binding="{Binding FileName}" Width="80" />
                             <DataGridTextColumn Header="Left" Binding="{Binding Left}" Width="30" />
@@ -60,26 +69,11 @@
                             <DataGridTextColumn Header="X Start" Binding="{Binding XOffsetStart}" Width="35" />
                             <DataGridTextColumn Header="X Finish" Binding="{Binding XOffsetFinish}" Width="35" />
                             <DataGridTextColumn Header="Y Start" Binding="{Binding YOffsetStart}" Width="35" />
-                            <DataGridTextColumn Header="Y Finish" Binding="{Binding YOffsetFinish}" Width="35" />
-                            <DataGridTemplateColumn Width="*" Header="Preview">
-                                <DataGridTemplateColumn.CellTemplate>
-                                    <DataTemplate>
-                                        <StackPanel>
-                                            <Button Content="Preview" Tag="{Binding ModuleName}" CommandParameter="{Binding Name}" Click="PreviewClick"/>
-                                        </StackPanel>
-                                    </DataTemplate>
-                                </DataGridTemplateColumn.CellTemplate>
-                            </DataGridTemplateColumn>
+                            <DataGridTextColumn Header="Y Finish" Binding="{Binding YOffsetFinish}" Width="auto" />
                         </DataGrid.Columns>
                     </DataGrid>
                 </StackPanel>
             </StackPanel>
         </StackPanel>
-        <!-- Horizontal StackPanel for the Modules -->
-        <!-- Current Module Configuration -->
-        <!-- 
-        <Separator Height="5"/>
-        <Separator Height="20"/>
-        -->
     </StackPanel>
 </Window>

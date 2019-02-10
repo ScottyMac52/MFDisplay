@@ -1,6 +1,4 @@
-﻿using log4net;
-using MFDSettingsManager.Configuration;
-using MFDSettingsManager.Enum;
+﻿using MFDSettingsManager.Configuration;
 using MFDSettingsManager.Models;
 using System.Collections.Generic;
 using System.Linq;
@@ -61,12 +59,16 @@ namespace MFDSettingsManager.Mappers
                         dc.ModuleName = modelModule.ModuleName;
                         dc.FileName = !string.IsNullOrEmpty(modelModule.FileName) ? modelModule.FileName : dc.FileName;
                         dc.SaveResults = dc.SaveResults ?? section.SaveClips ?? false;
-                        logger.Info($"Adding configuration {dc.ToReadableString()}...");
-                        var newMfdConfiguration = new ConfigurationDefinition(dc);
+                        logger.Info($"Adding default configuration {dc.ToReadableString()}...");
+                        var newMfdConfiguration = new ConfigurationDefinition(dc)
+                        {
+                            FilePath = section.FilePath
+                        };
                         modelModule.Configurations.Add(newMfdConfiguration);
                     }
                     else
                     {
+                        existConfig.Opacity = existConfig.Opacity > 0F ? existConfig.Opacity : dc.Opacity;
                         existConfig.Left = existConfig.Left == 0 ? dc.Left : existConfig.Left;
                         existConfig.Top = existConfig.Top == 0 ? dc.Top : existConfig.Top;
                         existConfig.Height = existConfig.Height == 0 ? dc.Height : existConfig.Height;
@@ -78,7 +80,8 @@ namespace MFDSettingsManager.Mappers
                         existConfig.FileName = string.IsNullOrEmpty(existConfig.FileName) ? dc.FileName : existConfig.FileName;
                         existConfig.SaveResults = existConfig.SaveResults ?? dc.SaveResults ?? false;
                         existConfig.ModuleName = modelModule.ModuleName;
-                        logger.Info($"Modifying configuration {existConfig.ToReadableString()}...");
+                        existConfig.FilePath = section.FilePath;
+                        logger.Info($"Updated configuration from default {dc.Name} -> {existConfig.ToReadableString()}.");
                     }
                 });
 
@@ -103,8 +106,11 @@ namespace MFDSettingsManager.Mappers
             defaultsCollection.ForEach(dc =>
             {
                 var mfdDefaultConfiguration = ConvertFromConfigSectionDefinition(section, null, dc);
-                logger.Info($"Loading the default Configuration {mfdDefaultConfiguration.ToReadableString()}...");
-                defaultConfigurations.Add(mfdDefaultConfiguration);
+                if ((mfdDefaultConfiguration?.Opacity ?? 0.0F) > 0.0F)
+                {
+                    logger.Info($"Loading the default Configuration {mfdDefaultConfiguration.ToReadableString()}...");
+                    defaultConfigurations.Add(mfdDefaultConfiguration);
+                }
 
             });
             return defaultConfigurations;
@@ -138,10 +144,11 @@ namespace MFDSettingsManager.Mappers
             {
                 Logger = section.Logger,
                 ModuleName = parent?.ModuleName,
+                FilePath = section.FilePath,
                 FileName = !string.IsNullOrEmpty(currentConfig.FileName) ? currentConfig.FileName : parent?.FileName,
                 Height = currentConfig.Height ?? 0,
                 Name = currentConfig.Name,
-                Opacity = currentConfig.Opacity ?? 1,
+                Opacity = currentConfig.Opacity ?? 0,
                 Left = currentConfig.Left ?? 0,
                 Top = currentConfig.Top ?? 0,
                 Width = currentConfig.Width ?? 0,

@@ -295,8 +295,9 @@
     <SplashScreen Include="Images\MFD4CTS_LOGO.png" />
     <Resource Include="Images\Vyper_FC_orig.png" />
     <EmbeddedResource Include="Properties\Resources.resx">
-      <Generator>ResXFileCodeGenerator</Generator>
+      <Generator>PublicResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+      <SubType>Designer</SubType>
     </EmbeddedResource>
     <None Include="ClassDiagram1.cd" />
     <Content Include="readme.rtf">
