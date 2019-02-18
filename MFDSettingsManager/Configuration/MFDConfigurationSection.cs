@@ -208,13 +208,13 @@ namespace MFDSettingsManager.Configuration
         /// MFD Default Configurations
         /// </summary>
         [ConfigurationProperty("DefaultConfigurations", IsDefaultCollection = false, IsRequired = false)]
-        [ConfigurationCollection(typeof(MFDDefinitionsCollection), AddItemName = "add", ClearItemsName = "clear", RemoveItemName = "remove")]
-        public MFDDefinitionsCollection DefaultConfigurations
+        [ConfigurationCollection(typeof(DefaultsDefinitionsCollection), AddItemName = "add", ClearItemsName = "clear", RemoveItemName = "remove")]
+        public DefaultsDefinitionsCollection DefaultConfigurations
         {
             get
             {
                 object o = this["DefaultConfigurations"];
-                return o as MFDDefinitionsCollection;
+                return o as DefaultsDefinitionsCollection;
             }
 
             set

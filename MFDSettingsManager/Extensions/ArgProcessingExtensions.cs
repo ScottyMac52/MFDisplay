@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System;
 using System.Linq;
 
 namespace MFDSettingsManager.Extensions
@@ -18,10 +19,16 @@ namespace MFDSettingsManager.Extensions
         /// <param name="defaultValue"></param>
         /// <param name="isSwitch"></param>
         /// <returns></returns>
-        public static string GetSafeArgumentFrom(this IList<string> args, string argumentKey, string defaultValue = null, bool isSwitch = false)
+        public static T GetSafeArgumentFrom<T>(this IList<string> args, string argumentKey, T defaultValue = default(T), bool isSwitch = false) 
+            where T : IConvertible
         {
-            var argsArray = args.ToArray();
-            return argsArray.GetSafeArgumentFrom(argumentKey, defaultValue, isSwitch);
+            if((args?.Count ?? 0) > 0)
+            {
+                var argsArray = args.ToArray();
+                var arg = argsArray.GetSafeArgumentFrom(argumentKey, defaultValue, isSwitch);
+                return (T)Convert.ChangeType(arg, typeof(T));
+            }
+            return defaultValue;
         }
 
         /// <summary>
@@ -34,12 +41,12 @@ namespace MFDSettingsManager.Extensions
         /// <returns></returns>
         public static string GetSafeArgumentFrom(this string[] args, string argumentKey, string defaultValue = null, bool isSwitch = false)
         {
-            if (args?.Any(arg => arg.Equals(argumentKey)) ?? false)
+            if (args?.Any(arg => arg.Equals(argumentKey, StringComparison.InvariantCultureIgnoreCase)) ?? false)
             {
                 if (!isSwitch)
                 {
                     var argumentValueIndex = args.Select((s, i) => new { i, s })
-                        .Where(t => t.s == argumentKey)
+                        .Where(t => t.s.Equals(argumentKey, StringComparison.InvariantCultureIgnoreCase))
                         .Select(t => t.i)
                         .ToList().FirstOrDefault() + 1;
                     if (args.Length > argumentValueIndex)
@@ -50,7 +57,7 @@ namespace MFDSettingsManager.Extensions
                 else
                 {
                     var switchIndex = args.Select((s, i) => new { i, s })
-                        .Where(t => t.s == argumentKey)
+                        .Where(t => t.s.Equals(argumentKey, StringComparison.InvariantCultureIgnoreCase))
                         ?.Select(t => t.i)
                         ?.ToList().FirstOrDefault();
 

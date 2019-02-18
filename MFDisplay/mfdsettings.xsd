@@ -150,6 +150,13 @@
       </xs:annotation>
     </xs:attribute>
   </xs:complexType>
+  <xs:complexType name="DefaultConfiguration">
+      <xs:complexContent>
+        <xs:extension base="Configuration">
+          <xs:attribute name="useCougar" type="xs:boolean" default="false"/>
+        </xs:extension>
+      </xs:complexContent>
+  </xs:complexType>
   <xs:element name="MFDSettings">
     <xs:complexType>
       <xs:sequence>
@@ -175,7 +182,7 @@
                 </xs:annotation>
                 <xs:complexType>
                   <xs:complexContent>
-                    <xs:extension base="Configuration">
+                    <xs:extension base="DefaultConfiguration">
                       <xs:sequence />
                     </xs:extension>
                   </xs:complexContent>

@@ -51,6 +51,8 @@
     <Reference Include="WindowsBase" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Configuration\DefaultsDefinitionsCollection .cs" />
+    <Compile Include="Configuration\MFDDefaultDefintion.cs" />
     <Compile Include="Extensions\ArgProcessingExtensions.cs" />
     <Compile Include="Extensions\ConfigurationSectionExtensions.cs" />
     <Compile Include="Extensions\ImageHandlerExtensions.cs" />

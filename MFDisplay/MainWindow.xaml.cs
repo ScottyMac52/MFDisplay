@@ -42,6 +42,11 @@ namespace MFDisplay
         /// The name of the module that was passed in
         /// </summary>
         public string PassedModule { get; internal set; }
+        
+        /// <summary>
+        /// Was the Cougar argument specified?
+        /// </summary>
+        public bool UseCougar { get; internal set; }
 
         /// <summary>
         /// Ctor, initializes component, logging, sorted list and loads the configuration  
@@ -99,7 +104,8 @@ namespace MFDisplay
                 {
                     Logger = Logger,
                     Configuration = config,
-                    FilePath = Config.FilePath
+                    FilePath = Config.FilePath,
+                    UseCougar = UseCougar
                 };
                 newmfdWindow.Show();
                 if (newmfdWindow.IsMFDLoaded)

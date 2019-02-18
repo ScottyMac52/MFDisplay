@@ -19,7 +19,17 @@ namespace MFDisplay
     {
         private const string Unique = "Vyper_MFD4CTS_Application";
         private const string Company = "Vyper Industries";
-        private const string Years = "2018, 2019"; 
+        private const string Years = "2018, 2019";
+
+        /// <summary>
+        /// Holds the Module name that was passed to the program
+        /// </summary>
+        public string Module { get; private set; }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        public bool UseCougar { get; private set; }
 
         /// <summary>
         /// Main entry point
@@ -48,11 +58,12 @@ namespace MFDisplay
         /// <returns></returns>
         public bool SignalExternalCommandLineArgs(IList<string> args)
         {
-            var modSpecified = args.GetSafeArgumentFrom("-mod");
-            if(!string.IsNullOrEmpty(modSpecified))
+            Module = args.GetSafeArgumentFrom("-mod", "");
+            UseCougar = args.GetSafeArgumentFrom("-hc", false, true);
+            if(!string.IsNullOrEmpty(Module))
             {
-                Logger.Info($"External request to change module to {modSpecified}.");
-                ((MainWindow)MainWindow).ChangeSelectedModule(modSpecified);
+                Logger.Info($"External request to change module to {Module}.");
+                ((MainWindow)MainWindow).ChangeSelectedModule(Module);
             }
             return true;
         }
@@ -119,7 +130,8 @@ namespace MFDisplay
         /// <param name="e"></param>
         protected override void OnStartup(StartupEventArgs e)
         {
-            var modSpecified = e.Args.GetSafeArgumentFrom("-mod");
+            Module = e?.Args?.GetSafeArgumentFrom("-mod", "");
+            UseCougar = e?.Args?.GetSafeArgumentFrom("-hc", false, true) == false;
 
             if (!configPresent)
             {
@@ -171,7 +183,8 @@ namespace MFDisplay
                     Config = Configuration,
                     Logger = Logger,
                     WindowState = WindowState.Minimized,
-                    PassedModule = string.IsNullOrEmpty(modSpecified) ? null : modSpecified
+                    PassedModule = string.IsNullOrEmpty(Module) ? null : Module,
+                    UseCougar = UseCougar
                 };
 
                 mainWindow.ShowDialog();

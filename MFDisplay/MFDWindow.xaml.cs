@@ -43,6 +43,11 @@ namespace MFDisplay
 
         private bool IsValid => CheckForValidConfig();
 
+        /// <summary>
+        /// If true then the Cougar Throttle definition is used
+        /// </summary>
+        public bool UseCougar { get; internal set; }
+
         private bool CheckForValidConfig()
         {
             return Directory.Exists(FilePath) 
@@ -102,6 +107,11 @@ namespace MFDisplay
             }
             else
             {
+                // If the Cougar was specified 
+                if (((MFDisplayApp)Application.Current)?.UseCougar ?? false)
+                {
+
+                }
                 var filePath = Path.Combine(FilePath, Configuration.FileName);
                 imgMain.Width = Width;
                 imgMain.Height = Height;
