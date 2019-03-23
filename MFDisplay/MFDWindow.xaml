@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:MFDisplay"
         mc:Ignorable="d"
-        Title="MFD" Name="mfdWindow" BorderThickness="0" Topmost="True" Loaded="Window_Loaded" Closed="Window_Closed" ResizeMode="NoResize" WindowStyle="None" ShowInTaskbar="False" Opacity=".3" AllowsTransparency="True">
+        Title="MFD" Name="mfdWindow" BorderThickness="0" Topmost="True" Loaded="Window_Loaded" Closed="Window_Closed" ResizeMode="NoResize" WindowStyle="None" ShowInTaskbar="False" Opacity="0" AllowsTransparency="True">
     <Grid>
         <Image Width="auto" Height="auto" x:Name="imgMain" Stretch="Fill"  Margin="0"/>
     </Grid>

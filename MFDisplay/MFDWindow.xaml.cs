@@ -57,6 +57,7 @@ namespace MFDisplay
         /// <returns></returns>
         public bool InitializeMFD(ConfigurationDefinition definition)
         {
+            Visibility = Visibility.Hidden;
             Configuration = definition;
             Title = definition?.Name;
             ResizeMode = ResizeMode.NoResize;
@@ -112,6 +113,7 @@ namespace MFDisplay
                 catch (Exception ex)
                 {
                     Logger?.Error($"Unable to load {Configuration.ToReadableString()}.", ex);
+                    Close();
                 }
                 finally
                 {
@@ -120,6 +122,7 @@ namespace MFDisplay
                         imgMain.Source = bitmapSource;
                         IsMFDLoaded = true;
                         Logger?.Debug($"Image {filePath} is loaded.");
+                        Visibility = Visibility.Visible;
                     }
                 }
             }
