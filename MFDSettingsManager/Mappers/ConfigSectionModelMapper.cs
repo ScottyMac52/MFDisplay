@@ -2,6 +2,7 @@
 using MFDSettingsManager.Models;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 
 namespace MFDSettingsManager.Mappers
 {
@@ -17,7 +18,7 @@ namespace MFDSettingsManager.Mappers
         /// <returns></returns>
         internal static ModulesConfiguration MapFromConfigurationSection(MFDConfigurationSection section)
         {
-            if(section == null)
+            if (section == null)
             {
                 return null;
             }
@@ -36,20 +37,20 @@ namespace MFDSettingsManager.Mappers
             var moduleList = section.Modules.List;
             logger.Info($"Loading {moduleList.Count} Modules...");
             logger.Info(logSep);
-            moduleList.ForEach(currentModule =>
+
+            Parallel.ForEach(moduleList, (currentModule, threadState, threadNumber) =>
             {
-                logger.Info($"Loading the Module named {currentModule.DisplayName} as {currentModule.ModuleName} using {currentModule.FileName}...");
+                logger.Info($"Thread: {threadNumber} Loading the Module named {currentModule.DisplayName} as {currentModule.ModuleName} using {currentModule.FileName}...");
                 var modelModule = ConvertFromConfigSectionModule(moduleConfigurations, currentModule);
-                var configurationList = currentModule.MFDConfigurations.List;
+
                 // Add the Configurations
-                configurationList.ForEach(currentConfig =>
+                currentModule.MFDConfigurations.List.ForEach(currentConfig =>
                 {
                     var mfdConfiguration = ConvertFromConfigSectionDefinition(section, modelModule, currentConfig);
                     logger.Info($"Loading Configuration {mfdConfiguration.ToReadableString()}...");
                     modelModule.Configurations.Add(mfdConfiguration);
                 });
 
-                // Add the default configurations as applicable
                 defaultConfigurations.ForEach(dc =>
                 {
                     var existConfig = modelModule.Configurations.SingleOrDefault(mmc => mmc.Name == dc.Name);
@@ -85,10 +86,11 @@ namespace MFDSettingsManager.Mappers
                     }
                 });
 
-                logger.Info($"Loaded Module named {modelModule.DisplayName} as {modelModule.ModuleName} with {modelModule.Configurations.Count} Configurations.");
+                logger.Info($"Thread: {threadNumber} Loaded Module named {modelModule.DisplayName} as {modelModule.ModuleName} with {modelModule.Configurations.Count} Configurations.");
                 logger.Info(logSep);
                 moduleConfigurations.Modules.Add(modelModule);
             });
+
             logger.Debug($"Loaded {moduleConfigurations.Modules.Count} Modules.");
             return moduleConfigurations;
         }
