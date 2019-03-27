@@ -5,6 +5,7 @@ using MFDSettingsManager.Extensions;
 using MFDSettingsManager.Models;
 using System;
 using System.Collections.Generic;
+using System.Configuration;
 using System.Drawing;
 using System.IO;
 using System.Linq;
@@ -145,8 +146,14 @@ namespace MFDisplay
             savedConfig.DefaultConfig = cbDefaultModule.SelectedValue?.ToString();
             Logger.Info($"Saving the configuration file {savedConfig.CurrentConfiguration.FilePath}...");
             // TODO: Update the Configuration Section from the Model
-
-            savedConfig.CurrentConfiguration.Save();
+            try
+            {
+                savedConfig.CurrentConfiguration.Save(ConfigurationSaveMode.Modified, true);
+            }
+            catch (System.Exception ex)
+            {
+                Logger.Error($"Unable to save the configuration to {savedConfig.CurrentConfiguration.FilePath}", ex);
+            }
         }
 
         private void ConfigurationMenuItem_Click(object sender, RoutedEventArgs e)

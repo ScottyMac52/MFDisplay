@@ -12,9 +12,6 @@
             <MenuItem Header="_File">
                 <MenuItem Header="_Exit" CommandParameter="Exit" Click="FileMenuItem_Click" />
             </MenuItem>
-            <MenuItem Header="_Configuration">
-                <MenuItem Header="_Modify" CommandParameter="Modify" Click="ConfigurationMenuItem_Click"/>
-            </MenuItem>
             <MenuItem Header="_Help">
                 <MenuItem Header="_About" CommandParameter="About" Click="HelpMenuItem_Click"/>
             </MenuItem>
