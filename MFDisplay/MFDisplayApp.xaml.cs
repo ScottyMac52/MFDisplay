@@ -139,28 +139,12 @@ namespace MFDisplay
             }
 
             Configuration = sectionConfig.ToModel(Logger);
-            while (!Directory.Exists(Configuration?.FilePath))
+            if(!Directory.Exists(Configuration?.FilePath))
             {
-                var configWindow = new ConfigurationWindow()
-                {
-                    Logger = Logger
-                };
-                configWindow.ShowInTaskbar = true;
-                configWindow.ShowDialog();
-                sectionConfig = MFDConfigurationSection.GetConfig(Logger);
-                Configuration = sectionConfig.ToModel(Logger);
-                if (!Directory.Exists(Configuration?.FilePath))
-                {
-                    var msgResult = MessageBox.Show($"{Configuration?.FilePath} is not a valid path. Do you wish to try another path?", "Invalid Path Configuration", MessageBoxButton.YesNo, MessageBoxImage.Hand);
-                    if(msgResult != MessageBoxResult.Yes)
-                    {
-                        break;
-                    }
-                }
-            }
-
-            if (!Directory.Exists(Configuration?.FilePath))
-            {
+                var mfdSettingsFile = Path.Combine((new FileInfo(assmLocation))?.DirectoryName, "mfdsettings.config");
+                var errorMessage = $"{Configuration.FilePath} is not a valid path. Please use an elevated editor, runas Administrator, and edit the FilePath in the file {mfdSettingsFile}";
+                Logger.Error(errorMessage);
+                MessageBox.Show(errorMessage, "Configuration Error", MessageBoxButton.OK, MessageBoxImage.Error);
                 Shutdown(2);
             }
             else

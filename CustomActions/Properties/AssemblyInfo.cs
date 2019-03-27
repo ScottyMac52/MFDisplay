@@ -1,15 +1,16 @@
 ﻿using System.Reflection;
+using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
 
 // General Information about an assembly is controlled through the following
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
-[assembly: AssemblyTitle("MFDSettingsManager")]
-[assembly: AssemblyDescription("Manages all of the Configuration settings and models for MFD4CTS")]
+[assembly: AssemblyTitle("CustomActions")]
+[assembly: AssemblyDescription("Defines custom install actions for the installer.")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("Vyper Industries")]
-[assembly: AssemblyProduct("MFD4CTS")]
-[assembly: AssemblyCopyright("Copyright © 2018, 2019")]
+[assembly: AssemblyProduct("CustomActions")]
+[assembly: AssemblyCopyright("Copyright ©  2019 Vyper Industires")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 
@@ -19,7 +20,7 @@ using System.Runtime.InteropServices;
 [assembly: ComVisible(false)]
 
 // The following GUID is for the ID of the typelib if this project is exposed to COM
-[assembly: Guid("bb12c431-7568-4ab3-ac21-4d6396744f22")]
+[assembly: Guid("957b51ac-5241-4213-9553-7623bd0aa2c6")]
 
 // Version information for an assembly consists of the following four values:
 //
@@ -31,5 +32,5 @@ using System.Runtime.InteropServices;
 // You can specify all the values or you can default the Build and Revision Numbers
 // by using the '*' as shown below:
 // [assembly: AssemblyVersion("1.0.*")]
-[assembly: AssemblyVersion("2.4.0.0")]
-[assembly: AssemblyFileVersion("2.4.0.0")]
+[assembly: AssemblyVersion("1.0.0.0")]
+[assembly: AssemblyFileVersion("1.0.0.0")]

@@ -78,7 +78,9 @@ namespace MFDisplay
         public void SetupWindow()
         {
             MFDList = new SortedList<string, MFDWindow>();
-            AvailableModules = Config?.Modules;
+            var moduleList = Config?.Modules;
+            moduleList?.Sort(new ModuleDefinitionComparer());
+            AvailableModules = moduleList;
 
             cbModules.ItemsSource = AvailableModules;
             cbModules.DisplayMemberPath = "DisplayName";
@@ -217,18 +219,6 @@ namespace MFDisplay
                 var selectedModule = PassedModule ?? Config.DefaultConfig;
                 cbModules.SelectedValue = selectedModule;
             }
-        }
-
-        private void ConfigurationMenuItem_Click(object sender, RoutedEventArgs e)
-        {
-            DestroyMFDs();
-            var configWindow = new ConfigurationWindow()
-            {
-                Logger = Logger,
-                Owner = this
-            };
-            configWindow.ShowDialog();
-            SetupWindow();
         }
 
         private void HelpMenuItem_Click(object sender, RoutedEventArgs e)

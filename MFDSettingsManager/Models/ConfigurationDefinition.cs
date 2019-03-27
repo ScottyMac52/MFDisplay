@@ -168,6 +168,15 @@ namespace MFDSettingsManager.Models
             return $"Config {Name} for {ModuleName} at ({Left}, {Top}) for ({Width}, {Height}) with Opacity {Opacity} from {completePath ?? "Unknown Image"} was {fileStatus} at Offset ({XOffsetStart}, {YOffsetStart}) for ({XOffsetFinish - XOffsetStart}, {YOffsetFinish - YOffsetStart}).";
         }
 
+        /// <summary>
+        /// Short form
+        /// </summary>
+        /// <returns></returns>
+        public override string ToString()
+        {
+            return ToReadableString();
+        }
+
         #endregion Public methods
 
         #region Private helpers
