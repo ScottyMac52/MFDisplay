@@ -308,7 +308,7 @@
     <None Include="MFDisplay_TemporaryKey.pfx" />
     <Content Include="mfdsettings.config">
       <SubType>Designer</SubType>
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <None Include="packages.config">
       <SubType>Designer</SubType>
