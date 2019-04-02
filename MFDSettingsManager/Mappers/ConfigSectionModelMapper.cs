@@ -38,9 +38,9 @@ namespace MFDSettingsManager.Mappers
             logger.Info($"Loading {moduleList.Count} Modules...");
             logger.Info(logSep);
 
-            Parallel.ForEach(moduleList, (currentModule, threadState, threadNumber) =>
+            moduleList.ForEach(currentModule =>  
             {
-                logger.Info($"Thread: {threadNumber} Loading the Module named {currentModule.DisplayName} as {currentModule.ModuleName} using {currentModule.FileName}...");
+                logger.Info($"Loading the Module named {currentModule.DisplayName} as {currentModule.ModuleName} using {currentModule.FileName}...");
                 var modelModule = ConvertFromConfigSectionModule(moduleConfigurations, currentModule);
 
                 // Add the Configurations
@@ -86,7 +86,7 @@ namespace MFDSettingsManager.Mappers
                     }
                 });
 
-                logger.Info($"Thread: {threadNumber} Loaded Module named {modelModule.DisplayName} as {modelModule.ModuleName} with {modelModule.Configurations.Count} Configurations.");
+                logger.Info($"Loaded Module named {modelModule.DisplayName} as {modelModule.ModuleName} with {modelModule.Configurations.Count} Configurations.");
                 logger.Info(logSep);
                 moduleConfigurations.Modules.Add(modelModule);
             });
