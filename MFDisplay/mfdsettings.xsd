@@ -24,6 +24,14 @@
         <xs:documentation>Filename for the configuration. Default Configurations do not include this but in the case of Module Configurations the module filename is used if the module configration filename is not present. </xs:documentation>
       </xs:annotation>
     </xs:attribute>
+    <xs:attribute name="enable"
+                  type="xs:boolean"
+                  use="optional"
+                  default="true">
+      <xs:annotation>
+        <xs:documentation>Is the configuration enabled.</xs:documentation>
+      </xs:annotation>
+    </xs:attribute>
     <xs:attribute name="opacity"
                   default="1"
                   type="xs:float"

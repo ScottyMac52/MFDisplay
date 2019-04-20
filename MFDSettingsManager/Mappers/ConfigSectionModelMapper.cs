@@ -158,6 +158,7 @@ namespace MFDSettingsManager.Mappers
                 XOffsetFinish = currentConfig.XOffsetFinish ?? 0,
                 YOffsetStart = currentConfig.YOffsetStart ?? 0,
                 YOffsetFinish = currentConfig.YOffsetFinish ?? 0,
+                Enabled = currentConfig.Enabled ?? true,
                 SaveResults = section.SaveClips
            };
 
