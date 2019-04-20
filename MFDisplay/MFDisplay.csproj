@@ -254,8 +254,8 @@
       <DependentUpon>MainWindow.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="MFDWindow.xaml.cs">
-      <DependentUpon>MFDWindow.xaml</DependentUpon>
+    <Compile Include="AuxWindow.xaml.cs">
+      <DependentUpon>AuxWindow.xaml</DependentUpon>
     </Compile>
     <Compile Include="MFDisplayApp.xaml.cs">
       <DependentUpon>MFDisplayApp.xaml</DependentUpon>
@@ -267,7 +267,7 @@
       <SubType>Designer</SubType>
       <Generator>XamlIntelliSenseFileGenerator</Generator>
     </Page>
-    <Page Include="MFDWindow.xaml">
+    <Page Include="AuxWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -321,7 +321,7 @@
   <ItemGroup>
     <Content Include="App.config">
       <SubType>Designer</SubType>
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
   </ItemGroup>
   <ItemGroup>

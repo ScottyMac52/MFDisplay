@@ -28,6 +28,7 @@ namespace MFDSettingsManager.Configuration
             Left = dc.Left;
             Top = dc.Top;
             Name = dc.Name;
+            Enabled = dc.Enabled ?? true;
             XOffsetStart = dc.XOffsetStart;
             XOffsetFinish = dc.XOffsetFinish;
             YOffsetStart = dc.YOffsetStart;
@@ -50,6 +51,23 @@ namespace MFDSettingsManager.Configuration
             set
             {
                 this["name"] = value;
+            }
+        }
+
+        /// <summary>
+        /// Is this configuration enabled for use
+        /// </summary>
+        [ConfigurationProperty("enable", IsRequired = false, DefaultValue = true)]
+        public bool? Enabled
+        {
+            get
+            {
+                var objectVar = this["enable"];
+                return objectVar == null ? true : Convert.ToBoolean(objectVar);
+            }
+            set
+            {
+                this["enable"] = value;
             }
         }
 

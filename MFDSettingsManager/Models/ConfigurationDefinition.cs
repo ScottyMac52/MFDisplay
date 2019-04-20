@@ -38,6 +38,11 @@ namespace MFDSettingsManager.Models
         /// </summary>
         public string FilePath { get; set; }
 
+        /// <summary>
+        /// Determines if the configuration is rendered
+        /// </summary>
+        public bool Enabled { get; internal set; }
+
         #endregion Identifying properties
 
         #region Basic Image Properties Left, Top, Width, Height and Opacity
@@ -103,6 +108,7 @@ namespace MFDSettingsManager.Models
         /// <param name="dc"></param>
         public ConfigurationDefinition(ConfigurationDefinition dc)
         {
+            Enabled = dc.Enabled;
             Logger = dc.Logger;
             FileName = dc.FileName;
             ModuleName = dc.ModuleName;
@@ -126,28 +132,35 @@ namespace MFDSettingsManager.Models
         /// <returns></returns>
         public BitmapSource CropImage(string imagePath)
         {
-            BitmapImage src = new BitmapImage();
-            src.BeginInit();
-            src.UriSource = new Uri(imagePath, UriKind.Relative);
-            src.CacheOption = BitmapCacheOption.OnLoad;
-            src.EndInit();
-
-            Int32Rect offSet = new Int32Rect(XOffsetStart, YOffsetStart, XOffsetFinish - XOffsetStart, YOffsetFinish - YOffsetStart);
-            CroppedBitmap croppedBitmap = new CroppedBitmap(src, offSet);
-            var noAlphaSource = new FormatConvertedBitmap();
-            noAlphaSource.BeginInit();
-            noAlphaSource.Source = croppedBitmap;
-            noAlphaSource.DestinationFormat = PixelFormats.Bgr24;
-            noAlphaSource.AlphaThreshold = 0;
-            noAlphaSource.EndInit();
-                       
-            if ((SaveResults ?? false) == true)
+            if (Enabled)
             {
-                var fi = new FileInfo(imagePath);
+                BitmapImage src = new BitmapImage();
+                src.BeginInit();
+                src.UriSource = new Uri(imagePath, UriKind.Relative);
+                src.CacheOption = BitmapCacheOption.OnLoad;
+                src.EndInit();
 
-                SaveImage(noAlphaSource, fi.Directory.FullName, $"X_{XOffsetStart}To{XOffsetFinish}Y_{YOffsetStart}To{YOffsetFinish}_{Opacity}");
+                Int32Rect offSet = new Int32Rect(XOffsetStart, YOffsetStart, XOffsetFinish - XOffsetStart, YOffsetFinish - YOffsetStart);
+                CroppedBitmap croppedBitmap = new CroppedBitmap(src, offSet);
+                var noAlphaSource = new FormatConvertedBitmap();
+                noAlphaSource.BeginInit();
+                noAlphaSource.Source = croppedBitmap;
+                noAlphaSource.DestinationFormat = PixelFormats.Bgr24;
+                noAlphaSource.AlphaThreshold = 0;
+                noAlphaSource.EndInit();
+
+                if ((SaveResults ?? false) == true)
+                {
+                    var fi = new FileInfo(imagePath);
+
+                    SaveImage(noAlphaSource, fi.Directory.FullName, $"X_{XOffsetStart}To{XOffsetFinish}Y_{YOffsetStart}To{YOffsetFinish}_{Opacity}");
+                }
+                return noAlphaSource;
             }
-            return noAlphaSource;
+            else
+            {
+                return null;
+            }
         }
 
         /// <summary>
@@ -165,7 +178,7 @@ namespace MFDSettingsManager.Models
                 pathExists = File.Exists(completePath);
                 fileStatus = pathExists ? "found " : "not found ";
             }
-            return $"Config {Name} for {ModuleName} at ({Left}, {Top}) for ({Width}, {Height}) with Opacity {Opacity} from {completePath ?? "Unknown Image"} was {fileStatus} at Offset ({XOffsetStart}, {YOffsetStart}) for ({XOffsetFinish - XOffsetStart}, {YOffsetFinish - YOffsetStart}).";
+            return $"Config: {Name} for: {ModuleName} at: ({Left}, {Top}) for ({Width}, {Height}) with Opacity: {Opacity} Enabled: {Enabled} from: {completePath ?? "Unknown Image"} was: {fileStatus} at Offset: ({XOffsetStart}, {YOffsetStart}) for: ({XOffsetFinish - XOffsetStart}, {YOffsetFinish - YOffsetStart}).";
         }
 
         /// <summary>

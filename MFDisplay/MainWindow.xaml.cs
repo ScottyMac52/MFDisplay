@@ -24,9 +24,9 @@ namespace MFDisplay
         public ModulesConfiguration Config { get; set; }
        
         /// <summary>
-        /// Sorted list of the active MFDs
+        /// Sorted list of the active Windows
         /// </summary>
-        protected SortedList<string, MFDWindow> MFDList { get; set; }
+        protected SortedList<string, AuxWindow> WindowList { get; set; }
 
         /// <summary>
         /// The list of available modules
@@ -52,7 +52,7 @@ namespace MFDisplay
         }
 
         /// <summary>
-        /// When we load we create the configured MFDs
+        /// When we load we create the configured Windows
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
@@ -68,8 +68,8 @@ namespace MFDisplay
         /// <param name="e"></param>
         private void Window_Closing(object sender, System.ComponentModel.CancelEventArgs e)
         {
-            Logger.Info("Closing the MFD Windows...");
-            DestroyMFDs();
+            Logger.Info("Closing the Windows...");
+            DestroyWindows();
         }
 
         /// <summary>
@@ -77,7 +77,7 @@ namespace MFDisplay
         /// </summary>
         public void SetupWindow()
         {
-            MFDList = new SortedList<string, MFDWindow>();
+            WindowList = new SortedList<string, AuxWindow>();
             var moduleList = Config?.Modules;
             moduleList?.Sort(new ModuleDefinitionComparer());
             AvailableModules = moduleList;
@@ -89,28 +89,28 @@ namespace MFDisplay
         }
 
         /// <summary>
-        /// Creates the MFDs using the specified Module Definition
+        /// Creates the Windows using the specified Module Definition
         /// </summary>
-        public void CreateMFDs()
+        public void CreateWindows()
         {
             Logger.Debug($"Creating configuration {SelectedModule?.DisplayName}");
             SelectedModule?.Configurations?.ForEach(config =>
             {
                 Logger.Info($"Creating {config.ToReadableString()}");
-                var newmfdWindow = new MFDWindow()
+                var newAuxWindow = new AuxWindow()
                 {
                     Logger = Logger,
                     Configuration = config,
                     FilePath = Config.FilePath
                 };
-                newmfdWindow.Show();
-                if (newmfdWindow.IsMFDLoaded)
+                newAuxWindow.Show();
+                if (newAuxWindow.IsWindowLoaded)
                 {
-                    MFDList.Add(config.Name, newmfdWindow);
+                    WindowList.Add(config.Name, newAuxWindow);
                 }
                 else
                 {
-                    newmfdWindow?.Close();
+                    newAuxWindow?.Close();
                 }
             });
         }
@@ -118,9 +118,9 @@ namespace MFDisplay
         /// <summary>
         /// Closes all the open Windows
         /// </summary>
-        public void DestroyMFDs()
+        public void DestroyWindows()
         {
-            MFDList.ToList().ForEach(mfd =>
+            WindowList.ToList().ForEach(mfd =>
             {
                 if (mfd.Value.IsLoaded)
                 {
@@ -129,8 +129,8 @@ namespace MFDisplay
                 }
             });
 
-            MFDList.Clear();
-            Logger.Info($"MFD list cleared.");
+            WindowList.Clear();
+            Logger.Info($"Window list cleared.");
         }
 
         /// <summary>
@@ -149,10 +149,10 @@ namespace MFDisplay
         {
             if (GetSelectedDefinition(moduleName))
             {
-                DestroyMFDs();
+                DestroyWindows();
                 try
                 {
-                    CreateMFDs();
+                    CreateWindows();
                     Logger.Info($"Module loaded {moduleName}.");
                 }
                 catch (IndexOutOfRangeException ioorx)
@@ -201,7 +201,7 @@ namespace MFDisplay
 
         private void Window_Closed(object sender, System.EventArgs e)
         {
-            Logger.Info($"Is Closed.");
+            Logger.Info($"MainWindow Is Closed.");
         }
 
         private void CbModules_Loaded(object sender, RoutedEventArgs e)

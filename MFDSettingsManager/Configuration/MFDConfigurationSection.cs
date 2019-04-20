@@ -65,36 +65,6 @@ namespace MFDSettingsManager.Configuration
 
         }
 
-        /// <summary>
-        /// Get the module
-        /// </summary>
-        /// <param name="moduleName"></param>
-        /// <returns><seealso cref="ModuleConfigurationDefintion"/></returns>
-        public ModuleConfigurationDefintion GetModuleConfiguration(string moduleName)
-        {
-            var iterator = Modules.GetEnumerator();
-            while(iterator.MoveNext())
-            {
-                var currentModule = (ModuleConfigurationDefintion)iterator.Current;
-                if(currentModule.ModuleName == moduleName)
-                {
-                    var defaultConfigs = DefaultConfigurations.List;
-                    defaultConfigs.ForEach(dc =>
-                    {
-                        var existingConfig = currentModule.MFDConfigurations.List.FirstOrDefault(mfdConfig => mfdConfig.Name == dc.Name);
-                        if(existingConfig == null)
-                        {
-                            var newDef = new MFDDefintion(dc);
-                            dc.FileName = currentModule.FileName;
-                            currentModule.MFDConfigurations.Add(newDef);
-                        }
-                    });
-                    return currentModule;
-                }
-            }
-            return null;
-        }
-
         #region Properties to support schema definitions 
 
         /// <summary>
