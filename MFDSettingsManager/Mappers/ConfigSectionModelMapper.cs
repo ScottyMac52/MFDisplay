@@ -1,6 +1,7 @@
 ﻿using MFDSettingsManager.Configuration;
 using MFDSettingsManager.Models;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -82,7 +83,15 @@ namespace MFDSettingsManager.Mappers
                         existConfig.SaveResults = existConfig.SaveResults ?? dc.SaveResults ?? false;
                         existConfig.ModuleName = modelModule.ModuleName;
                         existConfig.FilePath = section.FilePath;
-                        logger.Info($"Updated configuration from default {dc.Name} -> {existConfig.ToReadableString()}.");
+                        var completePath = Path.Combine(section.FilePath, existConfig.FileName);
+                        if(!File.Exists(completePath))
+                        {
+                            logger.Error($"Unable to find {completePath}");
+                        }
+                        else
+                        {
+                            logger.Info($"Updated configuration from default {dc.Name} -> {existConfig.ToReadableString()}.");
+                        }
                     }
                 });
 
