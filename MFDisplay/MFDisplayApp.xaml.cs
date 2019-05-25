@@ -21,6 +21,8 @@ namespace MFDisplay
         private const string Company = "Vyper Industries";
         private const string Years = "2018, 2019"; 
 
+        static string ConfigurationPath { get; set; }
+
         /// <summary>
         /// Main entry point
         /// </summary>
@@ -49,11 +51,20 @@ namespace MFDisplay
         public bool SignalExternalCommandLineArgs(IList<string> args)
         {
             var modSpecified = args.GetSafeArgumentFrom("-mod");
+            var subModeSpecified = args.GetSafeArgumentFrom("-submod");
             if(!string.IsNullOrEmpty(modSpecified))
             {
                 Logger.Info($"External request to change module to {modSpecified}.");
                 ((MainWindow)MainWindow).ChangeSelectedModule(modSpecified);
             }
+
+            if (!string.IsNullOrEmpty(subModeSpecified))
+            {
+                Logger.Info($"External request to change sub-module to {subModeSpecified}.");
+                ((MainWindow)MainWindow).ChangeSelectedSubModule(subModeSpecified);
+            }
+
+
             return true;
         }
 
@@ -79,15 +90,13 @@ namespace MFDisplay
 
         private ILog Logger;
         private static readonly bool configPresent = true;
-        private static readonly string configurationFile = "";
 
         static MFDisplayApp()
         {
-            var exeAssem = Assembly.GetExecutingAssembly();
-            configurationFile = $"{exeAssem.Location}.config";
-            if (!File.Exists(configurationFile))
+            ConfigurationPath = $"{Assembly.GetExecutingAssembly().Location}.config";
+            if (!File.Exists(ConfigurationPath))
             {
-                MessageBox.Show($"The configuration file could not be found! Please re-install or repair the application or restore the configuration file {configurationFile}.", "Invalid Configuration", MessageBoxButton.OK, MessageBoxImage.Error);
+                MessageBox.Show($"The configuration file could not be found! Please re-install or repair the application or restore the configuration file {ConfigurationPath}.", "Invalid Configuration", MessageBoxButton.OK, MessageBoxImage.Error);
                 configPresent = false;
                 return;
             }
@@ -104,11 +113,11 @@ namespace MFDisplay
             var logPath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), @"Vyper Industries\MFD4CTS\status.log");
             if(parent != null)
             {
-                MessageBox.Show(parent, $"Unable to load the configuration. Please check the log at {logPath} for details.", "Error in Configuration", MessageBoxButton.OK, MessageBoxImage.Error);
+                MessageBox.Show(parent, $"Unable to load the configuration from {ConfigurationPath}. Please check the log at {logPath} for details.", "Error in Configuration", MessageBoxButton.OK, MessageBoxImage.Error);
             }
             else
             {
-                MessageBox.Show($"Unable to load the configuration. Please check the log at {logPath} for details.", "Error in Configuration", MessageBoxButton.OK, MessageBoxImage.Error);
+                MessageBox.Show($"Unable to load the configuration from {ConfigurationPath}. Please check the log at {logPath} for details.", "Error in Configuration", MessageBoxButton.OK, MessageBoxImage.Error);
             }
         }
 
@@ -120,6 +129,7 @@ namespace MFDisplay
         protected override void OnStartup(StartupEventArgs e)
         {
             var modSpecified = e.Args.GetSafeArgumentFrom("-mod");
+            var subModeSpecified = e.Args.GetSafeArgumentFrom("-submod");
 
             if (!configPresent)
             {
@@ -128,8 +138,7 @@ namespace MFDisplay
             }
 
             Logger = LogManager.GetLogger("MFD4CTS");
-            var assmLocation = Assembly.GetExecutingAssembly().Location;
-            var sectionConfig = MFDConfigurationSection.GetConfig(Logger);
+            var sectionConfig = MFDConfigurationSection.GetConfig(Logger, ConfigurationPath);
 
             if(sectionConfig == null)
             {
@@ -139,28 +148,18 @@ namespace MFDisplay
             }
 
             Configuration = sectionConfig.ToModel(Logger);
-            if(!Directory.Exists(Configuration?.FilePath))
+            Logger.Info($"Startup");
+            var mainWindow = new MainWindow()
             {
-                var mfdSettingsFile = Path.Combine((new FileInfo(assmLocation))?.DirectoryName, "mfdsettings.config");
-                var errorMessage = $"{Configuration.FilePath} is not a valid path. Please use an elevated editor, runas Administrator, and edit the FilePath in the file {mfdSettingsFile}";
-                Logger.Error(errorMessage);
-                MessageBox.Show(errorMessage, "Configuration Error", MessageBoxButton.OK, MessageBoxImage.Error);
-                Shutdown(2);
-            }
-            else
-            {
-                Logger.Info($"Startup");
-                var mainWindow = new MainWindow()
-                {
-                    Config = Configuration,
-                    Logger = Logger,
-                    WindowState = WindowState.Minimized,
-                    PassedModule = string.IsNullOrEmpty(modSpecified) ? null : modSpecified
-                };
+                Config = Configuration,
+                Logger = Logger,
+                WindowState = WindowState.Minimized,
+                PassedModule = string.IsNullOrEmpty(modSpecified) ? null : modSpecified,
+                PassedSubModule = string.IsNullOrEmpty(subModeSpecified) ? null : subModeSpecified,
+            };
 
-                mainWindow.ShowDialog();
-                Shutdown(0);
-            }
+            mainWindow.ShowDialog();
+            Shutdown(0);
             base.OnStartup(e);
         }
 

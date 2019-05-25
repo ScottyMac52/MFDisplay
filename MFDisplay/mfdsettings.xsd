@@ -4,11 +4,10 @@
            attributeFormDefault="unqualified"
            elementFormDefault="qualified"
            xmlns:xs="http://www.w3.org/2001/XMLSchema">
-  <xs:complexType abstract="true"
-                  id="configuration"
-                  name="Configuration">
+
+  <xs:complexType abstract="true" id="baseconfiguration" name="BaseConfiguration">
     <xs:annotation>
-      <xs:documentation>Configuration defines all properties required to crop and image, re-size it and display it on the screen. The image is derived from the image filename specified either by the Module or by the configuration itself. </xs:documentation>
+      <xs:documentation>BaseConfiguration defines inserts of cropped images onto a Configuration. </xs:documentation>
     </xs:annotation>
     <xs:attribute name="name"
                   type="xs:string"
@@ -38,38 +37,6 @@
                   use="optional">
       <xs:annotation>
         <xs:documentation>Opacity of the image as rendered on the screen expressed as a percentage of 1. 30% Opacity is .3.</xs:documentation>
-      </xs:annotation>
-    </xs:attribute>
-    <xs:attribute name="width"
-                  default="100"
-                  type="xs:int"
-                  use="optional">
-      <xs:annotation>
-        <xs:documentation>Width of the image in screen pixels.</xs:documentation>
-      </xs:annotation>
-    </xs:attribute>
-    <xs:attribute name="height"
-                  default="100"
-                  type="xs:int"
-                  use="optional">
-      <xs:annotation>
-        <xs:documentation>Height of the image in screen pixels.</xs:documentation>
-      </xs:annotation>
-    </xs:attribute>
-    <xs:attribute name="left"
-                  default="1"
-                  type="xs:int"
-                  use="optional">
-      <xs:annotation>
-        <xs:documentation>Left position of the image in screen pixels.</xs:documentation>
-      </xs:annotation>
-    </xs:attribute>
-    <xs:attribute name="top"
-                  default="1"
-                  type="xs:int"
-                  use="optional">
-      <xs:annotation>
-        <xs:documentation>Top position of the image in screen pixels.</xs:documentation>
       </xs:annotation>
     </xs:attribute>
     <xs:attribute name="xOffsetStart"
@@ -105,6 +72,92 @@
       </xs:annotation>
     </xs:attribute>
   </xs:complexType>
+  <xs:complexType abstract="true"
+                  id="configuration"
+                  name="Configuration">
+    <xs:annotation>
+      <xs:documentation>Configuration defines all properties required to crop and image, re-size it and display it on the screen. The image is derived from the image filename specified either by the Module or by the configuration itself. </xs:documentation>
+    </xs:annotation>
+    <xs:complexContent>
+      <xs:extension base="BaseConfiguration">
+        <xs:attribute name="width"
+                      default="100"
+                      type="xs:int"
+                      use="optional">
+          <xs:annotation>
+            <xs:documentation>Width of the image in screen pixels.</xs:documentation>
+          </xs:annotation>
+        </xs:attribute>
+        <xs:attribute name="height"
+                      default="100"
+                      type="xs:int"
+                      use="optional">
+          <xs:annotation>
+            <xs:documentation>Height of the image in screen pixels.</xs:documentation>
+          </xs:annotation>
+        </xs:attribute>
+        <xs:attribute name="left"
+                      default="1"
+                      type="xs:int"
+                      use="optional">
+          <xs:annotation>
+            <xs:documentation>Left position of the image in screen pixels.</xs:documentation>
+          </xs:annotation>
+        </xs:attribute>
+        <xs:attribute name="top"
+                      default="1"
+                      type="xs:int"
+                      use="optional">
+          <xs:annotation>
+            <xs:documentation>Top position of the image in screen pixels.</xs:documentation>
+          </xs:annotation>
+        </xs:attribute>
+      </xs:extension>
+    </xs:complexContent>    
+  </xs:complexType>
+  <xs:complexType abstract="true"
+                  id="subconfiguration"
+                  name="SubConfiguration">
+    <xs:annotation>
+      <xs:documentation>SubConfiguration defines the image that gets cropped and pled inside a Configuration. </xs:documentation>
+    </xs:annotation>
+    <xs:complexContent>
+      <xs:extension base="BaseConfiguration">
+        <xs:attribute name="startX"
+                      default="100"
+                      type="xs:int"
+                      use="optional">
+          <xs:annotation>
+            <xs:documentation>Starting X coordinate relative to (0,0) of the Configuration where the image is rendered.</xs:documentation>
+          </xs:annotation>
+        </xs:attribute>
+        <xs:attribute name="endX"
+                      default="100"
+                      type="xs:int"
+                      use="optional">
+          <xs:annotation>
+            <xs:documentation>Ending X coordinate relative to (0,0) of the Configuration where the image is rendered.</xs:documentation>
+          </xs:annotation>
+        </xs:attribute>
+        <xs:attribute name="startY"
+                      default="1"
+                      type="xs:int"
+                      use="optional">
+          <xs:annotation>
+            <xs:documentation>Starting Y coordinate relative to (0,0) of the Configuration where the image is rendered.</xs:documentation>
+          </xs:annotation>
+        </xs:attribute>
+        <xs:attribute name="endY"
+                      default="1"
+                      type="xs:int"
+                      use="optional">
+          <xs:annotation>
+            <xs:documentation>Ending Y coordinate relative to (0,0) of the Configuration where the image is rendered.</xs:documentation>
+          </xs:annotation>
+        </xs:attribute>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
   <xs:complexType name="Module">
     <xs:annotation>
       <xs:documentation>Defines a module configuration. The moduleName, displayName and filename </xs:documentation>
@@ -124,11 +177,34 @@
                         maxOccurs="unbounded"
                         nillable="true">
               <xs:annotation>
-                <xs:documentation>Module configuration.</xs:documentation>
+                <xs:documentation>Configuration for a Module.</xs:documentation>
               </xs:annotation>
               <xs:complexType>
                 <xs:complexContent>
-                  <xs:extension base="Configuration" />
+                  <xs:extension base="Configuration">
+                    <xs:sequence>
+                      <xs:element name="SubConfigurations" minOccurs="0" maxOccurs="unbounded" nillable="true">
+                        <xs:annotation>
+                          <xs:documentation>SubConfigurations for the current Configuration</xs:documentation>
+                        </xs:annotation>
+                        <xs:complexType>
+                          <xs:sequence>
+                            <xs:element name="add" minOccurs="0" maxOccurs="unbounded" nillable="true">
+                              <xs:annotation>
+                                <xs:documentation>SubConfiguration for a Configuration.</xs:documentation>
+                              </xs:annotation>
+                              <xs:complexType>
+                                <xs:complexContent>
+                                  <xs:extension base="SubConfiguration">
+                                  </xs:extension>
+                                </xs:complexContent>
+                              </xs:complexType>
+                            </xs:element>                            
+                          </xs:sequence>
+                        </xs:complexType>
+                      </xs:element>
+                    </xs:sequence>
+                  </xs:extension>
                 </xs:complexContent>
               </xs:complexType>
             </xs:element>
@@ -171,9 +247,6 @@
           </xs:annotation>
           <xs:complexType>
             <xs:sequence>
-              <xs:annotation>
-                <xs:documentation>WHere does this appear in schema?</xs:documentation>
-              </xs:annotation>
               <xs:element name="add"
                           minOccurs="0"
                           maxOccurs="unbounded"
@@ -197,12 +270,18 @@
                     maxOccurs="unbounded"
                     nillable="false">
           <xs:complexType>
+            <xs:annotation>
+              <xs:documentation>Configured Modules</xs:documentation>
+            </xs:annotation>
             <xs:sequence>
               <xs:element name="add"
                           minOccurs="0"
                           maxOccurs="unbounded"
                           nillable="true">
                 <xs:complexType>
+                  <xs:annotation>
+                    <xs:documentation>Module Configuration</xs:documentation>
+                  </xs:annotation>
                   <xs:complexContent>
                     <xs:extension base="Module" />
                   </xs:complexContent>
@@ -212,13 +291,6 @@
           </xs:complexType>
         </xs:element>
       </xs:sequence>
-      <xs:attribute name="saveClips"
-                    type="xs:string"
-                    use="required">
-        <xs:annotation>
-          <xs:documentation>If true then PNG images of the cropped configurations are saved in the save directory they originated from in the following format:</xs:documentation>
-        </xs:annotation>
-      </xs:attribute>
       <xs:attribute name="filePath"
                     type="xs:string"
                     use="required">
