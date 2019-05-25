@@ -2,6 +2,7 @@
 using MFDSettingsManager.Models;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
@@ -42,6 +43,11 @@ namespace MFDisplay
         /// The name of the module that was passed in
         /// </summary>
         public string PassedModule { get; internal set; }
+
+        /// <summary>
+        /// The name of the sub-module that was passed
+        /// </summary>
+        public string PassedSubModule { get; internal set; }
 
         /// <summary>
         /// Ctor, initializes component, logging, sorted list and loads the configuration  
@@ -101,7 +107,8 @@ namespace MFDisplay
                 {
                     Logger = Logger,
                     Configuration = config,
-                    FilePath = Config.FilePath
+                    FilePath = Config.FilePath,
+                    SubConfigurationName = PassedSubModule
                 };
                 newAuxWindow.Show();
                 if (newAuxWindow.IsWindowLoaded)
@@ -144,6 +151,18 @@ namespace MFDisplay
                 cbModules.SelectedValue = moduleName;
             }
         }
+
+        /// <summary>
+        /// Changes the selected sub-module
+        /// </summary>
+        /// <param name="subModeSpecified"></param>
+        public void ChangeSelectedSubModule(string subModeSpecified)
+        {
+            PassedSubModule = subModeSpecified;
+            DestroyWindows();
+            CreateWindows();
+        }
+
 
         private void ProcessChangedModule(string moduleName)
         {
@@ -229,6 +248,31 @@ namespace MFDisplay
         private void FileMenuItem_Click(object sender, RoutedEventArgs e)
         {
             Close();
+        }
+
+        /// <summary>
+        /// Clears the cache of all PNG files
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void ClearCache_Click(object sender, RoutedEventArgs e)
+        {
+            DestroyWindows();
+            var cacheFolder = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), $"Vyper Industries\\MFD4CTS\\cache\\");
+            var cacheParent = new DirectoryInfo(cacheFolder);
+            var fileList = cacheParent.EnumerateFiles("*.png", SearchOption.AllDirectories).ToList();
+            fileList.ForEach((file) =>
+            {
+                try
+                {
+                    File.Delete(file.FullName);
+                }
+                catch (System.Exception ex)
+                {
+                    Logger.Warn($"Unable to delete cache file: {file.FullName}");
+                }
+            });
+            CreateWindows();
         }
     }
 }

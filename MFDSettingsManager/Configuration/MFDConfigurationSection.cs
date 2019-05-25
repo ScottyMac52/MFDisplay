@@ -1,4 +1,5 @@
 ﻿using log4net;
+using MFDSettingsManager.Configuration.Collections;
 using System;
 using System.Configuration;
 using System.IO;
@@ -35,7 +36,7 @@ namespace MFDSettingsManager.Configuration
 
             System.Configuration.Configuration currentConfiguration = null;
 
-            if(string.IsNullOrEmpty(fullPathtoConfig))
+            if (string.IsNullOrEmpty(fullPathtoConfig))
             {
                 var exeAssem = Assembly.GetEntryAssembly();
                 currentConfiguration = ConfigurationManager.OpenExeConfiguration(exeAssem.Location);
@@ -62,7 +63,6 @@ namespace MFDSettingsManager.Configuration
             }
 
             return null;
-
         }
 
         #region Properties to support schema definitions 
@@ -120,23 +120,6 @@ namespace MFDSettingsManager.Configuration
         #region Main configuration properties
 
         /// <summary>
-        /// SaveClips results in the cropped images being saved
-        /// </summary>
-        [ConfigurationProperty("saveClips", IsRequired = false)]
-        public bool? SaveClips
-        {
-            get
-            {
-                return (bool?)this["saveClips"];
-            }
-            set
-            {
-                IsDataDirty = true;
-                this["saveClips"] = value;
-            }
-        }
-
-        /// <summary>
         /// The file path to the images to be cropped
         /// </summary>
         [ConfigurationProperty("filePath", IsRequired = true)]
@@ -178,13 +161,13 @@ namespace MFDSettingsManager.Configuration
         /// MFD Default Configurations
         /// </summary>
         [ConfigurationProperty("DefaultConfigurations", IsDefaultCollection = false, IsRequired = false)]
-        [ConfigurationCollection(typeof(MFDDefinitionsCollection), AddItemName = "add", ClearItemsName = "clear", RemoveItemName = "remove")]
-        public MFDDefinitionsCollection DefaultConfigurations
+        [ConfigurationCollection(typeof(ConfigurationCollection), AddItemName = "add", ClearItemsName = "clear", RemoveItemName = "remove")]
+        public ConfigurationCollection DefaultConfigurations
         {
             get
             {
                 object o = this["DefaultConfigurations"];
-                return o as MFDDefinitionsCollection;
+                return o as ConfigurationCollection;
             }
 
             set

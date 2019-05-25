@@ -3,7 +3,6 @@ using MFDSettingsManager.Models;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Threading.Tasks;
 
 namespace MFDSettingsManager.Mappers
 {
@@ -45,7 +44,7 @@ namespace MFDSettingsManager.Mappers
                 var modelModule = ConvertFromConfigSectionModule(moduleConfigurations, currentModule);
 
                 // Add the Configurations
-                currentModule.MFDConfigurations.List.ForEach(currentConfig =>
+                currentModule.Configurations.List.ForEach(currentConfig =>
                 {
                     var mfdConfiguration = ConvertFromConfigSectionDefinition(section, modelModule, currentConfig);
                     logger.Info($"Loading Configuration {mfdConfiguration.ToReadableString()}...");
@@ -60,7 +59,6 @@ namespace MFDSettingsManager.Mappers
                         dc.Logger = logger;
                         dc.ModuleName = modelModule.ModuleName;
                         dc.FileName = !string.IsNullOrEmpty(modelModule.FileName) ? modelModule.FileName : dc.FileName;
-                        dc.SaveResults = dc.SaveResults ?? section.SaveClips ?? false;
                         logger.Info($"Adding default configuration {dc.ToReadableString()}...");
                         var newMfdConfiguration = new ConfigurationDefinition(dc)
                         {
@@ -80,7 +78,6 @@ namespace MFDSettingsManager.Mappers
                         existConfig.YOffsetStart = existConfig.YOffsetStart == 0 ? dc.YOffsetStart : existConfig.YOffsetStart;
                         existConfig.YOffsetFinish = existConfig.YOffsetFinish == 0 ? dc.YOffsetFinish : existConfig.YOffsetFinish;
                         existConfig.FileName = string.IsNullOrEmpty(existConfig.FileName) ? dc.FileName : existConfig.FileName;
-                        existConfig.SaveResults = existConfig.SaveResults ?? dc.SaveResults ?? false;
                         existConfig.ModuleName = modelModule.ModuleName;
                         existConfig.FilePath = section.FilePath;
                         var completePath = Path.Combine(section.FilePath, existConfig.FileName);
@@ -133,12 +130,11 @@ namespace MFDSettingsManager.Mappers
             {
                 Logger = section.Logger,
                 FilePath = section.FilePath,
-                DefaultConfig = section.DefaultConfig,
-                SaveClips = section.SaveClips ?? false,
+                DefaultConfig = section.DefaultConfig
             };
         }
 
-        private static ModuleDefinition ConvertFromConfigSectionModule(ModulesConfiguration parent, ModuleConfigurationDefintion module)
+        private static ModuleDefinition ConvertFromConfigSectionModule(ModulesConfiguration parent, ModuleConfiguration module)
         {
             return new ModuleDefinition()
             {
@@ -149,9 +145,9 @@ namespace MFDSettingsManager.Mappers
             };
         }
 
-        private static ConfigurationDefinition ConvertFromConfigSectionDefinition(MFDConfigurationSection section, ModuleDefinition parent, MFDDefintion currentConfig)
+        private static ConfigurationDefinition ConvertFromConfigSectionDefinition(MFDConfigurationSection section, ModuleDefinition parent, Configuration.Configuration currentConfig)
         {
-            return new ConfigurationDefinition()
+            var config = new ConfigurationDefinition()
             {
                 Logger = section.Logger,
                 ModuleName = parent?.ModuleName,
@@ -168,9 +164,34 @@ namespace MFDSettingsManager.Mappers
                 YOffsetStart = currentConfig.YOffsetStart ?? 0,
                 YOffsetFinish = currentConfig.YOffsetFinish ?? 0,
                 Enabled = currentConfig.Enabled ?? true,
-                SaveResults = section.SaveClips
-           };
+                SubConfigurations = new List<SubConfigurationDefinition>()
+            };
 
+            currentConfig.SubConfigurations.List.ForEach((subConfig) =>
+            {
+                var currentSubConfig = new SubConfigurationDefinition()
+                {
+                    Enabled = subConfig.Enabled ?? currentConfig.Enabled ?? true,
+                    EndX = subConfig.EndX ?? 0,
+                    EndY = subConfig.EndY ?? 0,
+                    StartX = subConfig.StartX ?? 0,
+                    StartY = subConfig.StartY ?? 0,
+                    FileName = subConfig.FileName ?? currentConfig.FileName ?? parent.FileName,
+                    FilePath = section.FilePath,
+                    Logger = section.Logger,
+                    ModuleName = parent?.ModuleName,
+                    Name = subConfig.Name,
+                    Opacity = subConfig.Opacity ?? 0,
+                    XOffsetStart = subConfig.XOffsetStart ?? 0,
+                    XOffsetFinish = subConfig.XOffsetFinish ?? 0,
+                    YOffsetStart = subConfig.YOffsetStart ?? 0,
+                    YOffsetFinish = subConfig.YOffsetFinish ?? 0
+                };
+
+                config.SubConfigurations.Add(currentSubConfig);
+            });
+
+            return config; 
         }
     }
 }

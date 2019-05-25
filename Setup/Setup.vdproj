@@ -3472,7 +3472,7 @@
             {
             "AssemblyRegister" = "3:1"
             "AssemblyIsInGAC" = "11:FALSE"
-            "AssemblyAsmDisplayName" = "8:MFDSettingsManager, Version=2.5.0.0, Culture=neutral, processorArchitecture=x86"
+            "AssemblyAsmDisplayName" = "8:MFDSettingsManager, Version=2.6.1.0, Culture=neutral, processorArchitecture=x86"
                 "ScatterAssemblies"
                 {
                     "_C4DC3EF2B28BD12B944CD4F281C1AE06"
@@ -4075,15 +4075,15 @@
         {
         "Name" = "8:Microsoft Visual Studio"
         "ProductName" = "8:MFD4CTS"
-        "ProductCode" = "8:{C947D7A5-4E57-4FE0-9B29-5B9CD8E7E7DD}"
-        "PackageCode" = "8:{817B5322-4A89-4B05-AC11-5081F11AD84E}"
+        "ProductCode" = "8:{394A03CA-2021-4C58-AB25-6AD614E510CA}"
+        "PackageCode" = "8:{A9424981-83B2-425E-9810-2BD624E175D7}"
         "UpgradeCode" = "8:{684D58BF-80C4-4679-8A57-A5856787407F}"
         "AspNetVersion" = "8:4.0.30319.0"
         "RestartWWWService" = "11:FALSE"
         "RemovePreviousVersions" = "11:FALSE"
         "DetectNewerInstalledVersion" = "11:TRUE"
         "InstallAllUsers" = "11:TRUE"
-        "ProductVersion" = "8:2.5.0"
+        "ProductVersion" = "8:2.6.1"
         "Manufacturer" = "8:Vyper Industries"
         "ARPHELPTELEPHONE" = "8:"
         "ARPHELPLINK" = "8:https://github.com/ScottyMac52/MFDisplay/issues"
