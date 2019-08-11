@@ -152,7 +152,6 @@ namespace MFDisplay
                     Close();
                 }
                 IsWindowLoaded = true;
-                Visibility = Visibility.Visible;
             }
         }
 
@@ -186,13 +185,12 @@ namespace MFDisplay
                         Directory.CreateDirectory(cacheFolder);
                     }
                     filePath = Path.Combine(FilePath, configSource.FileName);
-                    bitmapSource = configSource.CropImage(filePath);
+                    bitmapSource = configSource.CropImage(filePath, false);
                 }
             }
             catch (Exception ex)
             {
                 Logger?.Error($"Unable to load {configSource.ToReadableString()}.", ex);
-                Close();
             }
             finally
             {

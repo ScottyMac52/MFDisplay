@@ -114,6 +114,7 @@ namespace MFDisplay
                 if (newAuxWindow.IsWindowLoaded)
                 {
                     WindowList.Add(config.Name, newAuxWindow);
+                    newAuxWindow.Visibility = Visibility.Visible;
                 }
                 else
                 {
@@ -267,7 +268,7 @@ namespace MFDisplay
                 {
                     File.Delete(file.FullName);
                 }
-                catch (System.Exception ex)
+                catch (Exception)
                 {
                     Logger.Warn($"Unable to delete cache file: {file.FullName}");
                 }
