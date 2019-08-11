@@ -1,6 +1,7 @@
 ﻿using log4net;
 using MFDSettingsManager.Extensions;
 using System;
+using System.Drawing;
 using System.IO;
 using System.Windows;
 using System.Windows.Media;
@@ -124,30 +125,47 @@ namespace MFDSettingsManager.Models
         /// Crop the specified image
         /// </summary>
         /// <param name="imagePath"></param>
+        /// <param name="useNewMethod">If true then the NEW transparency preserving crop and resize are used</param>
         /// <returns></returns>
-        public virtual BitmapSource CropImage(string imagePath)
+        public virtual BitmapSource CropImage(string imagePath, bool useNewMethod = false)
         {
             if (Enabled)
             {
-                BitmapImage src = new BitmapImage();
-                src.BeginInit();
-                src.UriSource = new Uri(imagePath, UriKind.Relative);
-                src.CacheOption = BitmapCacheOption.OnLoad;
-                src.EndInit();
-
+                var imgSource = new Uri(imagePath, UriKind.RelativeOrAbsolute);
                 Int32Rect offSet = new Int32Rect(XOffsetStart, YOffsetStart, XOffsetFinish - XOffsetStart, YOffsetFinish - YOffsetStart);
-                CroppedBitmap croppedBitmap = new CroppedBitmap(src, offSet);
-                var noAlphaSource = new FormatConvertedBitmap();
-                noAlphaSource.BeginInit();
-                noAlphaSource.Source = croppedBitmap;
-                noAlphaSource.DestinationFormat = PixelFormats.Bgr24;
-                noAlphaSource.AlphaThreshold = 0;
-                noAlphaSource.EndInit();
-                SaveImage(noAlphaSource, CacheFolder, $"X_{XOffsetStart}To{XOffsetFinish}Y_{YOffsetStart}To{YOffsetFinish}_{Opacity}");
-                return noAlphaSource;
+                if (useNewMethod)
+                {
+                    var targetImage = Image.FromFile(imgSource.LocalPath);
+                    var reSizedImage = Resize(targetImage, new System.Drawing.Size(200, 200));
+                    BitmapImage src = new BitmapImage();
+                    src.BeginInit();
+                    src.UriSource = imgSource;
+                    src.CacheOption = BitmapCacheOption.OnLoad;
+                    src.EndInit();
+                    SaveImage(src, CacheFolder, $"TEST_X_{XOffsetStart}To{XOffsetFinish}Y_{YOffsetStart}To{YOffsetFinish}_{Opacity}");
+                    return src;
+                }
+                else
+                {
+                    BitmapImage src = new BitmapImage();
+                    src.BeginInit();
+                    src.UriSource = imgSource;
+                    src.CacheOption = BitmapCacheOption.OnLoad;
+                    src.EndInit();
+                    var croppedBitmap = new CroppedBitmap(src, offSet);
+                    var noAlphaSource = new FormatConvertedBitmap();
+                    noAlphaSource.BeginInit();
+                    noAlphaSource.Source = croppedBitmap;
+                    noAlphaSource.DestinationFormat = PixelFormats.Bgr24;
+                    //noAlphaSource.AlphaThreshold = 0;
+                    noAlphaSource.EndInit();
+                    SaveImage(noAlphaSource, CacheFolder, $"X_{XOffsetStart}To{XOffsetFinish}Y_{YOffsetStart}To{YOffsetFinish}_{Opacity}");
+                    return noAlphaSource;
+                }
             }
             else
             {
+                Logger?.Warn($"The configuration is disabled, {GetReadableString()}");
                 return null;
             }
         }
@@ -214,6 +232,44 @@ namespace MFDSettingsManager.Models
         private string GetCacheFolderForModule()
         {
             return Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), $"Vyper Industries\\MFD4CTS\\cache\\{ModuleName}");
+        }
+
+        private Image MakeImage(byte[] byteArrayIn)
+        {
+            var ms = new MemoryStream(byteArrayIn);
+            var returnImage = Image.FromStream(ms);
+            return returnImage;
+        }
+
+        private static Image Resize(Image image,
+            System.Drawing.Size size, bool preserveAspectRatio = true)
+        {
+            int newWidth;
+            int newHeight;
+            if (preserveAspectRatio)
+            {
+                var originalWidth = image.Width;
+                var originalHeight = image.Height;
+                var percentWidth = (float)size.Width / (float)originalWidth;
+                var percentHeight = (float)size.Height / (float)originalHeight;
+                var percent = percentHeight < percentWidth ? percentHeight : percentWidth;
+                newWidth = (int)(originalWidth * percent);
+                newHeight = (int)(originalHeight * percent);
+            }
+            else
+            {
+                newWidth = size.Width;
+                newHeight = size.Height;
+            }
+            Image newImage = new Bitmap(newWidth, newHeight);
+            using (Graphics graphicsHandle = Graphics.FromImage(newImage))
+            {
+                graphicsHandle.SmoothingMode = System.Drawing.Drawing2D.SmoothingMode.AntiAlias;
+                graphicsHandle.InterpolationMode =
+                           System.Drawing.Drawing2D.InterpolationMode.HighQualityBicubic;
+                graphicsHandle.DrawImage(image, 0, 0, newWidth, newHeight);
+            }
+            return newImage;
         }
 
         #endregion Private helpers
