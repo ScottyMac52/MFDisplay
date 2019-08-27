@@ -212,5 +212,10 @@ namespace MFDisplay
         {
             Logger?.Info($"Window Is Closed -> {Configuration.Name}.");
         }
+
+        private void AuxWindow_Closing(object sender, System.ComponentModel.CancelEventArgs e)
+        {
+            imgMain = null;
+        }
     }
 }

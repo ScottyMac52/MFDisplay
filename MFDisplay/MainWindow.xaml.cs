@@ -261,18 +261,28 @@ namespace MFDisplay
             DestroyWindows();
             var cacheFolder = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), $"Vyper Industries\\MFD4CTS\\cache\\");
             var cacheParent = new DirectoryInfo(cacheFolder);
-            var fileList = cacheParent.EnumerateFiles("*.png", SearchOption.AllDirectories).ToList();
-            fileList.ForEach((file) =>
+            var fileList = cacheParent?.EnumerateFiles("*.png", SearchOption.AllDirectories).ToList();
+            fileList?.ForEach((file) =>
             {
                 try
                 {
-                    File.Delete(file.FullName);
+                    file?.Delete();
                 }
-                catch (Exception)
+                catch (Exception ex)
                 {
-                    Logger.Warn($"Unable to delete cache file: {file.FullName}");
+                    Logger.Error($"Unable to delete cache file: {file.FullName}", ex);
                 }
             });
+            try
+            {
+                cacheParent?.Delete(true);
+
+            }
+            catch (Exception dex)
+            {
+
+                Logger.Error($"Unable to delete cache directory: {cacheFolder}", dex);
+            }
             CreateWindows();
         }
     }
