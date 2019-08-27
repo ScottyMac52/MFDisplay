@@ -43,7 +43,7 @@ namespace MFDSettingsManager.Configuration.Collections
         /// <returns></returns>
         protected override bool OnDeserializeUnrecognizedElement(string elementName, XmlReader reader)
         {
-            Logger?.Error($"Unrecognized element named: {elementName} location: {ElementInformation.Source}");
+            Logger?.Warn($"Unrecognized element named: {elementName} location: {ElementInformation.Source} line number: {ElementInformation.LineNumber}");
             return base.OnDeserializeUnrecognizedElement(elementName, reader);
         }
 

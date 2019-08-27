@@ -15,6 +15,6 @@
     <EnableSecurityDebugging>false</EnableSecurityDebugging>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|AnyCPU'">
-    <StartArguments>-mod F-14R -submod SPL</StartArguments>
+    <StartArguments>-mod F-14RHV -submod TGT</StartArguments>
   </PropertyGroup>
 </Project>

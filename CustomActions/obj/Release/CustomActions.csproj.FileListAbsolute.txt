@@ -1,0 +1,6 @@
+C:\Users\Scott\Source\Repos\MFDisplay\Output\CustomActions.dll
+C:\Users\Scott\Source\Repos\MFDisplay\Output\CustomActions.pdb
+C:\Users\Scott\Source\Repos\MFDisplay\CustomActions\obj\Release\CustomActions.csprojAssemblyReference.cache
+C:\Users\Scott\Source\Repos\MFDisplay\CustomActions\obj\Release\CustomActions.csproj.CoreCompileInputs.cache
+C:\Users\Scott\Source\Repos\MFDisplay\CustomActions\obj\Release\CustomActions.dll
+C:\Users\Scott\Source\Repos\MFDisplay\CustomActions\obj\Release\CustomActions.pdb
