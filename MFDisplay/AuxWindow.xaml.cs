@@ -39,6 +39,11 @@ namespace MFDisplay
         /// </summary>
         public string FilePath { get; set; }
 
+		/// <summary>
+		/// Is the Configuration for the display valid?
+		/// </summary>
+		public bool IsValid { get; private set; } = false;
+
         /// <summary>
         /// Ctor 
         /// </summary>
@@ -47,23 +52,28 @@ namespace MFDisplay
             InitializeComponent();
         }
 
-        private bool IsValid => CheckForValidConfig();
-
         private bool CheckForValidConfig()
         {
-            return Directory.Exists(FilePath) 
-                    && !string.IsNullOrEmpty(Configuration?.FileName) 
-                    && File.Exists(System.IO.Path.Combine(FilePath, Configuration.FileName)
-            );
+			if(Directory.Exists(FilePath))
+			{
+				if(File.Exists(Path.Combine(FilePath, Configuration?.FileName)))
+				{
+					// If there are sub configurations then make sure they are valid
+					return Configuration?.SubConfigurations?.All(
+						sub => Directory.Exists(sub?.FilePath) 
+						&& !string.IsNullOrEmpty(sub?.FilePath) 
+						&& File.Exists(Path.Combine(sub?.FilePath, sub?.FileName))) ?? true;
+				}
+			}
+			return false;
         }
-
+	   
         /// <summary>
         ///  Uses the Configuration to set the properties for this MFD
         /// </summary>
         /// <returns></returns>
         public bool InitializeWindow(ConfigurationDefinition definition)
         {
-            Visibility = Visibility.Hidden;
             Configuration = definition;
             Title = definition?.Name;
             ResizeMode = ResizeMode.NoResize;
@@ -72,7 +82,8 @@ namespace MFDisplay
             Left = Configuration?.Left ?? 0;
             Top = Configuration?.Top ?? 0;
             Opacity = Configuration?.Opacity ?? 1.0;
-            return true;
+			IsValid = CheckForValidConfig();
+            return IsValid;
         }
 
         /// <summary>
@@ -82,24 +93,24 @@ namespace MFDisplay
         /// <param name="e"></param>
         private void Window_Loaded(object sender, RoutedEventArgs e)
         {
-            InitializeWindow(Configuration);
-
-            if(Opacity == 0)
-            {
-                Logger?.Info($"Skipped {Configuration.ToReadableString()}...");
-                Close();
-                return;
-            }
-            if (Configuration.Enabled)
-            {
-                LoadImage();
-                Logger?.Debug($"Loading the configuration for {Configuration.Name} from Module {Configuration.ModuleName}");
-            }
-            else
-            {
-                Logger?.Info($"Configuration for {Configuration.Name} for Module {Configuration.ModuleName} is currently disabled in configuration.");
-            }
-        }
+			if (InitializeWindow(Configuration))
+			{
+				if (Configuration.Enabled)
+				{
+					LoadImage();
+					Logger?.Debug($"Loading the configuration for {Configuration.Name} from Module {Configuration.ModuleName}");
+				}
+				else
+				{
+					Logger?.Info($"Configuration for {Configuration.Name} for Module {Configuration.ModuleName} is currently disabled in configuration.");
+				}
+			}
+			else
+			{
+				var subConfigs = string.Join(Environment.NewLine, Configuration?.SubConfigurations.Select(sub => sub?.ToReadableString()));
+				Logger?.Error($"The configuration {Configuration.ToReadableString()} cannot be loaded using the full path: {Path.Combine(FilePath, Configuration.FileName)} OR there is a bad subconfiguration here: {subConfigs ?? "None"}.");
+			}
+		}
 
         /// <summary>
         /// Loads the specified image, logs failure and closes self if it fails to load
@@ -108,51 +119,43 @@ namespace MFDisplay
         {
             SubConfigurationDefinition subConfig = null;
             IsWindowLoaded = false;
-            if (!IsValid)
-            {
-                Logger?.Error($"The configuration {Configuration.ToReadableString()} cannot be loaded using the full path: {Path.Combine(FilePath, Configuration.FileName)}.");
-                Close();
-            }
-            else
-            {
-                var cacheFolder = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), $"Vyper Industries\\MFD4CTS\\cache\\{Configuration.ModuleName}");
+            var cacheFolder = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), $"Vyper Industries\\MFD4CTS\\cache\\{Configuration.ModuleName}");
 
-                // Previous renders are cached so if the cache file is available then it will be used
-                var imagePrefix = $"X_{Configuration.XOffsetStart}To{Configuration.XOffsetFinish}Y_{Configuration.YOffsetStart}To{Configuration.YOffsetFinish}_{Configuration.Opacity}";
-                var cacheFile = Path.Combine(cacheFolder, $"{imagePrefix}_{Configuration.Name}_{Configuration.Width}_{Configuration.Height}.png");
-                imgMain.Source = GetBitMapSource(Configuration, cacheFolder, cacheFile);
-                imgMain.Width = Width;
-                imgMain.Height = Height;
-                imgMain.Visibility = Visibility.Visible;
+            // Previous renders are cached so if the cache file is available then it will be used
+            var imagePrefix = $"X_{Configuration.XOffsetStart}To{Configuration.XOffsetFinish}Y_{Configuration.YOffsetStart}To{Configuration.YOffsetFinish}_{Configuration.Opacity}";
+            var cacheFile = Path.Combine(cacheFolder, $"{imagePrefix}_{Configuration.Name}_{Configuration.Width}_{Configuration.Height}.png");
+            imgMain.Source = GetBitMapSource(Configuration, cacheFolder, cacheFile);
+            imgMain.Width = Width;
+            imgMain.Height = Height;
+            imgMain.Visibility = Visibility.Visible;
 
-                try
+            try
+            {
+                // First check to see if we are using a SubConfiguration
+                if (!string.IsNullOrEmpty(SubConfigurationName))
                 {
-                    // First check to see if we are using a SubConfiguration
-                    if (!string.IsNullOrEmpty(SubConfigurationName))
+                    subConfig = Configuration?.SubConfigurations?.FirstOrDefault(sc => sc.Name.Equals(SubConfigurationName, StringComparison.InvariantCultureIgnoreCase));
+                    if (subConfig != null)
                     {
-                        subConfig = Configuration?.SubConfigurations?.FirstOrDefault(sc => sc.Name.Equals(SubConfigurationName, StringComparison.InvariantCultureIgnoreCase));
-                        if (subConfig != null)
-                        {
-                            Logger?.Info($"Processing sub-configuration: {subConfig.ToString()} for Module: {Configuration.ModuleName}!");
-                            var insetImagePrefix = $"X_{subConfig.XOffsetStart}To{subConfig.XOffsetFinish}Y_{subConfig.YOffsetStart}To{subConfig.YOffsetFinish}_{subConfig.Opacity}";
-                            var width = subConfig.EndX - subConfig.StartX;
-                            var height = subConfig.EndY - subConfig.StartY;
-                            var insetCacheFile = Path.Combine(cacheFolder, $"{insetImagePrefix}_{subConfig.Name}_{width}_{height}.png");
-                            imgInsert.Source = GetBitMapSource(subConfig, cacheFolder, insetCacheFile);
-                            imgInsert.Width = width;
-                            imgInsert.Height = height;
-                            imgInsert.Opacity = subConfig.Opacity;
-                            imgInsert.Visibility = Visibility.Visible;
-                        }
+                        Logger?.Info($"Processing sub-configuration: {subConfig.ToString()} for Module: {Configuration.ModuleName}!");
+                        var insetImagePrefix = $"X_{subConfig.XOffsetStart}To{subConfig.XOffsetFinish}Y_{subConfig.YOffsetStart}To{subConfig.YOffsetFinish}_{subConfig.Opacity}";
+                        var width = subConfig.EndX - subConfig.StartX;
+                        var height = subConfig.EndY - subConfig.StartY;
+                        var insetCacheFile = Path.Combine(cacheFolder, $"{insetImagePrefix}_{subConfig.Name}_{width}_{height}.png");
+                        imgInsert.Source = GetBitMapSource(subConfig, cacheFolder, insetCacheFile);
+                        imgInsert.Width = width;
+                        imgInsert.Height = height;
+                        imgInsert.Opacity = subConfig.Opacity;
+                        imgInsert.Visibility = Visibility.Visible;
                     }
                 }
-                catch (Exception ex)
-                {
-                    Logger?.Error($"Unable to load {subConfig?.ToReadableString()}.", ex);
-                    Close();
-                }
-                IsWindowLoaded = true;
             }
+            catch (Exception ex)
+            {
+                Logger?.Error($"Unable to load {subConfig?.ToReadableString()}.", ex);
+                Close();
+            }
+            IsWindowLoaded = true;
         }
 
         /// <summary>
