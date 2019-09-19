@@ -70,7 +70,7 @@ namespace MFDSettingsManager.Models
         /// <returns></returns>
         protected override string GetReadableString()
         {
-            return $"{Width}_{Height}";
+            return $"({Left}, {Top})_{Width}_{Height}";
         }
 
         #endregion Protected overrides 
