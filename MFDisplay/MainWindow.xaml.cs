@@ -285,5 +285,21 @@ namespace MFDisplay
             }
             CreateWindows();
         }
-    }
+
+		/// <summary>
+		/// Menu item to relaod the current configuration
+		/// </summary>
+		/// <param name="sender"></param>
+		/// <param name="e"></param>
+		private void ReloadConfiguration_Click(object sender, RoutedEventArgs e)
+		{
+			var currentapp = ((MFDisplayApp)Application.Current);
+			var module = (string)cbModules.SelectedValue;
+			DestroyWindows();
+			Config = currentapp.LoadConfiguration();
+			currentapp.LoadSelectedModule();
+			SetupWindow();
+			ChangeSelectedModule(module);
+		}
+	}
 }
