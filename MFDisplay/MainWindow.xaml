@@ -14,6 +14,7 @@
             </MenuItem>
             <MenuItem Header="Utility">
                 <MenuItem Header="_Clear Cache" CommandParameter="Cache" Click="ClearCache_Click"/>
+                <MenuItem Header="_Reload Configuration" CommandParameter="Reload" Click="ReloadConfiguration_Click"/>
             </MenuItem>
             <MenuItem Header="_Help">
                 <MenuItem Header="_About" CommandParameter="About" Click="HelpMenuItem_Click"/>

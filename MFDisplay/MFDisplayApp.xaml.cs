@@ -21,7 +21,17 @@ namespace MFDisplay
         private const string Company = "Vyper Industries";
         private const string Years = "2018, 2019"; 
 
-        static string ConfigurationPath { get; set; }
+		/// <summary>
+		/// Currently selected module
+		/// </summary>
+		public string Module { get; private set; }
+		
+		/// <summary>
+		/// Currently selected sub module
+		/// </summary>
+		public string SubModule { get; private set; }
+
+		static string ConfigurationPath { get; set; }
 
         /// <summary>
         /// Main entry point
@@ -50,30 +60,13 @@ namespace MFDisplay
         /// <returns></returns>
         public bool SignalExternalCommandLineArgs(IList<string> args)
         {
-            var modSpecified = args.GetSafeArgumentFrom("-mod");
-            var subModeSpecified = args.GetSafeArgumentFrom("-submod");
-            if(!string.IsNullOrEmpty(modSpecified))
-            {
-                Logger.Info($"External request to change module to {modSpecified}.");
-                ((MainWindow)MainWindow).ChangeSelectedModule(modSpecified);
-            }
-
-            if (!string.IsNullOrEmpty(subModeSpecified))
-            {
-                Logger.Info($"External request to change sub-module to {subModeSpecified}.");
-                ((MainWindow)MainWindow).ChangeSelectedSubModule(subModeSpecified);
-            }
-
-
+            Module = args.GetSafeArgumentFrom("-mod");
+            SubModule = args.GetSafeArgumentFrom("-submod");
+			LoadSelectedModule();
             return true;
         }
 
         #endregion ISingleInstanceApp Members
-
-        /// <summary>
-        /// Configuration section for the MFDs
-        /// </summary>
-        public ModulesConfiguration Configuration { get; protected set; }
 
         /// <summary>
         /// Gets the Name and version of the application
@@ -104,11 +97,47 @@ namespace MFDisplay
             XmlConfigurator.Configure();
         }
 
-        /// <summary>
-        /// Reports on Configuration errors
-        /// </summary>
-        /// <param name="parent">Parent Window</param>
-        internal void ShowConfigurationError(Window parent = null)
+		/// <summary>
+		/// Loads the current configuration 
+		/// </summary>
+		public ModulesConfiguration LoadConfiguration()
+		{
+			Logger = LogManager.GetLogger("MFD4CTS");
+			var sectionConfig = MFDConfigurationSection.GetConfig(Logger, ConfigurationPath);
+			if (sectionConfig == null)
+			{
+				ShowConfigurationError();
+				Shutdown(5);
+				return null;
+			}
+
+			return sectionConfig.ToModel(Logger);
+		}
+
+		/// <summary>
+		/// Loads the selected Module
+		/// </summary>
+		public void LoadSelectedModule()
+		{
+			if (!string.IsNullOrEmpty(Module))
+			{
+				Logger.Info($"External request to change module to {Module}.");
+				((MainWindow)MainWindow).ChangeSelectedModule(Module);
+			}
+
+			if (!string.IsNullOrEmpty(SubModule))
+			{
+				Logger.Info($"External request to change sub-module to {SubModule}.");
+				((MainWindow)MainWindow).ChangeSelectedSubModule(SubModule);
+			}
+
+		}
+
+		/// <summary>
+		/// Reports on Configuration errors
+		/// </summary>
+		/// <param name="parent">Parent Window</param>
+		internal void ShowConfigurationError(Window parent = null)
         {
             var logPath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), @"Vyper Industries\MFD4CTS\status.log");
             if(parent != null)
@@ -128,8 +157,8 @@ namespace MFDisplay
         /// <param name="e"></param>
         protected override void OnStartup(StartupEventArgs e)
         {
-            var modSpecified = e.Args.GetSafeArgumentFrom("-mod");
-            var subModeSpecified = e.Args.GetSafeArgumentFrom("-submod");
+            Module = e.Args.GetSafeArgumentFrom("-mod");
+            SubModule = e.Args.GetSafeArgumentFrom("-submod");
 
             if (!configPresent)
             {
@@ -137,25 +166,16 @@ namespace MFDisplay
                 return;
             }
 
-            Logger = LogManager.GetLogger("MFD4CTS");
-            var sectionConfig = MFDConfigurationSection.GetConfig(Logger, ConfigurationPath);
+			var config = LoadConfiguration();
 
-            if(sectionConfig == null)
-            {
-                ShowConfigurationError();
-                Shutdown(5);
-                return;
-            }
-
-            Configuration = sectionConfig.ToModel(Logger);
             Logger.Info($"Startup");
             var mainWindow = new MainWindow()
             {
-                Config = Configuration,
+                Config = config,
                 Logger = Logger,
                 WindowState = WindowState.Minimized,
-                PassedModule = string.IsNullOrEmpty(modSpecified) ? null : modSpecified,
-                PassedSubModule = string.IsNullOrEmpty(subModeSpecified) ? null : subModeSpecified,
+                PassedModule = string.IsNullOrEmpty(Module) ? null : Module,
+                PassedSubModule = string.IsNullOrEmpty(SubModule) ? null : SubModule,
             };
 
             mainWindow.ShowDialog();
